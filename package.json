@@ -1,0 +1,24 @@
+{
+  "name": "wainkbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheWaildug/wainkbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheWaildug/wainkbot/issues"
+  },
+  "homepage": "https://github.com/TheWaildug/wainkbot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7"
+  }
+}

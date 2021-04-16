@@ -1,8 +1,29 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
 require("dotenv").config()
+const prefix = ">"
 const evalrole = require("./values/evalroles.js")
+const modroles = require("./values/roles.js")
+const mongoose = require("mongoose")
+const fs = require("fs")
+mongoose.connect(process.env.mongourl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+}).then(() => console.log("Connected to MongoDB")).catch(error => {
+  console.log(error)
+})
+client.Commands = new Discord.Collection();
 
+  const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+  for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.Commands.set(command.name, command);
+  }
+
+  
 client.on("ready", () => {
     console.log("I'm ready, Aiden!");
     client.user.setActivity("🍇", {
@@ -10,6 +31,21 @@ client.on("ready", () => {
       url: "https://www.twitch.tv/wainked"
     });
   });
+  client.on("guildMemberAdd", async member => {
+    console.log(`${member.id}`)
+    if(member.id == "745325943035396230"){
+      const role = member.guild.roles.cache.get("832404582411927592")
+      member.roles.add(role,"User is stupid and fat.")
+    }else{
+      let members = await member.guild.members.fetch()
+      let membercount = members.size
+      const embed = new Discord.MessageEmbed()
+      .setDescription(`${member} just popped in! We're now at ${membercount} members!`)
+      .setColor("ff00f3")
+      let channel = member.guild.channels.cache.get("816863447156523028");
+      channel.send(embed)
+    }
+  })
   client.on("message", async message => {
     if (message.guild == null) {
       return;
@@ -29,16 +65,7 @@ client.on("ready", () => {
       message.channel.send(embed);
     }
   });
-  async function HasPermissions(rolesarray,member){
-    
-    for (let i = 0; i < rolesarray.length; i++) {
-      if(member.roles.cache.has(rolesarray[i])){
-        console.log(`User has the ${rolesarray[i]} role.`)
-        return true;
-      }
-    }
-    return false;
-  }
+  const HasPermissions = require("./isbypass")
   client.on("message", async message => {
     if(message.guild == null){
         return;
@@ -46,13 +73,13 @@ client.on("ready", () => {
       if(message.guild.id == "781292314856783892"){
         return;
       }
-      if(!message.content.startsWith("!")){
+      if(!message.content.startsWith(prefix)){
         return;
       }
       if(message.author.bot){
           return;
         }
-      const args = message.content.slice(1).split(" ")
+      const args = message.content.slice(prefix.length).split(" ")
       const command = args.shift().toLowerCase();
       if(command == "eval"){
         let cont = await HasPermissions(evalrole,message.member)
@@ -103,6 +130,8 @@ client.on("ready", () => {
       }
   
           
+      }else if(command == "kick"){
+        client.Commands.get("kick").execute(message,args,modroles)
       }
   })
 client.login(process.env.token)

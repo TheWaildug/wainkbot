@@ -138,4 +138,7 @@ client.on("ready", () => {
   const express = require("express")
   const server = express()
   server.listen(3000, ()=>{console.log("Server is Ready!")}); 
+  server.all('/', (req, res)=>{
+    res.send('wainked is meanie')
+})
 client.login(process.env.token)

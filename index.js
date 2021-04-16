@@ -134,4 +134,8 @@ client.on("ready", () => {
         client.Commands.get("kick").execute(message,args,modroles)
       }
   })
+
+  const express = require("express")
+  const server = express()
+  server.listen(3000, ()=>{console.log("Server is Ready!")}); 
 client.login(process.env.token)

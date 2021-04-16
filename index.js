@@ -5,6 +5,8 @@ let prefix = ">"
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
+
+
 const fs = require("fs")
 mongoose.connect(process.env.mongourl, {
   useNewUrlParser: true,
@@ -104,7 +106,7 @@ client.on("ready", () => {
         return;
       }
       if(client.user.id == "832740448909000755"){
-        if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
+        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230"){
           return;
         }
       }
@@ -168,6 +170,7 @@ client.on("ready", () => {
       }
   
           
+      
       }else if(command == "kick"){
         client.Commands.get("kick").execute(message,args,modroles)
       }

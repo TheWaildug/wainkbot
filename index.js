@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
 require("dotenv").config()
-const prefix = ">"
+let prefix = ">"
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
@@ -26,32 +26,59 @@ client.Commands = new Discord.Collection();
   
 client.on("ready", () => {
     console.log("I'm ready, Aiden!");
-    client.user.setActivity("🍇", {
-      type: "STREAMING",
-      url: "https://www.twitch.tv/wainked"
-    });
+    if(client.user.id == "832740448909000755"){
+      client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "dnd"})
+    }else{
+      client.user.setActivity("🍇", {
+        type: "STREAMING",
+        url: "https://www.twitch.tv/wainked"
+      });
+    }
+    
   });
   client.on("guildMemberAdd", async member => {
-    console.log(`${member.id}`)
-    if(member.id == "745325943035396230"){
-      const role = member.guild.roles.cache.get("832404582411927592")
-      member.roles.add(role,"User is stupid and fat.")
+    if(client.user.id != "832740448909000755"){
+      console.log(`${member.id}`)
+      if(member.id == "745325943035396230"){
+        const role = member.guild.roles.cache.get("832404582411927592")
+        member.roles.add(role,"User is stupid and fat.")
+      }else{
+      
+        const embed = new Discord.MessageEmbed()
+        .setTitle(`Welcome!`)
+        .setDescription(`${member} just hopped in!`)
+        .setColor("ff00f3")
+        .setTimestamp()
+        let channel = member.guild.channels.cache.get("816863447156523028");
+        channel.send(embed)
+      }
     }else{
-      let members = await member.guild.members.fetch()
-      let membercount = members.size
-      const embed = new Discord.MessageEmbed()
-      .setDescription(`${member} just popped in! We're now at ${membercount} members!`)
-      .setColor("ff00f3")
-      let channel = member.guild.channels.cache.get("816863447156523028");
-      channel.send(embed)
+      if(member.id == "432345618028036097"){
+        const embed = new Discord.MessageEmbed()
+        .setTitle(`Welcome!`)
+        .setDescription(`${member} just hopped in!`)
+        .setColor("ff00f3")
+        .setTimestamp()
+        let channel = member.guild.channels.cache.get("816863447156523028");
+        channel.send(embed)
+      }
     }
+    
   })
   client.on("message", async message => {
+    if(message.type != "DEFAULT"){
+      return;
+    }
     if (message.guild == null) {
       return;
     }
     if (message.author.bot) {
       return;
+    }
+    if(client.user.id == "832740448909000755"){
+      if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
+        return;
+      }
     }
     if (message.content.toLowerCase() == "aiden") {
       return message.channel.send(
@@ -67,11 +94,22 @@ client.on("ready", () => {
   });
   const HasPermissions = require("./isbypass")
   client.on("message", async message => {
+    if(message.type != "DEFAULT"){
+      return;
+    }
     if(message.guild == null){
         return;
       }
       if(message.guild.id == "781292314856783892"){
         return;
+      }
+      if(client.user.id == "832740448909000755"){
+        if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
+          return;
+        }
+      }
+      if(client.user.id == "832740448909000755"){
+        prefix = "&"
       }
       if(!message.content.startsWith(prefix)){
         return;

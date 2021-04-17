@@ -5,7 +5,7 @@ let prefix = ">"
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
-
+let wainkedcolor = "ff00f3"
 
 const fs = require("fs")
 mongoose.connect(process.env.mongourl, {
@@ -171,6 +171,14 @@ client.on("ready", () => {
   
           
       
+      }else if(command == "ping"){
+        let yourping = Date.now() - message.createdTimestamp
+        let botping = Math.round(client.ws.ping)
+        const embed = new Discord.MessageEmbed()
+        .setTitle(`Pong!`)
+        .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
+        .setColor(`ff00f3`)
+        message.channel.send(embed)
       }else if(command == "kick"){
         client.Commands.get("kick").execute(message,args,modroles)
       }

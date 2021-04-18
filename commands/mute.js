@@ -83,7 +83,7 @@ module.exports = {
             let id = await setData(mentionmember.id,ms(time),reason,message.member.id);
             const logembed = new Discord.MessageEmbed()
             .setTitle(`New Mute`)
-            .setDescription(`**User**\n${mentionmember}\n**Sender**\n${message.member}\n**Reason**\n${reason}\n**Length of Mute**\n${ms(ms(time,{long: true}))}\n**ID**\n${id}`)
+            .setDescription(`**User**\n${mentionmember}\n**Sender**\n${message.member}\n**Reason**\n${reason}\n**Length of Mute**\n${ms(ms(time))}\n**ID**\n${id}`)
             .setColor("ff00f3")
             .setFooter(`User unmute`)
             .setTimestamp(unmutetime)

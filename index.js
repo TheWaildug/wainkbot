@@ -190,7 +190,19 @@ client.on("ready", () => {
         .setColor(`ff00f3`)
         message.channel.send(embed)
       }else if(command == "status"){
-
+        let status = message.content.split(" ").splice(1).join(" ")
+        if(!status){
+          return message.reply(`I need a status!`)
+        }
+        let newData = data
+        newData.status = status
+        let saveData = JSON.stringify(newData)
+        fs.writeFileSync("data.json",saveData)
+        client.user.setActivity(status, {
+          type: "STREAMING",
+          url: "https://www.twitch.tv/wainked"
+        });
+        message.reply(`go check it out noob.`)
       }else if(command == "mute"){
         client.Commands.get("mute").execute(message,args,modroles)
       }else if(command == "kick"){

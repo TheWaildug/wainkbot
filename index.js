@@ -71,6 +71,36 @@ client.on("ready", () => {
     }
     
   })
+  ///Automod
+  client.on("message",async message => {
+    if(message.type != "DEFAULT"){
+      return;
+    }
+    if (message.guild == null) {
+      return;
+    }
+    if (message.author.bot) {
+      return;
+    }
+    const warnemote = message.guild.emojis.cache.get("833398158616821840")
+    let args = message.content.split(" ")
+    if(client.user.id == "832740448909000755"){
+      if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
+        return;
+      }
+    }
+    if(message.mentions.members.has("432345618028036097")){
+      if(message.member.roles.cache.has("833022116571381780")){
+        return console.log(`user is bypass`)
+      }
+      message.channel.send(`${warnemote} ${message.member}, You're not allowed to ping wainked!`).then(msg => {
+        setTimeout(() => {
+          msg.delete();
+        }, 5000)
+      })
+      return message.delete()
+    }
+  })
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
       return;

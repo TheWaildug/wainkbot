@@ -91,18 +91,19 @@ client.on("ready", () => {
       if(args[i].toLowerCase() == "ok"){
         message.react("🆗")
       }
-    }
-    if (message.content.toLowerCase() == "aiden") {
-      return message.channel.send(
-        "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
-      );
-    }
-    if (message.content.toLowerCase() == "wainked") {
-      const embed = new Discord.MessageEmbed()
+      if(args[i].toLowerCase() == "aiden"){
+        return message.channel.send(
+          "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
+        );
+      }
+      if(args[i].toLowerCase() == "wainked"){
+        const embed = new Discord.MessageEmbed()
         .setDescription("**Creating viruses...**")
         .setColor("#ff00f3");
       message.channel.send(embed);
+      }
     }
+    
   });
   const HasPermissions = require("./isbypass")
   client.on("message", async message => {

@@ -89,7 +89,7 @@ client.on("ready", () => {
         return;
       }
     }
-    if(message.mentions.members.has("432345618028036097")){
+    if(message.mentions.members.has("737825820642639883")){
       if(message.member.roles.cache.has("833022116571381780")){
         return console.log(`user is bypass`)
       }

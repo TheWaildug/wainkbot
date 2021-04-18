@@ -5,6 +5,7 @@ let prefix = ">"
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
+const mutemongo = require("./mutemongo")
 const fs = require("fs")
 let wainkedcolor = "ff00f3"
 let rawData = fs.readFileSync('data.json');
@@ -188,6 +189,8 @@ client.on("ready", () => {
         .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
         .setColor(`ff00f3`)
         message.channel.send(embed)
+      }else if(command == "status"){
+
       }else if(command == "mute"){
         client.Commands.get("mute").execute(message,args,modroles)
       }else if(command == "kick"){

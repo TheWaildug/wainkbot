@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
 require("dotenv").config()
-let prefix = ">"
+let prefix = "!"
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")

@@ -89,10 +89,21 @@ client.on("ready", () => {
         return;
       }
     }
-    if(message.mentions.members.has("737825820642639883")){
+    
+    if(message.mentions.members.has("832364191075663903")){
       if(message.member.roles.cache.has("833022116571381780")){
         return console.log(`user is bypass`)
       }
+      if(message.member.roles.cache.has("832364191075663903")){
+        return console.log(`user is bypass`)
+      }
+      if(message.member.roles.cache.has("813840097166360577")){
+        return console.log(`user is bypass`)
+      
+    }
+    if(message.member.roles.cache.has("819048048105357382")){
+      return console.log(`user is bypass`)
+    }
       message.channel.send(`${warnemote} ${message.member}, You're not allowed to ping wainked!`).then(msg => {
         setTimeout(() => {
           msg.delete();

@@ -5,9 +5,11 @@ let prefix = ">"
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
-let wainkedcolor = "ff00f3"
-
 const fs = require("fs")
+let wainkedcolor = "ff00f3"
+let rawData = fs.readFileSync('data.json');
+let data = JSON.parse(rawData);
+
 mongoose.connect(process.env.mongourl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -29,9 +31,10 @@ client.Commands = new Discord.Collection();
 client.on("ready", () => {
     console.log("I'm ready, Aiden!");
     if(client.user.id == "832740448909000755"){
+      client.user.setStatus("invisible")  
       client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "dnd"})
     }else{
-      client.user.setActivity("🍇", {
+      client.user.setActivity(data.status, {
         type: "STREAMING",
         url: "https://www.twitch.tv/wainked"
       });

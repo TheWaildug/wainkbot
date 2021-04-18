@@ -188,6 +188,8 @@ client.on("ready", () => {
         .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
         .setColor(`ff00f3`)
         message.channel.send(embed)
+      }else if(command == "mute"){
+        client.Commands.get("mute").execute(message,args,modroles)
       }else if(command == "kick"){
         client.Commands.get("kick").execute(message,args,modroles)
       }

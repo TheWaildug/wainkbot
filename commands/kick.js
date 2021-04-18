@@ -48,7 +48,7 @@ module.exports = {
         
         const dmembed = new Discord.MessageEmbed()
         .setTitle(`You've been kicked from ${message.guild.name}.`)
-        .setDescription(`**Reason**\n${reason}\n\n\n\nYou can rejoin by clicking [here.](https://discord.gg/Sm9GH4t695)`)
+        .setDescription(`**Reason**\n${reason}\n**ID**\n${code}\nYou can rejoin by clicking [here.](https://discord.gg/Sm9GH4t695)`)
         .setColor("ff00f3")
         .setTimestamp()
         mentionmember.send(dmembed).catch(console.log)

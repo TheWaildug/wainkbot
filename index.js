@@ -77,9 +77,15 @@ client.on("ready", () => {
     if (message.author.bot) {
       return;
     }
+    let args = message.content.split(" ")
     if(client.user.id == "832740448909000755"){
       if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
         return;
+      }
+    }
+    for(let i = 0; i < args.length; i++){
+      if(args[i].toLowerCase() == "ok"){
+        message.react("🆗")
       }
     }
     if (message.content.toLowerCase() == "aiden") {

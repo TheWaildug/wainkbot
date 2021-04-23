@@ -284,7 +284,7 @@ client.on("ready", async () => {
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
-        if(message.guild.me.id != "832740448909000755"){
+        if(message.guild.me.id == "832740448909000755"){
           return message.reply(`Please use this on the regular wainkbot.`)
         }
         let status = message.content.split(" ").splice(1).join(" ")

@@ -46,7 +46,7 @@ async function UpdateStatus(){
         type: "STREAMING",
         url: "https://www.twitch.tv/wainked"
       });
-    }, 30000)
+    }, 20000)
 }
   
 client.on("ready", async () => {

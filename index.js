@@ -141,7 +141,8 @@ client.on("ready", () => {
         const embed = new Discord.MessageEmbed()
         .setDescription("**Creating viruses...**")
         .setColor("#ff00f3");
-      message.channel.send(embed);
+      message.channel.send(embed)
+      
       }
     }
   });

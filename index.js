@@ -144,30 +144,6 @@ client.on("ready", () => {
       message.channel.send(embed);
       }
     }
-    const botuser = message.guild.me
-    if(message.content.includes("i'm")){
-      let ee = message.content.split("i'm").splice(1).join("")
-          return message.channel.send(`Hi,${ee}, I'm ${botuser.displayName}!`, {"allowedMentions": {parse: []}});
-      }
-      if(message.content.includes("I'm")){
-        let ee = message.content.split("I'm").splice(1).join("")
-            return message.channel.send(`Hi,${ee}, I'm ${botuser.displayName}!`, {"allowedMentions": {parse: []}});
-        }if(message.content.includes("Im")){
-          let ee = message.content.split("I'm").splice(1).join("")
-              return message.channel.send(`Hi,${ee}, I'm ${botuser.displayName}!`, {"allowedMentions": {parse: []}});
-          }
-          if(message.content.includes("IM")){
-            let ee = message.content.split("I'm").splice(1).join("")
-                return message.channel.send(`Hi,${ee}, I'm ${botuser.displayName}!`, {"allowedMentions": {parse: []}});
-            }
-            if(message.content.includes("I'M")){
-              let ee = message.content.split("I'm").splice(1).join("")
-                  return message.channel.send(`Hi,${ee}, I'm ${botuser.displayName}!`, {"allowedMentions": {parse: []}});
-              }
-      if(message.content.includes("im")){
-        let ee = message.content.split("im").splice(1).join("")
-            message.channel.send(`Hi,${ee}, I'm ${botuser.displayName}!`, {"allowedMentions": {parse: []}});
-        }
   });
   const HasPermissions = require("./isbypass")
   client.on("message", async message => {

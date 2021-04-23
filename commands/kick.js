@@ -36,6 +36,9 @@ module.exports = {
         if(mentionmember.roles.highest.position >= message.member.roles.highest.position){
             return message.reply(`This user has an equal or higher role.`)
         }
+        if(!mentionmember.kickable){
+            return message.reply(`It seems I cannot kick this user.`)
+        }
         let reason = message.content.split(" ").splice(2).join(" ")
         console.log(reason)
         if(!reason){

@@ -23,6 +23,7 @@ module.exports = {
     name: "mute",
     description: "mutes people",
     async execute(message,args,roles){
+        
         let hasperm = await HasPermissions(roles,message.member)
         console.log(hasperm)
         if(hasperm == false){
@@ -33,6 +34,9 @@ module.exports = {
               msg.delete({timeout: 5000})
             })
             return message.delete();
+        }
+        if(message.guild.me.id == "832740448909000755"){
+            return message.reply(`You must run this with the regular wainkbot.`)
         }
         if(!args[0]){
             return message.channel.send(`${message.member}, this is not a user.`)

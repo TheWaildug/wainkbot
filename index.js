@@ -2,14 +2,16 @@ const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { properties: { $browser: "Discord iOS" }} });
 require("dotenv").config()
 let prefix = "!"
+const afkmongo = require("./afkmongo.js")
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
+const statuses = require("./statuses")
 const mutemongo = require("./mutemongo")
+const ms = require("ms")
 const fs = require("fs")
 let wainkedcolor = "ff00f3"
-let rawData = fs.readFileSync('data.json');
-let data = JSON.parse(rawData);
+let allstatus = []
 
 mongoose.connect(process.env.mongourl, {
   useNewUrlParser: true,
@@ -27,18 +29,35 @@ client.Commands = new Discord.Collection();
     const command = require(`./commands/${file}`);
     client.Commands.set(command.name, command);
   }
+async function UpdateStatus(){
+ 
 
   
-client.on("ready", () => {
+  let randomstatus = allstatus[Math.floor(Math.random() * allstatus.length)];
+    client.user.setActivity(randomstatus.status, {
+      type: "STREAMING",
+      url: "https://www.twitch.tv/wainked"
+    });
+    setInterval(async () => {
+ 
+      let randomstatus = allstatus[Math.floor(Math.random() * allstatus.length)];
+      console.log(`changing status to ${randomstatus.status}`)
+      client.user.setActivity(randomstatus.status, {
+        type: "STREAMING",
+        url: "https://www.twitch.tv/wainked"
+      });
+    }, 30000)
+}
+  
+client.on("ready", async () => {
     console.log("I'm ready, Aiden!");
     if(client.user.id == "832740448909000755"){
       client.user.setStatus("invisible")  
       client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "online"})
     }else{
-      client.user.setActivity(data.status, {
-        type: "STREAMING",
-        url: "https://www.twitch.tv/wainked"
-      });
+      let status = await statuses.find()
+      allstatus = status
+      UpdateStatus()
     }
     
   });
@@ -70,6 +89,37 @@ client.on("ready", () => {
       }
     }
     
+  })
+  ///Remove AFK
+  client.on("message", async message => {
+    if(message.type != "DEFAULT"){
+      return;
+    }
+    if(message.guild == null){
+      return;
+    }
+    if(message.author.bot){
+      return;
+    }
+    let isafk = await afkmongo.findOne({userid: message.member.id})
+      
+        if(isafk != null){
+          console.log(`removing afk`)
+          
+            message.channel.send(`Welcome back, ${message.member}! I've removed your AFK.`);
+            await afkmongo.deleteMany({userid: message.member.id})
+          
+        }
+      if(message.mentions.members.first()){
+        message.mentions.members.forEach(async user => {
+          let isafk = await afkmongo.findOne({userid: user.id})
+          if(isafk != null){
+            let afkms = Date.now() - isafk.afkms
+            message.reply(`${user} has been AFK with the reason **${isafk.afk}** for **${ms(afkms,{long: true})}**`,{allowedMentions: {parse: [], users: [message.member.id]}})
+
+          }
+        })
+      }
   })
   ///Automod
   client.on("message",async message => {
@@ -231,20 +281,18 @@ client.on("ready", () => {
         .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
         .setColor(`ff00f3`)
         message.channel.send(embed)
+      }else if(command == "afk"){
+        client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
         let status = message.content.split(" ").splice(1).join(" ")
         if(!status){
           return message.reply(`I need a status!`)
         }
-        let newData = data
-        newData.status = status
-        let saveData = JSON.stringify(newData)
-        fs.writeFileSync("data.json",saveData)
-        client.user.setActivity(status, {
-          type: "STREAMING",
-          url: "https://www.twitch.tv/wainked"
-        });
         message.reply(`go check it out noob.`)
+        let statusm = new statuses({status: status, user: message.member.id})
+        await statusm.save()
+        let allstat = await statuses.find()
+        allstatus = allstat
       }else if(command == "mute"){
         client.Commands.get("mute").execute(message,args,modroles)
       }else if(command == "kick"){

@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const client = new Discord.Client()
+const client = new Discord.Client({ ws: { properties: { $browser: "Discord iOS" }} });
 require("dotenv").config()
 let prefix = "!"
 const evalrole = require("./values/evalroles.js")
@@ -33,7 +33,7 @@ client.on("ready", () => {
     console.log("I'm ready, Aiden!");
     if(client.user.id == "832740448909000755"){
       client.user.setStatus("invisible")  
-      client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "dnd"})
+      client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "online"})
     }else{
       client.user.setActivity(data.status, {
         type: "STREAMING",

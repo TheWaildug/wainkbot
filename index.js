@@ -284,11 +284,14 @@ client.on("ready", async () => {
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
+        if(message.guild.me.id != "832740448909000755"){
+          return message.reply(`Please use this on the regular wainkbot.`)
+        }
         let status = message.content.split(" ").splice(1).join(" ")
         if(!status){
           return message.reply(`I need a status!`)
         }
-        message.reply(`go check it out noob.`)
+        message.reply(`I have added this status to the pool. Beware! If you abuse this you will be blacklisted.`)
         let statusm = new statuses({status: status, user: message.member.id})
         await statusm.save()
         let allstat = await statuses.find()

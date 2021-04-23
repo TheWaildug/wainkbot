@@ -47,7 +47,7 @@ async function UpdateStatus(){
         url: "https://www.twitch.tv/wainked"
       });
     }, 20000)
-}
+} 
   
 client.on("ready", async () => {
     console.log("I'm ready, Aiden!");

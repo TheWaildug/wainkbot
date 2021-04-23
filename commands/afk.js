@@ -10,6 +10,9 @@ module.exports = {
         }
         afkmongo.deleteMany({userid: message.member.id})
         let afkmsg = args.join(" ")
+        if(afkmsg == ""){
+            afkmsg = "AFK"
+        }
            let afkmo = new afkmongo({userid: message.member.id, afk: afkmsg, afkms: Date.now()}) 
            afkmo.save()
            message.reply(`I have set your AFK, **${afkmsg}**`,{allowedMentions: {parse: [], users: [message.member.id]}})

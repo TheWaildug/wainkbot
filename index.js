@@ -117,7 +117,7 @@ client.on("ready", async () => {
           let isafk = await afkmongo.findOne({userid: user.id})
           if(isafk != null){
             let afkms = Date.now() - isafk.afkms
-            message.reply(`${user} has been AFK with the reason **${isafk.afk}** for **${ms(afkms,{long: true})}**`,{allowedMentions: {parse: [], users: [message.member.id]}})
+            message.reply(`${user} has been AFK with the reason **${isafk.afk}** for **${ms(afkms,{long: true})}**.`,{allowedMentions: {parse: [], users: [message.member.id]}})
 
           }
         })

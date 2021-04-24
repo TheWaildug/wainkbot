@@ -91,8 +91,10 @@ client.on("ready", async () => {
     }
     
   })
+  
   ///Remove AFK
   client.on("message", async message => {
+   
     if(message.type != "DEFAULT"){
       return;
     }
@@ -102,6 +104,12 @@ client.on("ready", async () => {
     if(message.author.bot){
       return;
     }
+    if(client.user.id == "832740448909000755"){
+      if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
+        return;
+      }
+    }
+    
     let isafk = await afkmongo.findOne({userid: message.member.id})
       
         if(isafk != null){

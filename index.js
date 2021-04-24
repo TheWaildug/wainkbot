@@ -41,7 +41,7 @@ async function UpdateStatus(){
     setInterval(async () => {
  
       let randomstatus = allstatus[Math.floor(Math.random() * allstatus.length)];
-      console.log(`changing status to ${randomstatus.status}`)
+     
       client.user.setActivity(randomstatus.status, {
         type: "STREAMING",
         url: "https://www.twitch.tv/wainked"

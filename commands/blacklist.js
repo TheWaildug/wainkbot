@@ -1,5 +1,6 @@
 const HasPermissions = require("../isbypass")
 const blacklistmongo = require("../blacklistmongo")
+const Discord = require("discord.js")
 module.exports = {
     name: "blacklist",
     description: "blacklist user from suggestions or changing status",

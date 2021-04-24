@@ -3,6 +3,7 @@ const client = new Discord.Client({ ws: { properties: { $browser: "Discord iOS" 
 require("dotenv").config()
 let prefix = "!"
 const afkmongo = require("./afkmongo.js")
+const blacklistmongo = require("./blacklistmongo")
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
@@ -296,6 +297,11 @@ client.on("ready", async () => {
         if(message.guild.me.id == "832740448909000755"){
           return message.reply(`Please use this on the regular wainkbot.`)
         }
+        let isblacklisted = await blacklistmongo.findOne({user: message.member.id, type: "status", blacklisted: true})
+        console.log(isblacklisted)
+        if(isblacklisted != null){
+          return message.reply(`You have been blacklisted from changing my ststus.`)
+        }
         let status = message.content.split(" ").splice(1).join(" ")
         if(!status){
           return message.reply(`I need a status!`)
@@ -314,6 +320,7 @@ client.on("ready", async () => {
 
   const express = require("express");
 const roles = require("./values/roles.js");
+const blacklist = require("./commands/blacklist.js");
   const server = express()
   server.listen(3000, ()=>{console.log("Server is Ready!")}); 
   server.all('/', (req, res)=>{

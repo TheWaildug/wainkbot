@@ -274,6 +274,14 @@ client.on("ready", async () => {
   
           
       
+      }else if(command == "bl"){
+        client.Commands.get("blacklist").execute(message,args,roles)
+      }else if(command == "deny"){
+        client.Commands.get("deny").execute(message,args,roles)
+      }else if(command == "accept"){
+        client.Commands.get("accept").execute(message,args,roles)
+      }else if(command == "suggest"){
+        client.Commands.get("suggest").execute(message,args,roles)
       }else if(command == "ping"){
         let yourping = Date.now() - message.createdTimestamp
         let botping = Math.round(client.ws.ping)
@@ -304,7 +312,8 @@ client.on("ready", async () => {
       }
   })
 
-  const express = require("express")
+  const express = require("express");
+const roles = require("./values/roles.js");
   const server = express()
   server.listen(3000, ()=>{console.log("Server is Ready!")}); 
   server.all('/', (req, res)=>{

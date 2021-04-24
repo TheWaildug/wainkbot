@@ -306,7 +306,7 @@ client.on("ready", async () => {
         if(!status){
           return message.reply(`I need a status!`)
         }
-        message.reply(`I have added this status to the pool. Beware! If you abuse this you will be blacklisted.`)
+        message.reply(`I have added this status to the pool.`)
         let statusm = new statuses({status: status, user: message.member.id})
         await statusm.save()
         let allstat = await statuses.find()

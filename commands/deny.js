@@ -50,6 +50,6 @@ module.exports = {
         .setFooter(`Denied`)
         .setTimestamp()
         msg.edit(newembed)
-        message.react("👍")
+        message.delete()
     }
 }

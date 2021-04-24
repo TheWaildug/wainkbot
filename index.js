@@ -107,6 +107,7 @@ client.on("ready", async () => {
           console.log(`removing afk`)
           
             message.channel.send(`Welcome back, ${message.member}! I've removed your AFK.`);
+            message.member.setNickname(isafk.currentname,`Removal from AFK.`).catch(e => console.log(e))
             await afkmongo.deleteMany({userid: message.member.id})
           
         }

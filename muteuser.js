@@ -74,7 +74,7 @@ module.exports = async function(message,reason,time){
                const peerams = {
                    "userid": message.member.id,
                    "reason": reason,
-                   "logurl": msg.id,
+                   "logsurl": msg.id,
                    "id": id,
                    "mutetime": time,
                    "moderator": message.guild.me.id

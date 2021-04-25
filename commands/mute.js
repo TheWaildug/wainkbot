@@ -7,6 +7,7 @@ const fetch = require("node-fetch")
 const mutemongo = require("../mutemongo")
 async function setData(user,time,reason,mod){
     let unmuteti = Date.now() + time
+    
     const ne = new mutemongo({
           userid: user,
           mutetime: time,
@@ -128,7 +129,7 @@ module.exports = {
                const peerams = {
                    "userid": mentionmember.id,
                    "reason": reason,
-                   "logurl": msg.id,
+                   "logsurl": msg.id,
                    "id": id,
                    "mutetime": ms(time),
                    "moderator": message.member.id

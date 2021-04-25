@@ -38,7 +38,7 @@ module.exports = {
             })
             return message.delete();
         }
-        
+        return message.reply(`this is still being worked on. (it doesn't work yet)`)
         if(!args[0]){
             return message.channel.send(`${message.member}, this is not a user.`)
         }

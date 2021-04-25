@@ -338,7 +338,7 @@ client.on("ready", async () => {
         let string = ""
         allstatus.forEach(status => {
           console.log(status)
-          string = string + ` ${status.status},`
+          string = string + `${status.status}, `
         })
         console.log(string)
         return message.channel.send(`Here are all the current statuses: \n${string}`,{allowedMentions: {parse: []}})

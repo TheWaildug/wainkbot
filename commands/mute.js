@@ -6,13 +6,15 @@ const mutedrole = "826093027545710653"
 const fetch = require("node-fetch")
 const mutemongo = require("../mutemongo")
 async function setData(user,time,reason,mod){
+    let unmuteti = Date.now() + time
     const ne = new mutemongo({
           userid: user,
           mutetime: time,
           reason: reason,
           moderator: mod,
           logsurl: "null",
-          ismuted: true
+          ismuted: true,
+          unmutetimestamp: unmuteti
         })
         console.log(`New Mute Data: ${user} ${time} ${reason} ${mod}`)
         console.log(ne)
@@ -35,9 +37,7 @@ module.exports = {
             })
             return message.delete();
         }
-        if(message.guild.me.id == "832740448909000755"){
-            return message.reply(`You must run this with the regular wainkbot.`)
-        }
+        
         if(!args[0]){
             return message.channel.send(`${message.member}, this is not a user.`)
         }
@@ -126,7 +126,7 @@ module.exports = {
                mentionmember.send(dmembed).catch(console.log)
                console.log(logurl)
                const peerams = {
-                   "user": mentionmember.id,
+                   "userid": mentionmember.id,
                    "reason": reason,
                    "logurl": msg.id,
                    "id": id,

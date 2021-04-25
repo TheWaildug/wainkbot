@@ -69,19 +69,22 @@ async function UpdateStatus(){
     let allwarnings = await automod.find({userid: message.member.id})
     let newwarnings = []
     allwarnings.forEach(async warning => {
-      if(warning.timestamp > requireddate){
-        await automod.deleteOne({id: warning.id})
+      console.log(warning.id)
+      console.log(Number(warning.timestamp))
+      console.log(requireddate)
+      if(Number(warning.timestamp) > requireddate){
+        await automod.deleteOne({_id: warning.id})
         
       }else{
         newwarnings.push(warning)
       }
     })
     console.log(newwarnings.length)
-    if(newwarnings.length >= 5){
+    if(newwarnings.length >= 3){
     
-      console.log(`at least 5 warns in past 5 minutes.`)
-      let things = (message.member,`5 warns in the past 5 minutes.`,Date.now() + ms("3 hours"))
-      muteuser(thingsa)
+      console.log(`at least 3 warns in past 5 minutes.`)
+
+      muteuser(message,`(AUTOMOD) 3 warns in the past 5 minutes.`,10800000)
     }
   }
 client.on("ready", async () => {

@@ -8,12 +8,27 @@ const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const mongoose = require("mongoose")
 const statuses = require("./statuses")
-const mutemongo = require("./mutemongo")
+const muteuser = require("./muteuser.js")
+const automod = require("./automod")
 const ms = require("ms")
 const fs = require("fs")
 let wainkedcolor = "ff00f3"
 let allstatus = []
-
+const mutemongo = require("./mutemongo")
+async function setData(user,time,reason,mod){
+    const ne = new mutemongo({
+          userid: user,
+          mutetime: time,
+          reason: reason,
+          moderator: mod,
+          logsurl: "null",
+          ismuted: true
+        })
+        console.log(`New Mute Data: ${user} ${time} ${reason} ${mod}`)
+        console.log(ne)
+        ne.save()
+        return ne._id
+  }
 mongoose.connect(process.env.mongourl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -49,7 +64,26 @@ async function UpdateStatus(){
       });
     }, 20000)
 } 
-  
+  async function enoughwarns(message){
+    let requireddate = Date.now() + ms("5 minutes")
+    let allwarnings = await automod.find({userid: message.member.id})
+    let newwarnings = []
+    allwarnings.forEach(async warning => {
+      if(warning.timestamp > requireddate){
+        await automod.deleteOne({id: warning.id})
+        
+      }else{
+        newwarnings.push(warning)
+      }
+    })
+    console.log(newwarnings.length)
+    if(newwarnings.length >= 5){
+    
+      console.log(`at least 5 warns in past 5 minutes.`)
+      let things = (message.member,`5 warns in the past 5 minutes.`,Date.now() + ms("3 hours"))
+      muteuser(thingsa)
+    }
+  }
 client.on("ready", async () => {
     console.log("I'm ready, Aiden!");
     if(client.user.id == "832740448909000755"){
@@ -144,33 +178,30 @@ client.on("ready", async () => {
     }
     const warnemote = message.guild.emojis.cache.get("833398158616821840")
     let args = message.content.split(" ")
+    let usertoping = "737825820642639883"
     if(client.user.id == "832740448909000755"){
+      usertoping = "432345618028036097"
       if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
         return;
       }
     }
     
-    if(message.mentions.members.has("832364191075663903")){
-      if(message.member.roles.cache.has("833022116571381780")){
-        return console.log(`user is bypass`)
+    if(message.mentions.members.has(usertoping)){
+      let cont = await HasPermissions(roles,message.member)
+      if(cont == true){
+        return console.log(`User is bypass.`)
       }
-      if(message.member.roles.cache.has("832364191075663903")){
-        return console.log(`user is bypass`)
-      }
-      if(message.member.roles.cache.has("813840097166360577")){
-        return console.log(`user is bypass`)
-      
-    }
-    if(message.member.roles.cache.has("819048048105357382")){
-      return console.log(`user is bypass`)
-    }
+      console.log(`${message.member.id} pinged wainked.`)
       message.channel.send(`${warnemote} ${message.member}, You're not allowed to ping wainked!`).then(msg => {
         setTimeout(() => {
           msg.delete();
         }, 5000)
       })
-      return message.delete()
-    }
+      message.delete()
+      let warn = new automod({userid: message.member.id, reason: `Pinging wainked.`, timestamp: Date.now()})
+   await warn.save()
+    enoughwarns(message)
+  }
   })
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
@@ -299,6 +330,14 @@ client.on("ready", async () => {
         .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
         .setColor(`ff00f3`)
         message.channel.send(embed)
+      }else if(command == "allstatuses"){
+        let string = ""
+        allstatus.forEach(status => {
+          console.log(status)
+          string = string + ` ${status.status},`
+        })
+        console.log(string)
+        return message.channel.send(`Here are all the current statuses \n${string}`,{allowedMentions: {parse: []}})
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
@@ -329,6 +368,7 @@ client.on("ready", async () => {
   const express = require("express");
 const roles = require("./values/roles.js");
 const blacklist = require("./commands/blacklist.js");
+const mute = require("./commands/mute.js");
   const server = express()
   server.listen(3000, ()=>{console.log("Server is Ready!")}); 
   server.all('/', (req, res)=>{

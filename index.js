@@ -14,6 +14,7 @@ const ms = require("ms")
 const fs = require("fs")
 let wainkedcolor = "ff00f3"
 let allstatus = []
+const allcooldown = new Set();
 const mutemongo = require("./mutemongo")
 async function setData(user,time,reason,mod){
     const ne = new mutemongo({
@@ -64,15 +65,16 @@ async function UpdateStatus(){
       });
     }, 20000)
 } 
+async function dmuser(user,info){
+ user.send(``,{embed: info}) 
+}
   async function enoughwarns(message){
     let requireddate = Date.now() + ms("5 minutes")
     let allwarnings = await automod.find({userid: message.member.id})
     let newwarnings = []
     allwarnings.forEach(async warning => {
-      console.log(warning.id)
-      console.log(Number(warning.timestamp))
-      console.log(requireddate)
-      if(Number(warning.timestamp) > requireddate){
+      console.log(Date.now() >= warning.enddate)
+      if(Date.now() >= warning.endtime){
         await automod.deleteOne({_id: warning.id})
         
       }else{
@@ -84,7 +86,7 @@ async function UpdateStatus(){
     
       console.log(`at least 3 warns in past 5 minutes.`)
 
-      muteuser(message,`(AUTOMOD) 3 warns in the past 5 minutes.`,10800000)
+      muteuser(message,`(AUTOMOD) 3 warns in the past 5 minutes.`,ms("1 hour"))
     }
   }
 client.on("ready", async () => {
@@ -200,11 +202,16 @@ client.on("ready", async () => {
           msg.delete();
         }, 5000)
       })
+      let embedinfo = []
+      embedinfo.title = "You can't do that!"
+      embedinfo.color = wainkedcolor
+      embedinfo.description = "You cannot ping wainked! If you want to contact him, you can visit our [website](https://bit.ly/wainkedd)."
+      dmuser(message.member,embedinfo)
       message.delete()
-      if(client.user.id == "826517160951676958"){
+      if(client.user.id == "12345"){
         return;
       }else{
-      let warn = new automod({userid: message.member.id, reason: `Pinging wainked.`, timestamp: Date.now()})
+      let warn = new automod({userid: message.member.id, reason: `Pinging wainked.`, timestamp: Date.now(), endtime: Date.now() + ms("24 hours")})
    await warn.save()
     enoughwarns(message)
       }

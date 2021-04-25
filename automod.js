@@ -12,6 +12,10 @@ const MuteSchema = new Schema({
   "timestamp": {
     type: String,
     required: true
+  },
+  "endtime": {
+    type: String,
+    required: true
   }
 });
 module.exports = Item = mongoose.model('automodschema', MuteSchema);

@@ -26,6 +26,9 @@ module.exports = async function(message,reason,time){
     if(!muter){
         return message.channel.send(`Uh oh! It seems that I could not find the muted role.`);
     }
+    if(message.member.roles.cache.has(muter)){
+      return console.log(`This user is already muted.`);
+    }
     let unmutetime = Date.now() + time;
     message.member.roles.add(muter).catch(e => {
         return message.channel.send(`Something went wrong! \`${e}\``)

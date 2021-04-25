@@ -341,7 +341,7 @@ client.on("ready", async () => {
           string = string + ` ${status.status},`
         })
         console.log(string)
-        return message.channel.send(`Here are all the current statuses \n${string}`,{allowedMentions: {parse: []}})
+        return message.channel.send(`Here are all the current statuses: \n${string}`,{allowedMentions: {parse: []}})
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){

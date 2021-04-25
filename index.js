@@ -198,9 +198,13 @@ client.on("ready", async () => {
         }, 5000)
       })
       message.delete()
+      if(client.user.id == "826517160951676958"){
+        return;
+      }else{
       let warn = new automod({userid: message.member.id, reason: `Pinging wainked.`, timestamp: Date.now()})
    await warn.save()
     enoughwarns(message)
+      }
   }
   })
   client.on("message", async message => {

@@ -104,7 +104,7 @@ client.on("ready", async () => {
       UpdateStatus()
       }else if(changestatus == false){
         let status = await statuses.findOne({shuffle: false})
-        console.log(status)
+       
         if(status == null){
           status.status = "test."
         }
@@ -384,6 +384,10 @@ client.on("ready", async () => {
           await statuses.deleteMany({shuffle: false})
           let statusm = new statuses({status: status, user: message.member.id, shuffle: false})
           await statusm.save()
+          client.user.setActivity(status, {
+            type: "STREAMING",
+            url: "https://www.twitch.tv/wainked"
+          });
         }
         
       }else if(command == "mute"){

@@ -106,7 +106,7 @@ client.on("ready", async () => {
         let status = await statuses.findOne({shuffle: false})
         console.log(status)
         if(status == null){
-          status = "test."
+          status.status = "test."
         }
         client.user.setActivity(status.status, {
           type: "STREAMING",

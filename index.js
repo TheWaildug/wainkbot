@@ -104,6 +104,10 @@ client.on("ready", async () => {
       UpdateStatus()
       }else if(changestatus == false){
         let status = await statuses.findOne({shuffle: false})
+        console.log(status)
+        if(status == null){
+          status = "test."
+        }
         client.user.setActivity(status.status, {
           type: "STREAMING",
           url: "https://www.twitch.tv/wainked"

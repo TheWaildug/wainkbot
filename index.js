@@ -11,6 +11,7 @@ const statuses = require("./statuses")
 const muteuser = require("./muteuser.js")
 const automod = require("./automod")
 const ms = require("ms")
+let changestatus = false
 const fs = require("fs")
 let wainkedcolor = "ff00f3"
 let allstatus = []
@@ -95,9 +96,19 @@ client.on("ready", async () => {
       client.user.setStatus("invisible")  
       client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "online"})
     }else{
+      if(changestatus == true){
+
+      
       let status = await statuses.find()
       allstatus = status
       UpdateStatus()
+      }else if(changestatus == false){
+        let status = await statuses.findOne({shuffle: false})
+        client.user.setActivity(status.status, {
+          type: "STREAMING",
+          url: "https://www.twitch.tv/wainked"
+        });
+      }
     }
     
   });
@@ -344,14 +355,6 @@ client.on("ready", async () => {
         .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
         .setColor(`ff00f3`)
         message.channel.send(embed)
-      }else if(command == "allstatuses"){
-        let string = ""
-        allstatus.forEach(status => {
-          console.log(status)
-          string = string + `${status.status}, `
-        })
-        console.log(string)
-        return message.channel.send(`Here are all the current statuses: \n${string}`,{allowedMentions: {parse: []}})
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
@@ -367,11 +370,18 @@ client.on("ready", async () => {
         if(!status){
           return message.reply(`I need a status!`)
         }
-        message.reply(`I have added this status to the pool.`)
-        let statusm = new statuses({status: status, user: message.member.id})
+        if(changestatus == true){
+          message.reply(`I have added this status to the pool.`)
+        let statusm = new statuses({status: status, user: message.member.id, shuffle: true})
         await statusm.save()
         let allstat = await statuses.find()
         allstatus = allstat
+        }else if(changestatus == false){
+          await statuses.deleteMany({shuffle: false})
+          let statusm = new statuses({status: status, user: message.member.id, shuffle: false})
+          await statusm.save()
+        }
+        
       }else if(command == "mute"){
         client.Commands.get("mute").execute(message,args,modroles)
       }else if(command == "kick"){

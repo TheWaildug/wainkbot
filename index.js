@@ -169,7 +169,11 @@ client.on("ready", async () => {
         if(isafk != null){
           console.log(`removing afk`)
           
-            message.channel.send(`Welcome back, ${message.member}! I've removed your AFK.`);
+            message.channel.send(`Welcome back, ${message.member}! I've removed your AFK.`).then(msg => {
+              setTimeout(() => {
+                msg.delete();
+              },10000)
+            })
             message.member.setNickname(isafk.currentname,`Removal from AFK.`).catch(e => console.log(e))
             await afkmongo.deleteMany({userid: message.member.id})
           
@@ -388,6 +392,7 @@ client.on("ready", async () => {
             type: "STREAMING",
             url: "https://www.twitch.tv/wainked"
           });
+          return message.reply(`go check it out noob.`)
         }
         
       }else if(command == "mute"){

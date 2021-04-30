@@ -218,9 +218,9 @@ client.on("ready", async () => {
         }, 5000)
       })
       let embedinfo = []
-      embedinfo.title = "You can't do that!"
+      embedinfo.title = "You're not allowed to do that!"
       embedinfo.color = wainkedcolor
-      embedinfo.description = "You cannot ping wainked! If you want to contact him, you can visit our [website](https://bit.ly/wainkedd)."
+      embedinfo.description = "You aren't allowed to ping **wainked.** If you'd like to contact him, try visiting our website [here](https://bit.ly/wainkedd)."
       dmuser(message.member,embedinfo)
       message.delete()
       if(client.user.id == "12345"){
@@ -352,7 +352,7 @@ client.on("ready", async () => {
       }else if(command == "suggest"){
         client.Commands.get("suggest").execute(message,args,roles)
       }else if(command == "ping"){
-        let yourping = Date.now() - message.createdTimestamp
+        let yourping = new Date().getTime() - message.createdTimestamp 
         let botping = Math.round(client.ws.ping)
         const embed = new Discord.MessageEmbed()
         .setTitle(`Pong!`)

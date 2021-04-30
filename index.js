@@ -374,7 +374,7 @@ client.on("ready", async () => {
         if(isblacklisted != null){
           return message.reply(`You have been blacklisted from changing my ststus.`)
         }
-        let status = message.content.split(" ").splice(1).join(" ")
+        let status = message.cleanContent.split(" ").splice(1).join(" ")
         if(!status){
           return message.reply(`I need a status!`)
         }

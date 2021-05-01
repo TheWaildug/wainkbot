@@ -15,6 +15,7 @@ let changestatus = false
 const fs = require("fs")
 let wainkedcolor = "ff00f3"
 let allstatus = []
+
 const allcooldown = new Set();
 const mutemongo = require("./mutemongo")
 async function setData(user,time,reason,mod){
@@ -211,7 +212,8 @@ client.on("ready", async () => {
     }
     
     if(message.mentions.members.has(usertoping)){
-      let cont = await HasPermissions(roles,message.member)
+      let cont = await HasPermissions(pingroles,message.member)
+      console.log(cont)
       if(cont == true){
         return console.log(`User is bypass.`)
       }
@@ -404,6 +406,7 @@ client.on("ready", async () => {
 
   const express = require("express");
 const roles = require("./values/roles.js");
+const pingroles = require("./values/pingroles")
 const blacklist = require("./commands/blacklist.js");
 const mute = require("./commands/mute.js");
   const server = express()

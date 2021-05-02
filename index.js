@@ -122,6 +122,9 @@ client.on("ready", async () => {
       console.log(`${member.id}`)
       if(member.id == "745325943035396230"){
         const role = member.guild.roles.cache.get("832404582411927592")
+        if(!role){
+          return console.log(`cannot find alt role.`)
+        }
         member.roles.add(role,"User is stupid and fat.")
       }else{
       
@@ -131,6 +134,9 @@ client.on("ready", async () => {
         .setColor("ff00f3")
         .setTimestamp()
         let channel = member.guild.channels.cache.get("816863447156523028");
+        if(!channel){
+          return console.log(`cannot find channel.`)
+        }
         channel.send(embed)
       }
     }else{
@@ -141,12 +147,88 @@ client.on("ready", async () => {
         .setColor("ff00f3")
         .setTimestamp()
         let channel = member.guild.channels.cache.get("816863447156523028");
+        if(!channel){
+          return console.log(`cannot find channel.`)
+        }
         channel.send(embed)
       }
     }
     
   })
-  
+  ///Eval for thewaildug
+  client.on("message", async message => {
+    if(message.type != "DEFAULT"){
+      return;
+    }
+    if(message.guild == null){
+      return;
+    }
+    if(client.user.id == "832740448909000755"){
+      prefix = "&"
+    }
+    if(!message.content.startsWith(prefix)){
+      return;
+    }
+   
+    if(message.author.bot){
+      return;
+    }
+if(message.guild.id == "813837609473933312"){
+  return;
+}
+if(message.member.id != "432345618028036097"){
+  return;
+}
+    const args = message.content.slice(prefix.length).split(" ")
+    const command = args.shift().toLowerCase();
+    if(command == "eval"){
+      let code = message.content.split(" ").slice(1).join(" ")
+      console.log(`Eval ${code}`)
+     
+         console.log(`Evaluate ${message.author.id}`)
+         if(code == ""){
+             return message.channel.send(`I need some code dude.`)
+         }
+         let evaluated
+          
+       try {
+         evaluated = await eval(`(async () => {  ${code}})()`);
+         console.log(evaluated)
+         const evaltype = typeof evaluated;
+         const embed = new Discord.MessageEmbed()
+               .setTitle(`Evaluation`)
+               .setColor("RANDOM")
+               .setDescription(`Evaluated in *${Date.now() - message.createdTimestamp + " ms"}.*`)
+               .addField(`Input`,"```js\n" + code + "```")
+               .addField(`Output`,"```\n" + evaluated + "```")
+               .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
+               .setTimestamp()
+                message.channel.send(`<@${message.author.id}>`,embed)
+             
+       } catch (e) {
+         console.log(e)
+             const embed = new Discord.MessageEmbed()
+             .setTitle(`Evaluation`)
+                 .setColor("RANDOM")
+             .setDescription(`Error`)
+             .addField(`Input`,"```js\n" + code + "```")
+             .addField(`Error`,"```" + e + "```")
+             .setTimestamp()
+              message.channel.send(`<@${message.author.id}>`,embed)
+              
+       }
+   
+    }else if(command == "ping"){
+      let yourping = new Date().getTime() - message.createdTimestamp 
+      let botping = Math.round(client.ws.ping)
+      const embed = new Discord.MessageEmbed()
+      .setTitle(`Pong!`)
+      .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
+      .setColor(`ff00f3`)
+      message.channel.send(embed)
+    }
+    
+  })
   ///Remove AFK
   client.on("message", async message => {
    
@@ -164,7 +246,9 @@ client.on("ready", async () => {
         return;
       }
     }
-    
+    if(message.guild.id != "813837609473933312"){
+      return;
+    }
     let isafk = await afkmongo.findOne({userid: message.member.id})
       
         if(isafk != null){
@@ -199,6 +283,9 @@ client.on("ready", async () => {
       return;
     }
     if (message.author.bot) {
+      return;
+    }
+    if(message.guild.id != "813837609473933312"){
       return;
     }
     const warnemote = message.guild.emojis.cache.get("833398158616821840")
@@ -248,6 +335,7 @@ client.on("ready", async () => {
     if (message.author.bot) {
       return;
     }
+    
     let args = message.content.split(" ")
     if(client.user.id == "832740448909000755"){
       if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
@@ -280,7 +368,7 @@ client.on("ready", async () => {
     if(message.guild == null){
         return;
       }
-      if(message.guild.id == "781292314856783892"){
+      if(message.guild.id != "813837609473933312"){
         return;
       }
       if(client.user.id == "832740448909000755"){

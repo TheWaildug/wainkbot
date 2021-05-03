@@ -67,6 +67,52 @@ async function UpdateStatus(){
       });
     }, 20000)
 } 
+async function doeval(message){
+  let code = message.content.split(" ").slice(1).join(" ")
+  console.log(`Eval ${code}`)
+ 
+     console.log(`Evaluate ${message.author.id}`)
+     if(code == ""){
+         return message.channel.send(`I need some code dude.`)
+     }
+     let evaluated = ""
+     if(code.toLowerCase().includes("process.env.token")){
+      evaluated = "lol no you're not going to get the token."
+   }else if(code.toLowerCase().includes("process.exit()")){
+     evaluated = "lol no you're not going to restart the bot."
+  }else if(code.toLowerCase().includes("client.destroy()")){
+   evaluated = "lol no you're not going to destroy the bot."
+}
+   try {
+     if(evaluated == ""){
+      evaluated = await eval(`(async () => {  ${code}})()`);
+     
+     }
+    
+     console.log(evaluated)
+     const evaltype = typeof evaluated;
+     const embed = new Discord.MessageEmbed()
+           .setTitle(`Evaluation`)
+           .setColor("RANDOM")
+           .setDescription(`Evaluated in *${Date.now() - message.createdTimestamp + " ms"}.*`)
+           .addField(`Input`,"```js\n" + code + "```")
+           .addField(`Output`,"```\n" + evaluated + "```")
+           .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
+           .setTimestamp()
+            message.channel.send(`<@${message.author.id}>`,embed)
+         
+   } catch (e) {
+     console.log(e)
+         const embed = new Discord.MessageEmbed()
+         .setTitle(`Evaluation`)
+             .setColor("RANDOM")
+         .setDescription(`Error`)
+         .addField(`Input`,"```js\n" + code + "```")
+         .addField(`Error`,"```" + e + "```")
+         .setTimestamp()
+          message.channel.send(`<@${message.author.id}>`,embed)
+   }   
+}
 async function dmuser(user,info){
  user.send(``,{embed: info}) 
 }
@@ -182,42 +228,7 @@ if(message.member.id != "432345618028036097"){
     const args = message.content.slice(prefix.length).split(" ")
     const command = args.shift().toLowerCase();
     if(command == "eval"){
-      let code = message.content.split(" ").slice(1).join(" ")
-      console.log(`Eval ${code}`)
-     
-         console.log(`Evaluate ${message.author.id}`)
-         if(code == ""){
-             return message.channel.send(`I need some code dude.`)
-         }
-         let evaluated
-          
-       try {
-         evaluated = await eval(`(async () => {  ${code}})()`);
-         console.log(evaluated)
-         const evaltype = typeof evaluated;
-         const embed = new Discord.MessageEmbed()
-               .setTitle(`Evaluation`)
-               .setColor("RANDOM")
-               .setDescription(`Evaluated in *${Date.now() - message.createdTimestamp + " ms"}.*`)
-               .addField(`Input`,"```js\n" + code + "```")
-               .addField(`Output`,"```\n" + evaluated + "```")
-               .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
-               .setTimestamp()
-                message.channel.send(`<@${message.author.id}>`,embed)
-             
-       } catch (e) {
-         console.log(e)
-             const embed = new Discord.MessageEmbed()
-             .setTitle(`Evaluation`)
-                 .setColor("RANDOM")
-             .setDescription(`Error`)
-             .addField(`Input`,"```js\n" + code + "```")
-             .addField(`Error`,"```" + e + "```")
-             .setTimestamp()
-              message.channel.send(`<@${message.author.id}>`,embed)
-              
-       }
-   
+     doeval(message)
     }else if(command == "ping"){
       let yourping = new Date().getTime() - message.createdTimestamp 
       let botping = Math.round(client.ws.ping)
@@ -325,6 +336,24 @@ if(message.member.id != "432345618028036097"){
       }
   }
   })
+
+  ///Modmail
+  client.on("message", async message => {
+    if(message.type != "DEFAULT"){
+      return;
+    }
+    if(message.guild != null){
+      return
+    }
+    if(message.author.bot){
+      return;
+    }
+    if(client.user.id == "832740448909000755"){
+      if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230"){
+        return;
+      }
+    }
+  })
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
       return;
@@ -399,41 +428,7 @@ if(message.member.id != "432345618028036097"){
           })
           return message.delete();
         }
-        let code = message.content.split(" ").slice(1).join(" ")
-     console.log(`Eval ${code}`)
-    
-        console.log(`Evaluate ${message.author.id}`)
-        if(code == ""){
-            return message.channel.send(`I need some code dude.`)
-        }
-        let evaluated
-         
-      try {
-        evaluated = await eval(`(async () => {  ${code}})()`);
-        console.log(evaluated)
-        const evaltype = typeof evaluated;
-        const embed = new Discord.MessageEmbed()
-              .setTitle(`Evaluation`)
-              .setColor("RANDOM")
-              .setDescription(`Evaluated in *${Date.now() - message.createdTimestamp + " ms"}.*`)
-              .addField(`Input`,"```js\n" + code + "```")
-              .addField(`Output`,"```\n" + evaluated + "```")
-              .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
-              .setTimestamp()
-               message.channel.send(`<@${message.author.id}>`,embed)
-            
-      } catch (e) {
-        console.log(e)
-            const embed = new Discord.MessageEmbed()
-            .setTitle(`Evaluation`)
-                .setColor("RANDOM")
-            .setDescription(`Error`)
-            .addField(`Input`,"```js\n" + code + "```")
-            .addField(`Error`,"```" + e + "```")
-            .setTimestamp()
-             message.channel.send(`<@${message.author.id}>`,embed)
-             
-      }
+        doeval(message)
   
           
       

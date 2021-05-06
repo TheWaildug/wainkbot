@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { properties: { $browser: "Discord iOS" }} });
 require("dotenv").config()
 let prefix = "!"
+const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
 const evalrole = require("./values/evalroles.js")
@@ -10,6 +11,7 @@ const mongoose = require("mongoose")
 const statuses = require("./statuses")
 const muteuser = require("./muteuser.js")
 const automod = require("./automod")
+const rules = require("./values/rules")
 const ms = require("ms")
 let changestatus = false
 const fs = require("fs")
@@ -299,6 +301,7 @@ if(message.member.id != "432345618028036097"){
     if(message.guild.id != "813837609473933312"){
       return;
     }
+    
     const warnemote = message.guild.emojis.cache.get("833398158616821840")
     let args = message.content.split(" ")
     let usertoping = "737825820642639883"
@@ -308,7 +311,29 @@ if(message.member.id != "432345618028036097"){
         return;
       }
     }
-    
+    for(let i = 0; i < rslur.length; i++){
+   if(message.content.includes(rslur[i])){
+      let cont = await HasPermissions(pingroles,message.member)
+      console.log(cont)
+      if(cont == true || message.member.id == "432345618028036097"){
+        return console.log(`User is bypass.`)
+      }
+      console.log(`${message.member.id} just said a racial slur.`)
+      message.channel.send(`${warnemote} ${message.member}, You're not allowed to use racial slurs.`).then(msg => {
+        setTimeout(() =>{
+          msg.delete();
+        },5000)
+      })
+      let embedinfo = []
+      embedinfo.title = `You're not allowed to do that!`
+      embedinfo.color = wainkedcolor
+      embedinfo.description = `You're not allowed to use racial slurs.`
+      dmuser(message.member,embedinfo)
+      message.delete();
+      muteuser(message,`(AUTOMOD) Use of racial slurs.`,ms("1 hour"))
+      return;
+    }
+  }
     if(message.mentions.members.has(usertoping)){
       let cont = await HasPermissions(pingroles,message.member)
       console.log(cont)
@@ -440,6 +465,32 @@ if(message.member.id != "432345618028036097"){
         client.Commands.get("accept").execute(message,args,roles)
       }else if(command == "suggest"){
         client.Commands.get("suggest").execute(message,args,roles)
+      }else if(command == "rule"){
+        let cont = await HasPermissions(roles,message.member)
+        console.log(cont)
+         if(cont == false && message.member.id != "432345618028036097"){
+           const embed = new Discord.MessageEmbed()
+           .setDescription(`You do not have the correct permissions to run this command.`)
+           .setColor("FF0000")
+           message.channel.send(embed).then(msg => {
+             msg.delete({timeout: 5000})
+           })
+           return message.delete();
+         }
+         const rule = args[0]
+         let tablerule = Number(args[0]) - 1
+         if(tablerule > rules.length - 1){
+           return message.reply(`This is not a rule!`)
+         }
+         if(tablerule < 0){
+           return message.reply(`This is not a rule!`)
+         }
+         let getrule = rules[tablerule]
+         const embed = new Discord.MessageEmbed()
+         .setTitle(`Rule #**${rule}**`)
+         .setDescription(getrule)
+         .setColor(wainkedcolor)
+         message.channel.send(embed)
       }else if(command == "ping"){
         let yourping = new Date().getTime() - message.createdTimestamp 
         let botping = Math.round(client.ws.ping)

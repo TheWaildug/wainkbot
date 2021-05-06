@@ -13,11 +13,18 @@ module.exports = {
         if(afkmsg == ""){
             afkmsg = "AFK"
         }
+        if(afkmsg.toLowerCase() == "sleep"){
+            message.reply(`Sweet Dreams. 💤`,{allowedMentions: {parse: [], users: [message.member.id]}})
+            let curname = message.member.displayName
+            message.member.setNickname(`[AFK] ${curname}`,`Adding AFK.`).catch(e => console.log(e))
+               let afkmo = new afkmongo({userid: message.member.id, afk: afkmsg, afkms: Date.now(), currentname: curname}) 
+               afkmo.save()
+        }else{
         message.reply(`I have set your AFK, **${afkmsg}**`,{allowedMentions: {parse: [], users: [message.member.id]}})
         let curname = message.member.displayName
         message.member.setNickname(`[AFK] ${curname}`,`Adding AFK.`).catch(e => console.log(e))
            let afkmo = new afkmongo({userid: message.member.id, afk: afkmsg, afkms: Date.now(), currentname: curname}) 
            afkmo.save()
-
+        }
                }
 }

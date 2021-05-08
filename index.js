@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const client = new Discord.Client({ ws: { properties: { $browser: "Discord iOS" }} });
 require("dotenv").config()
 let prefix = "!"
+const discordInv = require('discord-inv');
 const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
@@ -313,7 +314,7 @@ if(message.member.id != "432345618028036097"){
     }
     for(let i = 0; i < rslur.length; i++){
    if(message.content.includes(rslur[i])){
-      let cont = await HasPermissions(pingroles,message.member)
+      let cont = await HasPermissions(roles,message.member)
       console.log(cont)
       if(cont == true || message.member.id == "432345618028036097"){
         return console.log(`User is bypass.`)
@@ -334,6 +335,49 @@ if(message.member.id != "432345618028036097"){
       return;
     }
   }
+  let regxinvite = /discord.gg\/\w*\d*/
+let cdu = regxinvite.test(message.content.toLowerCase().replace(/\s+/g, ''))
+console.log(cdu)
+if(cdu == true){
+  let cont = await HasPermissions(roles,message.member)
+  console.log(cont)
+  if(cont == true || message.member.id == "432345618028036097"){
+    return console.log(`User is bypass.`)
+  }
+  if(message.channel.id == "831176865595129888"  || message.channel.id == "831175761137631273"){
+    return message.reply(`In a whitelisted channel.`)
+  } 
+  let inv = message.content.search("discord.gg/");
+  let e = message.content.split("").slice(inv).join("").split(" ").join(" ")
+  console.log(e)
+  let e2 = e.search(`discord.gg/`)
+  console.log(e2)
+  let e3 = e.split(" ").slice(e2)
+console.log(e3)
+  discordInv.getInv(discordInv.getCodeFromUrl(e3[0])).then(async invite => {
+    console.log(invite)
+    console.log(`${message.member.id} posted an invite to the server ${invite.guild.name}`)
+    message.channel.send(`${warnemote} ${message.member}, You're not allowed to post invites in this channel!`).then(msg => {
+      setTimeout(() => {
+        msg.delete();
+      }, 5000)
+    })
+    let embedinfo = []
+    embedinfo.title = "You're not allowed to do that!"
+    embedinfo.color = wainkedcolor
+    embedinfo.description = "You aren't allowed to post invites in that channel. The only channels that you can post invites in are <#831176865595129888> and <#831175761137631273>."
+    dmuser(message.member,embedinfo)
+    message.delete()
+    if(client.user.id == "12345"){
+      return;
+    }else{
+    let warn = new automod({userid: message.member.id, reason: `Posting Invites.`, timestamp: Date.now(), endtime: Date.now() + ms("24 hours")})
+ await warn.save()
+  enoughwarns(message)
+    }
+}).catch(console.log('This is not a valid invite'))
+ 
+}
     if(message.mentions.members.has(usertoping)){
       let cont = await HasPermissions(pingroles,message.member)
       console.log(cont)
@@ -457,6 +501,8 @@ if(message.member.id != "432345618028036097"){
   
           
       
+      }else if(command == "sm"){
+        client.Commands.get("slowmode").execute(message,args,roles)
       }else if(command == "bl"){
         client.Commands.get("blacklist").execute(message,args,roles)
       }else if(command == "deny"){

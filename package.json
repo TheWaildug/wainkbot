@@ -18,6 +18,7 @@
   "homepage": "https://github.com/TheWaildug/wainkbot#readme",
   "dependencies": {
     "@supercharge/strings": "^1.18.0",
+    "discord-inv": "^1.1.0",
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

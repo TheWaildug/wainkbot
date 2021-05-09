@@ -505,10 +505,10 @@ console.log(e3)
         client.Commands.get("slowmode").execute(message,args,roles)
       }else if(command == "bl"){
         client.Commands.get("blacklist").execute(message,args,roles)
-      }else if(command == "deny"){
-        client.Commands.get("deny").execute(message,args,roles)
-      }else if(command == "accept"){
-        client.Commands.get("accept").execute(message,args,roles)
+      }else if(command == "sdeny"){
+        client.Commands.get("denysuggestion").execute(message,args,roles)
+      }else if(command == "saccept"){
+        client.Commands.get("acceptsuggestion").execute(message,args,roles)
       }else if(command == "suggest"){
         client.Commands.get("suggest").execute(message,args,roles)
       }else if(command == "rule"){

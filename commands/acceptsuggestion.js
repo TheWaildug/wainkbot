@@ -1,8 +1,8 @@
 let channelid = "828999520120733777"
 const Discord = require("discord.js")
 module.exports = {
-    name: "deny",
-    descripion: "denies things",
+    name: "acceptsuggestion",
+    descripion: "accept things",
    async execute(message,args,roles){
        if(!message.member.roles.cache.has("833021553935122432")){
 
@@ -29,11 +29,13 @@ module.exports = {
         if(msg.author.id != message.guild.me.id){
             return message.reply(`I am not the author of this message! I cannot edit it.`);
         }
+       
         console.log(msg.embeds[0])
         let oldembed = msg.embeds[0]
         if(oldembed == undefined){
             return message.reply(`This isn't a suggestion!`)
         }
+        
         let acceptmsg = args.splice(1).join(" ")
         if(acceptmsg == ""){
             return message.reply(`I need a reason.`);
@@ -45,9 +47,9 @@ module.exports = {
         console.log(oldembed.description)
         let newembed = new Discord.MessageEmbed()
         .setAuthor(oldembed.author.name,oldembed.author.iconURL)
-        .setDescription(`${oldembed.description}\n**Denied:**\nDenied by ${message.member}.\nReason: ${acceptmsg}`)
-        .setColor("FF0000")
-        .setFooter(`Denied`)
+        .setDescription(`${oldembed.description}\n**Approved:**\nApproved by ${message.member}.\nReason: ${acceptmsg}`)
+        .setColor("00FF1D")
+        .setFooter(`Accepted`)
         .setTimestamp()
         msg.edit(newembed)
         message.delete()

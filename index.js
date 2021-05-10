@@ -335,7 +335,6 @@ if(message.member.id != "432345618028036097"){
   }
   let regxinvite = /discord.gg\/\w*\d*/
 let cdu = regxinvite.test(message.content.toLowerCase().replace(/\s+/g, ''))
-console.log(cdu)
 if(cdu == true){
   let cont = await HasPermissions(roles,message.member)
   console.log(cont)

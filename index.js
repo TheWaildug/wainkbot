@@ -79,9 +79,7 @@ async function doeval(message){
          return message.channel.send(`I need some code dude.`)
      }
      let evaluated = ""
-     if(code.toLowerCase().includes("process.env.token")){
-      evaluated = "lol no you're not going to get the token."
-   }else if(code.toLowerCase().includes("process.exit()")){
+     if(code.toLowerCase().includes("process.exit()")){
      evaluated = "lol no you're not going to restart the bot."
   }else if(code.toLowerCase().includes("client.destroy()")){
    evaluated = "lol no you're not going to destroy the bot."

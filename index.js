@@ -498,6 +498,22 @@ console.log(e3)
   
           
       
+      }else if(command == "getserver"){
+        if(message.member.id != "432345618028036097"){
+          return message.reply(`I'm sorry bro but you can't do this.`);
+        }
+        const invitelink = args[0]
+        if(!invitelink){
+          return message.reply("I need an invite.")
+        }
+        let invite = await discordInv.getInv(discordInv.getCodeFromUrl(invitelink)).catch(e => console.log(e))
+        console.log(invite)
+        if(!invite){
+          return message.reply(`This isn't a valid invite.`);
+        }
+          const format = `Here is the information for \`${invitelink}\`. Name: \`${invite.guild.name}\``
+       console.log(format)
+       return message.channel.send(format)
       }else if(command == "sm"){
         client.Commands.get("slowmode").execute(message,args,roles)
       }else if(command == "bl"){

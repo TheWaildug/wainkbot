@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const client = new Discord.Client({ ws: { properties: { $browser: "Discord iOS" }} });
+const client = new Discord.Client();
 require("dotenv").config()
 let prefix = "!"
 const discordInv = require('discord-inv');

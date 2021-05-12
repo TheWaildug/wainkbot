@@ -10,7 +10,6 @@ const slurs = [
     "niggah",
     "niggur",
     "niggar",
-    "nig",
     "neger"
 
 ]

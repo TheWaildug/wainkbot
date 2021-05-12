@@ -310,29 +310,32 @@ if(message.member.id != "432345618028036097"){
         return;
       }
     }
-    for(let i = 0; i < rslur.length; i++){
-   if(message.content.includes(rslur[i])){
-      let cont = await HasPermissions(roles,message.member)
-      console.log(cont)
-      if(cont == true || message.member.id == "432345618028036097"){
-        return console.log(`User is bypass.`)
-      }
-      console.log(`${message.member.id} just said a racial slur.`)
-      message.channel.send(`${warnemote} ${message.member}, You're not allowed to use racial slurs.`).then(msg => {
-        setTimeout(() =>{
-          msg.delete();
-        },5000)
-      })
-      let embedinfo = []
-      embedinfo.title = `You're not allowed to do that!`
-      embedinfo.color = wainkedcolor
-      embedinfo.description = `You're not allowed to use racial slurs.`
-      dmuser(message.member,embedinfo)
-      message.delete();
-      muteuser(message,`(AUTOMOD) Use of racial slurs.`,ms("1 hour"))
-      return;
+    for(let i = 0; i < args.length; i++){
+      for(let e = 0; e < rslur.length; e++){
+        if(args[i].toLowerCase() == rslur[e]){
+           let cont = await HasPermissions(roles,message.member)
+           console.log(cont)
+           if(cont == true || message.member.id == "432345618028036097"){
+             return console.log(`User is bypass.`)
+           }
+           console.log(`${message.member.id} just said a racial slur.`)
+           message.channel.send(`${warnemote} ${message.member}, You're not allowed to use racial slurs.`).then(msg => {
+             setTimeout(() =>{
+               msg.delete();
+             },5000)
+           })
+           let embedinfo = []
+           embedinfo.title = `You're not allowed to do that!`
+           embedinfo.color = wainkedcolor
+           embedinfo.description = `You're not allowed to use racial slurs.`
+           dmuser(message.member,embedinfo)
+           message.delete();
+           muteuser(message,`(AUTOMOD) Use of racial slurs.`,ms("1 hour"))
+           return;
+         }
+       }
     }
-  }
+   
   let regxinvite = /discord.gg\/\w*\d*/
 let cdu = regxinvite.test(message.content.toLowerCase().replace(/\s+/g, ''))
 if(cdu == true){

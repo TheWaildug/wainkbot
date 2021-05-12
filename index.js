@@ -331,7 +331,7 @@ if(message.member.id != "432345618028036097"){
            dmuser(message.member,embedinfo)
            message.delete();
            muteuser(message,`(AUTOMOD) Use of racial slurs.`,ms("1 hour"))
-           return;
+           break;
          }
        }
     }

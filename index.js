@@ -310,14 +310,26 @@ if(message.member.id != "432345618028036097"){
         return;
       }
     }
+    let brek = false
     for(let i = 0; i < args.length; i++){
+      if(brek == true){
+        return;
+      }
       for(let e = 0; e < rslur.length; e++){
+        if(brek == true){
+          return;
+        }
         if(args[i].toLowerCase() == rslur[e]){
+          if(brek == true){
+            return;
+          }
+          console.log(brek)
            let cont = await HasPermissions(roles,message.member)
            console.log(cont)
            if(cont == true || message.member.id == "432345618028036097"){
              return console.log(`User is bypass.`)
            }
+           console.log(rslur[e])
            console.log(`${message.member.id} just said a racial slur.`)
            message.channel.send(`${warnemote} ${message.member}, You're not allowed to use racial slurs.`).then(msg => {
              setTimeout(() =>{
@@ -331,6 +343,7 @@ if(message.member.id != "432345618028036097"){
            dmuser(message.member,embedinfo)
            message.delete();
            muteuser(message,`(AUTOMOD) Use of racial slurs.`,ms("1 hour"))
+           brek = true
            break;
          }
        }

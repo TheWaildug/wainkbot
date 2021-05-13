@@ -464,7 +464,7 @@ console.log(e3)
       }
       if(args[i].toLowerCase() == "wainked"){
         const embed = new Discord.MessageEmbed()
-        .setDescription("**Creating viruses...**")
+        .setDescription("**He is pro.**")
         .setColor("#ff00f3");
       message.channel.send(embed)
       

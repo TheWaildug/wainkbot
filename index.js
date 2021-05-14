@@ -577,7 +577,7 @@ console.log(e3)
         .setAuthor(tag,avatarurl)
         .setDescription(newmsg.content)
         .setColor(wainkedcolor)
-        .setFooter(`Deleted`)
+        
         .setTimestamp(newmsg.timestamp)
         message.channel.send(embed)
       }else if(command == "sm"){

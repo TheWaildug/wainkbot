@@ -19,7 +19,7 @@ const fs = require("fs")
 let wainkedcolor = "ff00f3"
 let allstatus = []
 
-const allcooldown = new Set();
+
 const mutemongo = require("./mutemongo")
 async function setData(user,time,reason,mod){
     const ne = new mutemongo({
@@ -43,6 +43,7 @@ mongoose.connect(process.env.mongourl, {
 }).then(() => console.log("Connected to MongoDB")).catch(error => {
   console.log(error)
 })
+client.snipes = new Discord.Collection()
 client.Commands = new Discord.Collection();
 
   const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -51,6 +52,36 @@ client.Commands = new Discord.Collection();
     const command = require(`./commands/${file}`);
     client.Commands.set(command.name, command);
   }
+  client.on("messageDelete", async message => {
+    if(message.guild == null){
+      return;
+
+    }
+    if(message.guild.id != "813837609473933312"){
+      return;
+    }
+    if(message.type != "DEFAULT"){
+      return;
+    }
+    if(message.guild == null){
+      return;
+    }
+    if(message.author.bot){
+      return;
+    }
+    try{
+      const format = []
+      format.content = message.content
+      format.author = message.author
+      format.timestamp = message.createdTimestamp
+   
+      message.client.snipes.set(message.channel.id, format)
+    }catch(e){
+      console.log(e)
+    }
+    console.log(`New Message Deleted: ${message.content}`)
+    
+  })
 async function UpdateStatus(){
  
 
@@ -95,7 +126,7 @@ async function doeval(message){
      const embed = new Discord.MessageEmbed()
            .setTitle(`Evaluation`)
            .setColor("RANDOM")
-           .setDescription(`Evaluated in *${Date.now() - message.createdTimestamp + " ms"}.*`)
+           .setDescription(`Evaluated in *${new Date().getTime() - message.createdTimestamp + " ms"}.*`)
            .addField(`Input`,"```js\n" + code + "```")
            .addField(`Output`,"```\n" + evaluated + "```")
            .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
@@ -118,12 +149,12 @@ async function dmuser(user,info){
  user.send(``,{embed: info}) 
 }
   async function enoughwarns(message){
-    let requireddate = Date.now() + ms("5 minutes")
+    let requireddate = new Date().getTime() + ms("5 minutes")
     let allwarnings = await automod.find({userid: message.member.id})
     let newwarnings = []
     allwarnings.forEach(async warning => {
-      console.log(Date.now() >= warning.enddate)
-      if(Date.now() >= warning.endtime){
+      console.log( new Date().getTime() >= warning.enddate)
+      if(new Date().getTime() >= warning.endtime){
         await automod.deleteOne({_id: warning.id})
         
       }else{
@@ -279,7 +310,7 @@ if(message.member.id != "432345618028036097"){
         message.mentions.members.forEach(async user => {
           let isafk = await afkmongo.findOne({userid: user.id})
           if(isafk != null){
-            let afkms = Date.now() - isafk.afkms
+            let afkms =  new Date().getTime() - isafk.afkms
             message.reply(`${user} has been AFK with the reason **${isafk.afk}** for **${ms(afkms,{long: true})}**.`,{allowedMentions: {parse: [], users: [message.member.id]}})
 
           }
@@ -384,7 +415,7 @@ console.log(e3)
     if(client.user.id == "12345"){
       return;
     }else{
-    let warn = new automod({userid: message.member.id, reason: `Posting Invites.`, timestamp: Date.now(), endtime: Date.now() + ms("24 hours")})
+    let warn = new automod({userid: message.member.id, reason: `Posting Invites.`, timestamp:  new Date().getTime(), endtime:  new Date().getTime() + ms("24 hours")})
  await warn.save()
   enoughwarns(message)
     }
@@ -412,7 +443,7 @@ console.log(e3)
       if(client.user.id == "12345"){
         return;
       }else{
-      let warn = new automod({userid: message.member.id, reason: `Pinging wainked.`, timestamp: Date.now(), endtime: Date.now() + ms("24 hours")})
+      let warn = new automod({userid: message.member.id, reason: `Pinging wainked.`, timestamp:  new Date().getTime(), endtime:  new Date().getTime() + ms("24 hours")})
    await warn.save()
     enoughwarns(message)
       }
@@ -529,7 +560,26 @@ console.log(e3)
         }
           const format = `Here is the information for \`${invitelink}\`. Name: \`${invite.guild.name}\``
        console.log(format)
+       console.log(format)
        return message.channel.send(format)
+      }else if(command == "snipe"){
+        console.log(`snipe`)
+        const newmsg = client.snipes.get(message.channel.id);
+      
+        if(!newmsg){
+          return message.channel.send(`I couldn't find anthing to snipe.`)
+        }
+        let avatarurl = newmsg.author.avatarURL({format: "jpg", dynamic: true, size: 512}) || newmsg.author.defaultAvatarURL
+        let tag = `${newmsg.author.username}#${newmsg.author.discriminator}`
+        console.log(newmsg.content)
+        console.log(newmsg.author)
+        const embed = new Discord.MessageEmbed()
+        .setAuthor(tag,avatarurl)
+        .setDescription(newmsg.content)
+        .setColor(wainkedcolor)
+        .setFooter(`Deleted`)
+        .setTimestamp(newmsg.timestamp)
+        message.channel.send(embed)
       }else if(command == "sm"){
         client.Commands.get("slowmode").execute(message,args,roles)
       }else if(command == "bl"){
@@ -540,6 +590,8 @@ console.log(e3)
         client.Commands.get("acceptsuggestion").execute(message,args,roles)
       }else if(command == "suggest"){
         client.Commands.get("suggest").execute(message,args,roles)
+      }else if(command == "report"){
+        client.Commands.get("report").execute(message,args,roles)
       }else if(command == "rule"){
         let cont = await HasPermissions(roles,message.member)
         console.log(cont)

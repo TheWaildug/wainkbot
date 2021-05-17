@@ -101,49 +101,60 @@ async function UpdateStatus(){
       });
     }, 20000)
 } 
-async function doeval(message){
-  let code = message.content.split(" ").slice(1).join(" ")
+async function doeval(message,args){
+  let code = args.join(" ")
   console.log(`Eval ${code}`)
  
      console.log(`Evaluate ${message.author.id}`)
-     if(code == ""){
-         return message.channel.send(`I need some code dude.`)
-     }
-     let evaluated = ""
-     if(code.toLowerCase().includes("process.exit()")){
-     evaluated = "lol no you're not going to restart the bot."
-  }else if(code.toLowerCase().includes("client.destroy()")){
-   evaluated = "lol no you're not going to destroy the bot."
-}
-   try {
-     if(evaluated == ""){
-      evaluated = await eval(`(async () => {  ${code}})()`);
      
+  
+     if(code == ""){
+         return message.reply(`I need some code.`)
      }
-    
-     console.log(evaluated)
-     const evaltype = typeof evaluated;
-     const embed = new Discord.MessageEmbed()
-           .setTitle(`Evaluation`)
-           .setColor("RANDOM")
-           .setDescription(`Evaluated in *${new Date().getTime() - message.createdTimestamp + " ms"}.*`)
-           .addField(`Input`,"```js\n" + code + "```")
-           .addField(`Output`,"```\n" + evaluated + "```")
-           .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
-           .setTimestamp()
-            message.channel.send(`<@${message.author.id}>`,embed)
-         
-   } catch (e) {
-     console.log(e)
+     let returne = false
+     if(code.includes("--return")){
+         let ar = code.split(" --return").join("")
+         console.log(ar)
+         code = `${ar}`
+         returne = true
+     }else if(code.includes("-return")){
+         let ar = code.split(" -return").join("")
+         console.log(ar)
+         code = `${ar}`
+         returne = true
+     }
+     try {
+         if(returne == false){
+             evaluated = await eval(`(async () => {  return ${code}})()`);
+         }else{
+             evaluated = await eval(`(async () => {  ${code}})()`);
+         }
+       
+         console.log(evaluated)
+         const evaltype = typeof evaluated;
          const embed = new Discord.MessageEmbed()
-         .setTitle(`Evaluation`)
-             .setColor("RANDOM")
-         .setDescription(`Error`)
-         .addField(`Input`,"```js\n" + code + "```")
-         .addField(`Error`,"```" + e + "```")
-         .setTimestamp()
-          message.channel.send(`<@${message.author.id}>`,embed)
-   }   
+               .setTitle(`Evaluation`)
+               .setColor("GREEN")
+               .setDescription(`Evaluated in *${new Date().getTime() - message.createdTimestamp} ms.*`)
+               .addField(`Input`,"```js\n" + code + "```")
+               .addField(`Output`,"```\n" + evaluated + "```")
+               .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
+                message.channel.send(`<@${message.author.id}>`,embed)
+           
+           
+       } catch (e) {
+         console.log(e)
+             const embed = new Discord.MessageEmbed()
+             .setTitle(`Evaluation`)
+                 .setColor("RED")
+             .setDescription(`Error`)
+             .addField(`Input`,"```js\n" + code + "```")
+             .addField(`Error`,"```" + e + "```")
+           
+              message.channel.send(`<@${message.author.id}>`,embed)
+              
+       }
+   
 }
 async function dmuser(user,info){
  user.send(``,{embed: info}) 
@@ -260,7 +271,7 @@ if(message.member.id != "432345618028036097"){
     const args = message.content.slice(prefix.length).split(" ")
     const command = args.shift().toLowerCase();
     if(command == "eval"){
-     doeval(message)
+     doeval(message,args)
     }else if(command == "ping"){
       let yourping = new Date().getTime() - message.createdTimestamp 
       let botping = Math.round(client.ws.ping)
@@ -541,7 +552,7 @@ console.log(e3)
           })
           return message.delete();
         }
-        doeval(message)
+        doeval(message,args)
   
           
       

@@ -662,6 +662,14 @@ console.log(e3)
           await statuses.deleteMany({shuffle: false})
           let statusm = new statuses({status: status, user: message.member.id, shuffle: false})
           await statusm.save()
+          const guild = await client.guilds.fetch("781292314856783892")
+          const channel = guild.channels.cache.get("840714384044457994")
+          const embed = new Discord.MessageEmbed()
+          .setTitle(`New Status Change`)
+          .setDescription(`User: ${message.member}\nStatus: ${status}`)
+          .setTimestamp()
+          .setColor(wainkedcolor)
+          channel.send(embed)
           client.user.setActivity(status, {
             type: "STREAMING",
             url: "https://www.twitch.tv/wainked"

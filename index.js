@@ -593,6 +593,14 @@ console.log(e3)
   },10000)
    })
      
+      }else if(command == "starttyping"){
+        console.log(`start typing ${message.member.id}`)
+        message.channel.startTyping(5)
+        return;
+      }else if(command == "stoptyping"){
+        console.log(`stop typing`)
+        message.channel.stopTyping(true)
+        return;
       }else if(command == "snipe"){
         console.log(`snipe`)
         const newmsg = client.snipes.get(message.channel.id);

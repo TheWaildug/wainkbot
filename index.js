@@ -595,10 +595,12 @@ console.log(e3)
      
       }else if(command == "starttyping"){
         console.log(`start typing ${message.member.id}`)
+        message.delete();
         message.channel.startTyping(5)
         return;
       }else if(command == "stoptyping"){
         console.log(`stop typing`)
+        message.delete();
         message.channel.stopTyping(true)
         return;
       }else if(command == "snipe"){

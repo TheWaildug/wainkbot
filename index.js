@@ -632,7 +632,7 @@ console.log(e3)
       }else if(command == "suggest"){
         client.Commands.get("suggest").execute(message,args,roles)
       }else if(command == "report"){
-        client.Commands.get("report").execute(message,args,roles)
+        client.Commands.get("report").execute(message,args,roles,client)
       }else if(command == "serverinfo"){
         client.Commands.get("serverinfo").execute(message,args,roles)
       }else if(command == "rule"){

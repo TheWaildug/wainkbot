@@ -8,6 +8,7 @@ const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
+const snipemongo = require("./snipemongo")
 const mongoose = require("mongoose")
 const statuses = require("./statuses")
 const muteuser = require("./muteuser.js")
@@ -43,7 +44,7 @@ mongoose.connect(process.env.mongourl, {
 }).then(() => console.log("Connected to MongoDB")).catch(error => {
   console.log(error)
 })
-client.snipes = new Discord.Collection()
+
 client.Commands = new Discord.Collection();
 
   const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -70,12 +71,11 @@ client.Commands = new Discord.Collection();
       return;
     }
     try{
-      const format = []
-      format.content = message.content
-      format.author = message.author
-      format.timestamp = message.createdTimestamp
-   
-      message.client.snipes.set(message.channel.id, format)
+      
+      await snipemongo.deleteMany({channel: message.channel.id})
+      const newsnipe = new snipemongo({channel: message.channel.id, content: message.content, author: message.author.id, timestamp: message.createdTimestamp})
+      console.log(newsnipe)
+      newsnipe.save()
     }catch(e){
       console.log(e)
     }
@@ -605,21 +605,21 @@ console.log(e3)
         return;
       }else if(command == "snipe"){
         console.log(`snipe`)
-        const newmsg = client.snipes.get(message.channel.id);
-      
+        const newmsg = await snipemongo.findOne({channel: message.channel.id})
+      console.log(newmsg)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
         }
-        let avatarurl = newmsg.author.avatarURL({format: "jpg", dynamic: true, size: 512}) || newmsg.author.defaultAvatarURL
-        let tag = `${newmsg.author.username}#${newmsg.author.discriminator}`
+        let author = await client.users.fetch(newmsg.author).catch((e) => {console.log(e); return message.channel.send(`Something went wrong! \`${e}\``)})
+        let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || ksauthor.defaultAvatarURL
+        let tag = `${author.username}#${author.discriminator}`
         console.log(newmsg.content)
-        console.log(newmsg.author)
+        console.log(author)
         const embed = new Discord.MessageEmbed()
         .setAuthor(tag,avatarurl)
         .setDescription(newmsg.content)
         .setColor(wainkedcolor)
-        
-        .setTimestamp(newmsg.timestamp)
+        .setTimestamp(Number(newmsg.timestamp))
         message.channel.send(embed)
       }else if(command == "sm"){
         client.Commands.get("slowmode").execute(message,args,roles)

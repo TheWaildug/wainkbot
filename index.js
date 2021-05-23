@@ -618,7 +618,7 @@ console.log(e3)
         const embed = new Discord.MessageEmbed()
         .setAuthor(tag,avatarurl)
         .setDescription(newmsg.content)
-        .setColor(wainkedcolor)
+        .setColor(wainkedcolor) 
         .setTimestamp(Number(newmsg.timestamp))
         message.channel.send(embed)
       }else if(command == "sm"){

@@ -627,6 +627,10 @@ console.log(e3)
         client.Commands.get("blacklist").execute(message,args,roles)
       }else if(command == "sdeny"){
         client.Commands.get("denysuggestion").execute(message,args,roles)
+      }else if(command == "raccept"){
+        client.Commands.get("acceptreport").execute(message,args,roles)
+      }else if(command == "rdeny"){
+        client.Commands.get("denyreport").execute(message,args,roles)
       }else if(command == "saccept"){
         client.Commands.get("acceptsuggestion").execute(message,args,roles)
       }else if(command == "suggest"){

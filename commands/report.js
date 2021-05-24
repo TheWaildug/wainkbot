@@ -6,9 +6,7 @@ module.exports = {
     name: "report",
     description: "reports users maybe?",
     async execute(message,args,roles,client){
-      if(message.member.id != "745325943035396230" && message.member.id != "432345618028036097"){
-        return message.reply(`Sorry bro but this isn't in use yet.`)
-      }
+     
         let cont = await Isbypass(roles,message.member)
         console.log(cont)
         if(cont == false && message.member.id != "432345618028036097" && message.channel.id != "818890024178155603"){

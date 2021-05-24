@@ -430,7 +430,7 @@ console.log(e3)
  await warn.save()
   enoughwarns(message)
     }
-}).catch(console.log('This is not a valid invite'))
+}).catch(() => {console.log('This is not a valid invite')})
  
 }
     if(message.mentions.members.has(usertoping)){

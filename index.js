@@ -422,7 +422,7 @@ console.log(e3)
     embedinfo.color = wainkedcolor
     embedinfo.description = "You aren't allowed to post invites in that channel. The only channels that you can post invites in are <#831176865595129888> and <#831175761137631273>."
     dmuser(message.member,embedinfo)
-    message.delete()
+    message.delete().catch((e) => console.log(e))
     if(client.user.id == "12345"){
       return;
     }else{

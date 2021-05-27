@@ -625,7 +625,7 @@ console.log(e3)
       }else if(command == "snipe"){
         console.log(`snipe`)
         if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
-          return message.delete();
+          return;
         }
         const newmsg = await snipemongo.findOne({channel: message.channel.id})
       console.log(newmsg)

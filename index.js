@@ -54,6 +54,15 @@ client.Commands = new Discord.Collection();
     const command = require(`./commands/${file}`);
     client.Commands.set(command.name, command);
   }
+  client.on("clickButton", async (button) => {
+    if(button.id == "nitro_button"){
+      
+      await button.think(true)
+      setTimeout(() => {
+        button.reply.send("Your nitro will be coming soon...")
+      },1000)
+    }
+  })
   client.on("messageDelete", async message => {
     if(message.guild == null){
       return;
@@ -80,6 +89,15 @@ client.Commands = new Discord.Collection();
     }catch(e){
       console.log(e)
     }
+    const guild = await client.guilds.fetch("781292314856783892")
+    const channel = await guild.channels.cache.get("847284615331708969")
+    const embed = new Discord.MessageEmbed()
+    .setTitle("New Message Deleted")
+    .setDescription(`**Author:** <@${message.author.id}>\n**Content:** ${message.content}`)
+    .setFooter(`Deleted`)
+    .setColor(wainkedcolor)
+    .setTimestamp(Date.now())
+    channel.send(embed)
     console.log(`New Message Deleted: ${message.content}`)
     
   })
@@ -627,8 +645,12 @@ console.log(e3)
         if(message.member.id != "432345618028036097"){
           return;
         }
-        let button = new disbut.MessageButton().setLabel('click here for free nitro!!').setStyle("gray").setURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ%22").setID("test_234")
-await message.channel.send('test 1234', button); 
+        let button = new disbut.MessageButton()
+        .setStyle("blurple")
+        .setLabel("Click here for free nitro!")
+        .setID("nitro_button")
+        .setURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+await message.channel.send("_ _",button); 
       }else if(command == "snipe"){
         console.log(`snipe`)
         if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){

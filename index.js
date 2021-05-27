@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const client = new Discord.Client();
-const disbut = require('discord-buttons')(client);
+
 require("dotenv").config()
 let prefix = "!"
 const discordInv = require('discord-inv');
@@ -54,15 +54,7 @@ client.Commands = new Discord.Collection();
     const command = require(`./commands/${file}`);
     client.Commands.set(command.name, command);
   }
-  client.on("clickButton", async (button) => {
-    if(button.id == "nitro_button"){
-      
-      await button.think(true)
-      setTimeout(() => {
-        button.reply.send("Your nitro will be coming soon...")
-      },1000)
-    }
-  })
+  
   client.on("messageDelete", async message => {
     if(message.guild == null){
       return;
@@ -641,16 +633,6 @@ console.log(e3)
         message.delete();
         message.channel.stopTyping(true)
         return;
-      }else if(command == "button"){
-        if(message.member.id != "432345618028036097"){
-          return;
-        }
-        let button = new disbut.MessageButton()
-        .setStyle("blurple")
-        .setLabel("Click here for free nitro!")
-        .setID("nitro_button")
-        .setURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-await message.channel.send("_ _",button); 
       }else if(command == "snipe"){
         console.log(`snipe`)
         if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){

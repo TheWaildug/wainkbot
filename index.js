@@ -1,5 +1,6 @@
 const Discord = require("discord.js")
 const client = new Discord.Client();
+const disbut = require('discord-buttons')(client);
 require("dotenv").config()
 let prefix = "!"
 const discordInv = require('discord-inv');
@@ -622,6 +623,12 @@ console.log(e3)
         message.delete();
         message.channel.stopTyping(true)
         return;
+      }else if(command == "button"){
+        if(message.member.id != "432345618028036097"){
+          return;
+        }
+        let button = new disbut.MessageButton().setLabel('click here for free nitro!!').setStyle("gray").setURL("https://www.youtube.com/watch?v=dQw4w9WgXcQ%22").setID("test_234")
+await message.channel.send('test 1234', button); 
       }else if(command == "snipe"){
         console.log(`snipe`)
         if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){

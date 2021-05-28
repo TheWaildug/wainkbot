@@ -26,9 +26,12 @@ module.exports = {
         if(hasperm == true){
             return message.reply(`This user cannot be blacklisted.`)
         }
-        let typeofbl = args[1].toLowerCase()
+        if(!args[1]){
+          return message.reply(`This isn't a blacklist type! You can choose from **status**, **suggestion**, or **report**.`);
+        }
+        let typeofbl = args[1].toLowerCase();
         if(typeofbl != "status" && typeofbl != "suggestion" && typeofbl != "report"){
-            return message.reply(`This isn't a blacklist type!`);
+          return message.reply(`This isn't a blacklist type! You can choose from **status**, **suggestion**, or **report**.`);
         }
         let isblacklisted = await blacklistmongo.findOne({user: mentionmember.id, type: typeofbl, blacklisted: true})
         console.log(isblacklisted)

@@ -1,4 +1,4 @@
-
+const blacklistmongo = require("../blacklistmongo")
 const Discord = require("discord.js")
 const Isbypass = require("../isbypass")
 let continuee = true
@@ -13,6 +13,11 @@ module.exports = {
             return message.reply(`Whoops! Make sure to use this command in <#818890024178155603>.`);
             
           } 
+          const isblacklisted = await blacklistmongo.findOne({user: message.member.id, type: "report", blacklisted: true})
+          console.log(isblacklisted)
+          if(isblacklisted != null){
+            return message.reply(`You have been blacklited from making reports.`)
+          }
           message.member.send(`Who are you reporting? Please reply with their Discord ID. Reply with **Cancel** to cancel this prompt.`).then(async msg => {
             message.reply(`Check your DMs.`)
             const filter =  m => m.author.id == message.author.id

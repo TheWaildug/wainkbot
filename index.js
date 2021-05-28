@@ -83,12 +83,14 @@ client.Commands = new Discord.Collection();
     }
     const guild = await client.guilds.fetch("781292314856783892")
     const channel = await guild.channels.cache.get("847284615331708969")
-    const embed = new Discord.MessageEmbed()
-    .setTitle("New Message Deleted")
-    .setDescription(`**Author:** <@${message.author.id}>\n**Content:** ${message.content}`)
-    .setFooter(`Deleted`)
-    .setColor(wainkedcolor)
-    .setTimestamp(Date.now())
+    let embed = new Discord.MessageEmbed()
+      .setTitle("New Message Deleted")
+      .setDescription(`**Author:** <@${message.author.id}>\n**Content:** ${message.content}\n**Channel:** <#${message.channel.id}>`)
+      .setFooter(`Deleted`)
+      .setColor(wainkedcolor)
+      .setTimestamp(Date.now())
+    
+   
     channel.send(embed)
     console.log(`New Message Deleted: ${message.content}`)
     
@@ -489,6 +491,7 @@ console.log(e3)
       }
     }
   })
+  ///Custom Messagse
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
       return;
@@ -501,11 +504,11 @@ console.log(e3)
     }
     
     let args = message.content.split(" ")
-    if(client.user.id == "832740448909000755"){
-      if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
-        return;
+     if(client.user.id == "832740448909000755"){
+        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.member.id != "737825820642639883"){
+          return;
+        }
       }
-    }
     for(let i = 0; i < args.length; i++){
       if(args[i].toLowerCase() == "ok"){
         message.react("🆗")
@@ -536,7 +539,7 @@ console.log(e3)
         return;
       }
       if(client.user.id == "832740448909000755"){
-        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230"){
+        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
           return;
         }
       }
@@ -586,6 +589,8 @@ console.log(e3)
         })
         message.delete();
        
+      }else if(command == "ban"){
+        client.Commands.get("ban").execute(message,args,roles,client)
       }else if(command == "getserver"){
         if(message.member.id != "432345618028036097"){
           return message.reply(`I'm sorry bro but you can't do this.`);

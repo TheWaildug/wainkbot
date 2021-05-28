@@ -27,7 +27,7 @@ module.exports = {
             return message.reply(`This user cannot be blacklisted.`)
         }
         let typeofbl = args[1].toLowerCase()
-        if(typeofbl != "status" && typeofbl != "suggestion"){
+        if(typeofbl != "status" && typeofbl != "suggestion" && typeofbl != "report"){
             return message.reply(`This isn't a blacklist type!`);
         }
         let isblacklisted = await blacklistmongo.findOne({user: mentionmember.id, type: typeofbl, blacklisted: true})

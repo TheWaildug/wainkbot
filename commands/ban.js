@@ -1,10 +1,11 @@
-const HasPermissions = require("../isbypass")
-const Discord = require("discord.js")
+
+  const HasPermissions = require("../isbypass")
+  const RandomString = require("@supercharge/strings")
+  const Discord = require("discord.js")
 module.exports = {
-    name: "ban",
-    description: "bans bad bois",
-    async execute(message,args,roles,client){
-      
+    name: `ban`,
+    description: `bans members duh`,
+    async execute(message,args,roles){
         let hasperm = await HasPermissions(roles,message.member)
         console.log(hasperm)
         if(hasperm == false){
@@ -16,43 +17,52 @@ module.exports = {
             })
             return message.delete();
         }
-        if(client.user.id != "832740448909000755"){
-            return message.reply(`The ban command isn't in use yet.`)
+        if(!args[0]){
+            return message.channel.send(`${message.member}, this is not a user.`)
         }
         let mentionmember
         if(message.mentions.members.first()){
+            console.log(`there's mentions`)
             mentionmember = message.mentions.members.first()
         }else if(!message.mentions.members.first()){
-            mentionmember = await message.guild.members.fetch(args[0]).catch(e => {
-                console.log(e)
-            })
-        }   
+            console.log(`fetching a user`)
+            mentionmember = await message.guild.members.fetch(args[0]).catch(console.log)
+        }
+        
         if(!mentionmember || mentionmember.size > 1){
-            return message.reply(`You must specify someone to ban.`);
+            return message.channel.send(`${message.member}, this is not a user.`);
+        }
+        console.log(mentionmember)
+        if(mentionmember.roles.highest.position >= message.member.roles.highest.position){
+            return message.reply(`This user has an equal or higher role.`)
+        }
+        if(!mentionmember.bannable){
+            return message.reply(`It seems I cannot ban this user.`)
         }
         let reason = message.content.split(" ").splice(2).join(" ")
+        console.log(reason)
         if(!reason){
             return message.reply(`I need a reason.`)
         }
+        let code = RandomString.random(20)
+        const banembed = new Discord.MessageEmbed()
+        .setDescription(`Successfully banned ${mentionmember} with the ID of \`${code}\``)
+        .setColor("ff00f3")
         
-        if(message.member.id == mentionmember.id){
-            return message.reply(`You cannot ban yourself!`)
-        }
-        const cannotbebanned = await HasPermissions(roles,mentionmember)
-        console.log(cannotbebanned)
-        if(cannotbebanned == true && !message.member.roles.cache.has("819048048105357382")){
-            return message.reply(`This user has a whitelisted role.`)
-        }
-        console.log(mentionmember.roles.highest.position >= message.member.roles.highest.position && !message.member.roles.cache.has("819048048105357382"))
-        if(mentionmember.roles.highest.position >= message.member.roles.highest.position){
-            return message.reply(`This user has a role that is greater than or equal to your highest role.`)
-        }
-        if(message.member.id == "432345618028036097"){
-            return message.reply(`lol you can't ban the froggo.`)
-        }
-        mentionmember.ban(`Banned by ${message.author.tag} with the reason ${reason}`).catch(e => {
-            console.log(e)
-            return message.reply(`Something went wrong!`)
-        })
+        const dmembed = new Discord.MessageEmbed()
+        .setTitle(`You've been banned from ${message.guild.name}.`)
+        .setDescription(`**Reason**\n${reason}\n**ID**\n${code}\n\nYou can appeal this ban by clicking [here](https://docs.google.com/forms/d/e/1FAIpQLScgqdZNwcrqNdfypmUmabOVIw-00NaStK4OD6R_eQAt1tNMhA/viewform)`)
+        .setColor("ff00f3")
+        .setTimestamp()
+        mentionmember.send(dmembed).catch(console.log)
+        message.channel.send(banembed)
+        mentionmember.ban({reason:`Banned by ${message.author.tag} (${message.member.id}) with the ID of ${code} and the reason of ${reason}`})
+        const logembed = new Discord.MessageEmbed()
+        .setTitle(`New Ban`)
+        .setDescription(`**User**\n${mentionmember}\n**Sender**\n${message.member}\n**Reason**\n${reason}\n**ID**\n${code}`)
+        .setColor("ff00f3")
+        .setTimestamp()
+        const logchannel = message.guild.channels.cache.get("825938877327998997")
+        logchannel.send(logembed)
     }
 }

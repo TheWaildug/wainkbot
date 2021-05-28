@@ -46,7 +46,7 @@ module.exports = {
         }
         let code = RandomString.random(20)
         const kickembed = new Discord.MessageEmbed()
-        .setDescription(`Successfully kicked ${mentionmember} with the id \`${code}\``)
+        .setDescription(`Successfully kicked ${mentionmember} with the ID of \`${code}\``)
         .setColor("ff00f3")
         
         const dmembed = new Discord.MessageEmbed()

@@ -7,6 +7,7 @@ const discordInv = require('discord-inv');
 const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
+const LeaveRoleSchema = require("./leaveroles")
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const snipemongo = require("./snipemongo")
@@ -71,6 +72,11 @@ client.Commands = new Discord.Collection();
     }
     if(message.author.bot){
       return;
+    }
+    if(client.user.id == "832740448909000755"){
+      if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
+        return;
+      }
     }
     try{
       
@@ -219,43 +225,67 @@ client.on("ready", async () => {
     }
     
   });
+  client.on("guildMemberRemove", async member => {
+    if(client.user.id == "832740448909000755"){
+      if(member.id != "432345618028036097" && member.id != "745325943035396230"){
+        return;
+      }
+    }
+    
+      console.log(`${member.id} left the server :(.`)
+      if(member.bot){
+        return;
+      }
+      await LeaveRoleSchema.deleteMany(({userid: member.id}))
+   let rolearray = []
+     member.roles.cache.forEach(role => {if( !role.managed && role.name != "@everyone"){ rolearray.push(role);}})
+  let roleschema = new LeaveRoleSchema({
+    userid: member.id,
+    roles: rolearray
+  })
+  await roleschema.save()
+  })
   client.on("guildMemberAdd", async member => {
-    if(client.user.id != "832740448909000755"){
+    if(client.user.id == "832740448909000755"){
+      if(member.id != "432345618028036097" && member.id != "745325943035396230"){
+        return;
+      }
+    }
       console.log(`${member.id}`)
       if(member.id == "745325943035396230"){
         const role = member.guild.roles.cache.get("832404582411927592")
         if(!role){
-          return console.log(`cannot find alt role.`)
-        }
+          console.log(`cannot find alt role.`)
+        }else{
         member.roles.add(role,"User is stupid and fat.")
-      }else{
-      
-        const embed = new Discord.MessageEmbed()
-        .setTitle(`Welcome!`)
-        .setDescription(`${member} just hopped in!`)
-        .setColor("ff00f3")
-        .setTimestamp()
-        let channel = member.guild.channels.cache.get("816863447156523028");
-        if(!channel){
-          return console.log(`cannot find channel.`)
         }
-        channel.send(embed)
       }
-    }else{
-      if(member.id == "432345618028036097"){
-        const embed = new Discord.MessageEmbed()
-        .setTitle(`Welcome!`)
-        .setDescription(`${member} just hopped in!`)
-        .setColor("ff00f3")
-        .setTimestamp()
-        let channel = member.guild.channels.cache.get("816863447156523028");
-        if(!channel){
-          return console.log(`cannot find channel.`)
+      const leaveroles = await LeaveRoleSchema.findOne({userid: member.id})
+      if(leaveroles){
+        
+           console.log(leaveroles.roles)
+      leaveroles.roles.forEach(rolei => {
+        console.log(rolei)
+        const role = member.guild.roles.cache.get(rolei)
+        if(role){
+          if(role.name != "@everyone"){
+            member.roles.add(role,`User had this role before they left.`)
+          }
         }
-        channel.send(embed)
-      }
+   
+      })
     }
-    
+        const embed = new Discord.MessageEmbed()
+        .setTitle(`Welcome!`)
+        .setDescription(`${member} just hopped in!`)
+        .setColor("ff00f3")
+        .setTimestamp()
+        let channel = member.guild.channels.cache.get("816863447156523028");
+        if(!channel){
+          return console.log(`cannot find channel.`)
+        }
+        channel.send(embed)
+      
   })
   ///Eval for thewaildug
   client.on("message", async message => {
@@ -309,7 +339,7 @@ if(message.member.id != "432345618028036097"){
       return;
     }
     if(client.user.id == "832740448909000755"){
-      if(message.member.id != "432345618028036097" && message.member.id != "745325943035396230"){
+      if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
         return;
       }
     }

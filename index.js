@@ -4,6 +4,7 @@ const client = new Discord.Client();
 require("dotenv").config()
 let prefix = "!"
 const discordInv = require('discord-inv');
+
 const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
@@ -11,9 +12,15 @@ const LeaveRoleSchema = require("./leaveroles")
 const evalrole = require("./values/evalroles.js")
 const modroles = require("./values/roles.js")
 const snipemongo = require("./snipemongo")
+if(1+1 == 3){
+  const GphApiClient = require("giphy-js-sdk-core");
+  const giphy = GphApiClient(process.env.GIPHYTOKEN);
+}
+
 const mongoose = require("mongoose")
 const statuses = require("./statuses")
 const muteuser = require("./muteuser.js")
+const froggif = require("./frogifs")
 const automod = require("./automod")
 const rules = require("./values/rules")
 const ms = require("ms")
@@ -55,7 +62,33 @@ client.Commands = new Discord.Collection();
     const command = require(`./commands/${file}`);
     client.Commands.set(command.name, command);
   }
-  
+  client.on("messageUpdate", async (oldmsg,message) => {
+    if(message.guild == null){
+      return;
+    }
+    if(message.guild.id != "813837609473933312"){
+      return;
+    }
+    if(message.type != "DEFAULT"){
+      return;
+    }
+    if(message.guild == null){
+      return;
+    }
+    if(message.author.bot){
+      return;
+    }
+    if(client.user.id == "832740448909000755"){
+      if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
+        return;
+      }
+    }
+    if(oldmsg.content == message.content){
+      return;
+    }
+    console.log(oldmsg.content)
+    console.log(message.content)
+  })
   client.on("messageDelete", async message => {
     if(message.guild == null){
       return;
@@ -245,6 +278,7 @@ client.on("ready", async () => {
   })
   await roleschema.save()
   })
+ 
   client.on("guildMemberAdd", async member => {
     if(client.user.id == "832740448909000755"){
       if(member.id != "432345618028036097" && member.id != "745325943035396230"){
@@ -544,9 +578,12 @@ console.log(e3)
         message.react("🆗")
       }
       if(args[i].toLowerCase() == "aiden"){
-        return message.channel.send(
+        message.channel.send(
           "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
         );
+      }
+      if(args[i].toLowerCase() == "waildug"){
+        message.channel.send(`You mean that annoying person <@432345618028036097>?`,{allowedMentions: {parse: []}})
       }
       if(args[i].toLowerCase() == "wainked"){
         const embed = new Discord.MessageEmbed()
@@ -619,6 +656,10 @@ console.log(e3)
         })
         message.delete();
        
+      }else if(command == "frog"){
+        let randomFrog = froggif[Math.floor(Math.random() * froggif.length)];
+        console.log(randomFrog)
+        return message.channel.send(randomFrog)
       }else if(command == "ban"){
         client.Commands.get("ban").execute(message,args,roles,client)
       }else if(command == "getserver"){
@@ -678,8 +719,15 @@ console.log(e3)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
         }
+        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes")){
+          const embed = new Discord.MessageEmbed()
+          .setDescription(`I couldn't find anything to snipe!`)
+          .setColor(wainkedcolor)
+          message.channel.send(embed)
+          return console.log(`Past 10 minutes.`)
+        }
         let author = await client.users.fetch(newmsg.author).catch((e) => {console.log(e); return message.channel.send(`Something went wrong! \`${e}\``)})
-        let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || ksauthor.defaultAvatarURL
+        let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || author.defaultAvatarURL
         let tag = `${author.username}#${author.discriminator}`
         console.log(newmsg.content)
         console.log(author)

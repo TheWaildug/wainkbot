@@ -112,6 +112,9 @@ client.Commands = new Discord.Collection();
    
     channel.send(embed)
   })
+  client.on("guildMemberUpdate", async (oldmember,newmember) => {
+    
+  })
   client.on("messageDelete", async message => {
     if(message.guild == null){
       return;

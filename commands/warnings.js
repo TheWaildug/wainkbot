@@ -59,8 +59,20 @@ const embed = new Discord.MessageEmbed()
 let hours = date.getUTCHours() ; 
 let AmOrPm = hours >= 12 ? 'pm' : 'am';
 hours = (hours % 12) || 12;
+hours = hours.toLocaleString('en-US', {
+  minimumIntegerDigits: 2,
+  useGrouping: false
+})
 let minutes = date.getUTCMinutes();
+minutes = minutes.toLocaleString('en-US', {
+  minimumIntegerDigits: 2,
+  useGrouping: false
+})
 let seconds = date.getUTCSeconds();
+seconds = seconds.toLocaleString('en-US', {
+  minimumIntegerDigits: 2,
+  useGrouping: false
+})
 let finalTime = `${hours}:${minutes}:${seconds} ${AmOrPm}`
       let format = `${daysoftheweek[date.getUTCDay()]}, ${months[date.getUTCMonth()]} ${date.getUTCDate()} ${date.getUTCFullYear()} ${finalTime} GMT`
     embed.addField(`ID: ${warning.warningid}`,`**WARN** ${warning.warning} - ${format}`)

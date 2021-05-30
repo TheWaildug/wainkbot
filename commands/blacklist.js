@@ -1,5 +1,6 @@
 const HasPermissions = require("../isbypass")
 const blacklistmongo = require("../blacklistmongo")
+const RandomString = require("randomstring")
 const Discord = require("discord.js")
 module.exports = {
     name: "blacklist",
@@ -29,6 +30,10 @@ module.exports = {
         if(!args[1]){
           return message.reply(`This isn't a blacklist type! You can choose from **status**, **suggestion**, or **report**.`);
         }
+        let id = RandomString.generate({
+          length: 20,
+          charset: 'alphabetic'
+        });
         let typeofbl = args[1].toLowerCase();
         if(typeofbl != "status" && typeofbl != "suggestion" && typeofbl != "report"){
           return message.reply(`This isn't a blacklist type! You can choose from **status**, **suggestion**, or **report**.`);
@@ -59,7 +64,7 @@ const options = { returnNewDocument: true };
    await blacklistmongo.findOneAndUpdate(query, update, options).then(updatedDocument => {
        console.log(updatedDocument)
     if(updatedDocument) {
-        message.channel.send(`I have unblacklisted this user with the id \`${updatedDocument.id}\``)
+        message.channel.send(`I have unblacklisted this user with the ID of \`${updateDocument.blid}\``)
       console.log(`Successfully updated document: ${updatedDocument}.`)
     } else {
       message.channel.send(`Something went wrong! \`Cannot find document\``)
@@ -70,8 +75,9 @@ const options = { returnNewDocument: true };
 
 
         }else{
-            let blmongo = new blacklistmongo({user: mentionmember.id, type: typeofbl, moderator: message.member.id, reason: reason, blacklisted: true})
-            message.channel.send(`I have blacklisted this user with the ID \`${blmongo.id}\`.`);
+          
+            let blmongo = new blacklistmongo({user: mentionmember.id, type: typeofbl,  blid: id, moderator: message.member.id, reason: reason, blacklisted: true})
+            message.channel.send(`I have blacklisted this user with the ID of \`${id}\`.`);
            await blmongo.save()
         }
        

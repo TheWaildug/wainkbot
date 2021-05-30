@@ -1,7 +1,7 @@
 const Discord= require("discord.js")
 const HasPermissions = require("../isbypass")
 const ms = require("ms")
-const RandomString = require("@supercharge/strings")
+const RandomString = require("randomstring")
 const mutedrole = "826093027545710653"
 const fetch = require("node-fetch")
 const mutemongo = require("../mutemongo")
@@ -85,7 +85,11 @@ module.exports = {
             return message.channel.send(`Something went wrong! \`${e}\``)
         }).then(async () => {
             
-            let id = await setData(mentionmember.id,ms(time),reason,message.member.id);
+            let id = RandomString.generate({
+                length: 20,
+                charset: 'alphabetic'
+              });
+            await setData(mentionmember.id,ms(time),reason,message.member.id);
             const logembed = new Discord.MessageEmbed()
             .setTitle(`New Mute`)
             .setDescription(`**User**\n${mentionmember}\n**Sender**\n${message.member}\n**Reason**\n${reason}\n**Length of Mute**\n${ms(ms(time))}\n**ID**\n${id}`)

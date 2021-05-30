@@ -13,6 +13,10 @@ const WarningSchema = new Schema({
       type: String,
       required: true
   },
+  "blid": {
+      type: String,
+      required: true
+  },
   "reason": {
       type: String,
       required: true

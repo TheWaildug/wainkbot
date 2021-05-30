@@ -689,6 +689,10 @@ console.log(e3)
         let randomFrog = froggif[Math.floor(Math.random() * froggif.length)];
         console.log(randomFrog)
         return message.channel.send(randomFrog)
+      }else if(command == "warn"){
+        client.Commands.get("warn").execute(message,args,roles)
+      }else if(command == "warnings"){
+        client.Commands.get("warnings").execute(message,args,roles)
       }else if(command == "ban"){
         client.Commands.get("ban").execute(message,args,roles,client)
       }else if(command == "getserver"){

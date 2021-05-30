@@ -1,6 +1,6 @@
 
   const HasPermissions = require("../isbypass")
-  const RandomString = require("@supercharge/strings")
+  const RandomString = require("randomstring")
   const Discord = require("discord.js")
 module.exports = {
     name: `kick`,
@@ -44,7 +44,10 @@ module.exports = {
         if(!reason){
             return message.reply(`I need a reason.`)
         }
-        let code = RandomString.random(20)
+        let code = RandomString.generate({
+            length: 20,
+            charset: 'alphabetic'
+          });
         const kickembed = new Discord.MessageEmbed()
         .setDescription(`Successfully kicked ${mentionmember} with the ID of \`${code}\``)
         .setColor("ff00f3")

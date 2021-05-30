@@ -136,7 +136,7 @@ client.Commands = new Discord.Collection();
     try{
       
       await snipemongo.deleteMany({channel: message.channel.id, type: "delete"})
-      const newsnipe = new snipemongo({channel: message.channel.id, type: "delete", content: message.content, author: message.author.id, timestamp: message.editedTimestamp})
+      const newsnipe = new snipemongo({channel: message.channel.id, type: "delete", content: message.content, author: message.author.id, timestamp: new Date().getTime()})
       console.log(newsnipe)
       newsnipe.save()
     }catch(e){
@@ -785,7 +785,6 @@ console.log(e3)
         console.log(author)
         const embed = new Discord.MessageEmbed()
         .setAuthor(tag,avatarurl)
-        .setTitle(`Delete Snipe`)
         .setDescription(`${newmsg.content}`)
         .setColor(wainkedcolor) 
         .setFooter(`Deleted`)

@@ -75,7 +75,7 @@ seconds = seconds.toLocaleString('en-US', {
 })
 let finalTime = `${hours}:${minutes}:${seconds} ${AmOrPm}`
       let format = `${daysoftheweek[date.getUTCDay()]}, ${months[date.getUTCMonth()]} ${date.getUTCDate()} ${date.getUTCFullYear()} ${finalTime} GMT`
-    embed.addField(`ID: ${warning.warningid}`,`**WARN** ${warning.warning} - ${format}`)
+    embed.addField(`ID: ${warning.warningid}`,`${warning.warning} - ${format}`)
   })
  
   message.channel.send(embed)

@@ -86,8 +86,30 @@ client.Commands = new Discord.Collection();
     if(oldmsg.content == message.content){
       return;
     }
+    
+    
     console.log(oldmsg.content)
     console.log(message.content)
+    try{
+      
+      await snipemongo.deleteMany({channel: message.channel.id, type: "edit" })
+      const newsnipe = new snipemongo({channel: message.channel.id, type: "edit", oldcontent: oldmsg.content, content: message.content, link: message.url, author: message.author.id, timestamp: message.editedTimestamp})
+      console.log(newsnipe)
+      newsnipe.save()
+    }catch(e){
+      console.log(e)
+    }
+    const guild = await client.guilds.fetch("781292314856783892")
+    const channel = await guild.channels.cache.get("847284615331708969")
+    let embed = new Discord.MessageEmbed()
+      .setTitle("New Message Edited")
+      .setDescription(`**Author:** <@${message.author.id}>\n**Old Content:** ${oldmsg.content}\n**New Content:** ${message.content}\n**Channel:** <#${message.channel.id}>\n**Jump to [message.](${message.url})**`)
+      .setFooter(`Edited`)
+      .setColor(wainkedcolor)
+      .setTimestamp(Date.now())
+    
+   
+    channel.send(embed)
   })
   client.on("messageDelete", async message => {
     if(message.guild == null){
@@ -113,8 +135,8 @@ client.Commands = new Discord.Collection();
     }
     try{
       
-      await snipemongo.deleteMany({channel: message.channel.id})
-      const newsnipe = new snipemongo({channel: message.channel.id, content: message.content, author: message.author.id, timestamp: message.createdTimestamp})
+      await snipemongo.deleteMany({channel: message.channel.id, type: "delete"})
+      const newsnipe = new snipemongo({channel: message.channel.id, type: "delete", content: message.content, author: message.author.id, timestamp: message.editedTimestamp})
       console.log(newsnipe)
       newsnipe.save()
     }catch(e){
@@ -709,12 +731,12 @@ console.log(e3)
         message.delete();
         message.channel.stopTyping(true)
         return;
-      }else if(command == "snipe"){
-        console.log(`snipe`)
+      }else if(command == "editsnipe"){
+        console.log(`edit snipe`)
         if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
           return;
         }
-        const newmsg = await snipemongo.findOne({channel: message.channel.id})
+        const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "edit"})
       console.log(newmsg)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
@@ -724,7 +746,35 @@ console.log(e3)
           .setDescription(`I couldn't find anything to snipe!`)
           .setColor(wainkedcolor)
           message.channel.send(embed)
-          return console.log(`Past 10 minutes.`)
+          return console.log(`Past 5 minutes.`)
+        }
+        let author = await client.users.fetch(newmsg.author).catch((e) => {console.log(e); return message.channel.send(`Something went wrong! \`${e}\``)})
+        let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || author.defaultAvatarURL
+        let tag = `${author.username}#${author.discriminator}`
+        console.log(newmsg.content)
+        console.log(author)
+        const embed = new Discord.MessageEmbed()
+        .setAuthor(tag,avatarurl)
+        .setDescription(`**Old:** ${newmsg.oldcontent}\n**New:** ${newmsg.content}\n**Jump to [message.](${newmsg.link})**`)
+        .setColor(wainkedcolor) 
+        .setTimestamp(Number(newmsg.timestamp))
+        message.channel.send(embed)
+      }else if(command == "snipe"){
+        console.log(`snipe`)
+        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
+          return;
+        }
+        const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "delete"})
+      console.log(newmsg)
+        if(!newmsg){
+          return message.channel.send(`I couldn't find anthing to snipe.`)
+        }
+        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes")){
+          const embed = new Discord.MessageEmbed()
+          .setDescription(`I couldn't find anything to snipe!`)
+          .setColor(wainkedcolor)
+          message.channel.send(embed)
+          return console.log(`Past 5 minutes.`)
         }
         let author = await client.users.fetch(newmsg.author).catch((e) => {console.log(e); return message.channel.send(`Something went wrong! \`${e}\``)})
         let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || author.defaultAvatarURL

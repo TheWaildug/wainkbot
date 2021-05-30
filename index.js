@@ -113,7 +113,7 @@ client.Commands = new Discord.Collection();
     channel.send(embed)
   })
   client.on("guildMemberUpdate", async (oldmember,newmember) => {
-    if(oldmmber.bot || newmember.bot){
+    if(oldmember.bot || newmember.bot){
       return;
     }
     

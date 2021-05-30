@@ -10,6 +10,7 @@ const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
 const LeaveRoleSchema = require("./leaveroles")
 const evalrole = require("./values/evalroles.js")
+const asked = require("./values/whoasked.js")
 const modroles = require("./values/roles.js")
 const snipemongo = require("./snipemongo")
 if(1+1 == 3){
@@ -20,7 +21,7 @@ if(1+1 == 3){
 const mongoose = require("mongoose")
 const statuses = require("./statuses")
 const muteuser = require("./muteuser.js")
-const froggif = require("./frogifs")
+const froggif = require("./values/frogifs")
 const automod = require("./automod")
 const rules = require("./values/rules")
 const ms = require("ms")
@@ -595,10 +596,16 @@ console.log(e3)
           return;
         }
       }
+      for(let i = 0; i < asked.length; i++){
+        if(message.content.toLowerCase().includes(asked[i])){
+          return message.channel.send(`${message.member}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
+        }
+      }
     for(let i = 0; i < args.length; i++){
       if(args[i].toLowerCase() == "ok"){
         message.react("🆗")
       }
+      
       if(args[i].toLowerCase() == "aiden"){
         message.channel.send(
           "Did someone say **Aiden**? I'm pretty sure that's what I heard!"

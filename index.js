@@ -113,6 +113,9 @@ client.Commands = new Discord.Collection();
     channel.send(embed)
   })
   client.on("guildMemberUpdate", async (oldmember,newmember) => {
+    if(oldmmber.bot || newmember.bot){
+      return;
+    }
     
   })
   client.on("messageDelete", async message => {
@@ -747,7 +750,7 @@ console.log(e3)
         return;
       }else if(command == "editsnipe"){
         console.log(`edit snipe`)
-        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
+        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
           return;
         }
         const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "edit"})
@@ -777,7 +780,7 @@ console.log(e3)
         message.channel.send(embed)
       }else if(command == "snipe"){
         console.log(`snipe`)
-        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
+        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
           return;
         }
         const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "delete"})

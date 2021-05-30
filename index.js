@@ -741,7 +741,7 @@ console.log(e3)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
         }
-        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes")){
+        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && message.member.id != "432345618028036097"){
           const embed = new Discord.MessageEmbed()
           .setDescription(`I couldn't find anything to snipe!`)
           .setColor(wainkedcolor)
@@ -755,8 +755,10 @@ console.log(e3)
         console.log(author)
         const embed = new Discord.MessageEmbed()
         .setAuthor(tag,avatarurl)
-        .setDescription(`**Old:** ${newmsg.oldcontent}\n**New:** ${newmsg.content}\n\n**[Jump to Message.](${newmsg.link})**`)
+        .setTitle(`Edit Snipe`)
+        .setDescription(`**Before:**\n${newmsg.oldcontent}\n\n**After:**\n${newmsg.content}\n\n**[Jump to Message.](${newmsg.link})**`)
         .setColor(wainkedcolor) 
+        .setFooter(`Edited`)
         .setTimestamp(Number(newmsg.timestamp))
         message.channel.send(embed)
       }else if(command == "snipe"){
@@ -769,7 +771,7 @@ console.log(e3)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
         }
-        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes")){
+        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && message.member.id != "432345618028036097"){
           const embed = new Discord.MessageEmbed()
           .setDescription(`I couldn't find anything to snipe!`)
           .setColor(wainkedcolor)
@@ -783,8 +785,10 @@ console.log(e3)
         console.log(author)
         const embed = new Discord.MessageEmbed()
         .setAuthor(tag,avatarurl)
-        .setDescription(newmsg.content)
+        .setTitle(`Delete Snipe`)
+        .setDescription(`${newmsg.content}`)
         .setColor(wainkedcolor) 
+        .setFooter(`Deleted`)
         .setTimestamp(Number(newmsg.timestamp))
         message.channel.send(embed)
       }else if(command == "sm"){

@@ -4,7 +4,7 @@ const client = new Discord.Client();
 require("dotenv").config()
 let prefix = "!"
 const discordInv = require('discord-inv');
-
+const RandomString = require("randomstring")
 const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
 const blacklistmongo = require("./blacklistmongo")
@@ -116,7 +116,19 @@ client.Commands = new Discord.Collection();
     if(oldmember.bot || newmember.bot){
       return;
     }
-    
+    if(oldmember.displayName != newmember.displayName){
+      if(newmember.displayName.toLowerCase() == "wainked"){
+        const newnick = RandomString.generate({
+          length: 7,
+          charset: 'alphabetic'
+        });
+        console.log(newnick)
+        console.log(`User has nickname of wainked.`)
+        newmember.setNickname(`Moderated Nickname ${newnick}`,`User had nickname of wainked.`).catch(e => {
+          console.log(e)
+        })
+      }
+    }
   })
   client.on("messageDelete", async message => {
     if(message.guild == null){

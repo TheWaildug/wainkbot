@@ -762,6 +762,8 @@ console.log(e3)
         return;
       }else if(command == "editsnipe"){
         console.log(`edit snipe`)
+        let hasperm = await HasPermissions(roles,message.member)
+        console.log(hasperm)
         if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
           return;
         }
@@ -770,7 +772,7 @@ console.log(e3)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
         }
-        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && message.member.id != "432345618028036097"){
+        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && hasperm == false && message.member.id != "432345618028036097"){
           const embed = new Discord.MessageEmbed()
           .setDescription(`I couldn't find anything to snipe!`)
           .setColor(wainkedcolor)
@@ -792,7 +794,9 @@ console.log(e3)
         message.channel.send(embed)
       }else if(command == "snipe"){
         console.log(`snipe`)
-        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
+        let hasperm = await HasPermissions(roles,message.member)
+        console.log(hasperm)
+        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
           return;
         }
         const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "delete"})
@@ -800,7 +804,7 @@ console.log(e3)
         if(!newmsg){
           return message.channel.send(`I couldn't find anthing to snipe.`)
         }
-        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && message.member.id != "432345618028036097"){
+        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && hasperm == false && message.member.id != "432345618028036097"){
           const embed = new Discord.MessageEmbed()
           .setDescription(`I couldn't find anything to snipe!`)
           .setColor(wainkedcolor)

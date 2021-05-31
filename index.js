@@ -737,8 +737,12 @@ console.log(e3)
         if(!mentionmember){
           return message.reply(`Who do I ban?`)
         }
+        const reason = args.join(" ")
+        if(!reason){
+          return message.reply(`i need reason for ban.`)
+        }
         const dmembed = new Discord.MessageEmbed()
-        .setDescription(`you are have ben ban from waink sergver. please a peal [here.](https://forms.gle/aZJPVnAhYMAk4AAA6)`)
+        .setDescription(`you are have ben ban from waink sergver with reason of ${reason} please a peal [here.](https://forms.gle/aZJPVnAhYMAk4AAA6)`)
         .setColor(wainkedcolor)
         .setTimestamp()
         mentionmember.send(dmembed).catch(e => {

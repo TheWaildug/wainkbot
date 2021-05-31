@@ -116,14 +116,22 @@ client.Commands = new Discord.Collection();
     if(oldmember.bot || newmember.bot){
       return;
     }
+    
     if(oldmember.displayName != newmember.displayName){
       if(newmember.displayName.toLowerCase() == "wainked"){
+        console.log(`User has nickname of wainked.`)
+        let hasperm = await HasPermissions(roles,newmember)
+    console.log(hasperm)
+    if(hasperm == true){
+      console.log(`User has bypassed role.`)
+      return;
+    }
         const newnick = RandomString.generate({
           length: 7,
           charset: 'alphabetic'
         });
         console.log(newnick)
-        console.log(`User has nickname of wainked.`)
+        
         newmember.setNickname(`Moderated Nickname ${newnick}`,`User had nickname of wainked.`).catch(e => {
           console.log(e)
         })

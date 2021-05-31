@@ -718,7 +718,9 @@ console.log(e3)
         message.delete();
        
       }else if(command == "doban"){
-        if(message.member.id != "432345618028036097"){
+        const cont = await HasPermissions(roles,message.member)
+        console.log(cont)
+        if(cont == false){
           return;
         }
         let mentionmember = message.mentions.members.first()

@@ -622,25 +622,28 @@ console.log(e3)
           return;
         }
       }
+      const newmessage = message.content.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
       for(let i = 0; i < asked.length; i++){
-        if(message.content.toLowerCase().includes(asked[i])){
+      
+        if(newmessage.includes(asked[i])){
           return message.channel.send(`${message.member}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
         }
       }
     for(let i = 0; i < args.length; i++){
-      if(args[i].toLowerCase() == "ok"){
+      const newargs = args[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+      if(newargs == "ok"){
         message.react("🆗")
       }
       
-      if(args[i].toLowerCase() == "aiden"){
+      if(newargs == "aiden"){
         message.channel.send(
           "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
         );
       }
-      if(args[i].toLowerCase() == "waildug"){
+      if(newargs == "waildug"){
         message.channel.send(`You mean that annoying person <@432345618028036097>?`,{allowedMentions: {parse: []}})
       }
-      if(args[i].toLowerCase() == "wainked"){
+      if(newargs == "wainked"){
         const embed = new Discord.MessageEmbed()
         .setDescription("**He is pro.**")
         .setColor("#ff00f3");

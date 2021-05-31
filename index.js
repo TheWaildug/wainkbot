@@ -604,6 +604,9 @@ console.log(e3)
       }
     }
   })
+  client.on("raw", async packet => {
+      
+  })
   ///Custom Messagse
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
@@ -634,7 +637,7 @@ console.log(e3)
       if(newargs == "ok"){
         message.react("🆗")
       }
-      
+     
       if(newargs == "aiden"){
         message.channel.send(
           "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
@@ -714,7 +717,23 @@ console.log(e3)
         })
         message.delete();
        
-      }else if(command == "frog"){
+      }else if(command == "doban"){
+        if(message.member.id != "432345618028036097"){
+          return;
+        }
+        let mentionmember = message.mentions.members.first()
+        if(!mentionmember){
+          return message.reply(`Who do I ban?`)
+        }
+        const dmembed = new Discord.MessageEmbed()
+        .setDescription(`you are have ben ban from waink sergver. please a peal [here.](https://forms.gle/aZJPVnAhYMAk4AAA6)`)
+        .setColor(wainkedcolor)
+        .setTimestamp()
+        mentionmember.send(dmembed).catch(e => {
+          console.log(e)
+        })
+        return message.reply(`i are ban this noob.`)
+           }else if(command == "frog"){
         let randomFrog = froggif[Math.floor(Math.random() * froggif.length)];
         console.log(randomFrog)
         return message.channel.send(randomFrog)

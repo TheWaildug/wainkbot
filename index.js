@@ -737,7 +737,7 @@ console.log(e3)
         if(!mentionmember){
           return message.reply(`Who do I ban?`)
         }
-        const reason = args.join(" ")
+        const reason = args.splice(1).join(" ")
         if(!reason){
           return message.reply(`i need reason for ban.`)
         }

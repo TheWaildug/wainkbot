@@ -619,7 +619,7 @@ console.log(e3)
     
     let args = message.content.split(" ")
      if(client.user.id == "832740448909000755"){
-        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.member.id != "737825820642639883"){
+        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
           return;
         }
       }

@@ -615,9 +615,7 @@ console.log(e3)
     if (message.guild == null) {
       return;
     }
-    if (message.author.bot) {
-      return;
-    }
+   
     
     let args = message.content.split(" ")
      if(client.user.id == "832740448909000755"){
@@ -625,13 +623,7 @@ console.log(e3)
           return;
         }
       }
-      const newmessage = message.content.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
-      for(let i = 0; i < asked.length; i++){
       
-        if(newmessage.includes(asked[i])){
-          return message.channel.send(`${message.member}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
-        }
-      }
     for(let i = 0; i < args.length; i++){
       const newargs = args[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
       if(newargs == "ok"){
@@ -639,19 +631,37 @@ console.log(e3)
       }
      
       if(newargs == "aiden"){
+        if(message.author.bot){
+          return;
+        }
         message.channel.send(
           "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
         );
       }
       if(newargs == "waildug"){
+        if(message.author.bot){
+          return;
+        }
         message.channel.send(`You mean that annoying person <@432345618028036097>?`,{allowedMentions: {parse: []}})
       }
       if(newargs == "wainked"){
+        if(message.author.bot){
+          return;
+        }
         const embed = new Discord.MessageEmbed()
         .setDescription("**He is pro.**")
         .setColor("#ff00f3");
       message.channel.send(embed)
       
+      }
+    }
+    const newmessage = message.content.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+    for(let i = 0; i < asked.length; i++){
+      if(message.author.bot){
+        return;
+      }
+      if(newmessage.includes(asked[i])){
+        return message.channel.send(`${message.member}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
       }
     }
   });

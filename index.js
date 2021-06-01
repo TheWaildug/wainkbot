@@ -605,7 +605,7 @@ console.log(e3)
     }
   })
   client.on("raw", async packet => {
-      
+     
   })
   ///Custom Messagse
   client.on("message", async message => {
@@ -759,6 +759,15 @@ console.log(e3)
         client.Commands.get("warnings").execute(message,args,roles)
       }else if(command == "ban"){
         client.Commands.get("ban").execute(message,args,roles,client)
+      }else if(command == "membercount"){
+        client.Commands.get("membercount").execute(message,args,roles)
+      }else if(command == "mock"){
+        let msg = args.join(" ")
+        if(msg == null){
+          return message.reply(`i nEED SOme tExt tO mOcK`)
+        }
+        let mock = require("./mock")(msg)
+        return message.channel.send(mock,{allowedMentions: {parse: []}})
       }else if(command == "getserver"){
         if(message.member.id != "432345618028036097"){
           return message.reply(`I'm sorry bro but you can't do this.`);

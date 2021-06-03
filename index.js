@@ -21,7 +21,7 @@ if(1+1 == 3){
 const mongoose = require("mongoose")
 const statuses = require("./statuses")
 const muteuser = require("./muteuser.js")
-const froggif = require("./values/frogifs")
+
 const automod = require("./automod")
 const rules = require("./values/rules")
 const ms = require("ms")
@@ -756,10 +756,7 @@ console.log(e3)
           console.log(e)
         })
         return message.reply(`i are ban this noob.`)
-           }else if(command == "frog"){
-        let randomFrog = froggif[Math.floor(Math.random() * froggif.length)];
-        console.log(randomFrog)
-        return message.channel.send(randomFrog)
+           
       }else if(command == "warn"){
         client.Commands.get("warn").execute(message,args,roles)
       }else if(command == "warnings"){

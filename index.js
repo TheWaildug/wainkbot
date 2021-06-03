@@ -284,8 +284,12 @@ async function dmuser(user,info){
 client.on("ready", async () => {
     console.log("I'm ready, Aiden!");
     if(client.user.id == "832740448909000755"){
-      client.user.setStatus("invisible")  
-      client.user.setPresence({activity: {name: "new features for wainkbot.", type: `WATCHING`}, status: "online"})
+      let status = await statuses.findOne({shuffle: false})
+       console.log(status)
+      if(status == null){
+        status.status = "test."
+      }
+      client.user.setPresence({activity: {name: status.status, type: `WATCHING`}, status: "online"})
     }else{
       if(changestatus == true){
 
@@ -936,9 +940,7 @@ console.log(e3)
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
-        if(message.guild.me.id == "832740448909000755"){
-          return message.reply(`Please use this on the regular wainkbot.`)
-        }
+        
         let isblacklisted = await blacklistmongo.findOne({user: message.member.id, type: "status", blacklisted: true})
         console.log(isblacklisted)
         if(isblacklisted != null){
@@ -966,10 +968,16 @@ console.log(e3)
           .setTimestamp()
           .setColor(wainkedcolor)
           channel.send(embed)
+          if(client.user.id == "832740448909000755"){
+            client.user.setPresence({activity: {name: status, type: `WATCHING`}, status: "online"})
+          }else{
+
+          
           client.user.setActivity(status, {
             type: "STREAMING",
             url: "https://www.twitch.tv/wainked"
           });
+        }
           return message.reply(`go check it out noob.`)
         }
         

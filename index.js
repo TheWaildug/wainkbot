@@ -638,6 +638,9 @@ console.log(e3)
           "Did someone say **Aiden**? I'm pretty sure that's what I heard!"
         );
       }
+      if(newargs == "ansh"){
+        message.channel.send("He Are Say Ok")
+      }
       if(newargs == "waildug"){
         if(message.author.bot){
           return;
@@ -851,7 +854,7 @@ console.log(e3)
         console.log(`snipe`)
         let hasperm = await HasPermissions(roles,message.member)
         console.log(hasperm)
-        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434"){
+        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
           return;
         }
         const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "delete"})
@@ -1009,6 +1012,8 @@ console.log(e3)
         }
         mentionchannel.send(msg).catch(e => {return message.reply(`${e}`)})
         message.delete()
+      }else if(command == "unmute"){
+        client.Commands.get("unmute").execute(message,args,modroles)
       }else if(command == "mute"){
         client.Commands.get("mute").execute(message,args,modroles)
       }else if(command == "kick"){

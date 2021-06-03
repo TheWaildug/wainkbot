@@ -118,7 +118,7 @@ module.exports = {
                  updatedDocumet
                }).catch(err => console.error(`Failed to find and update document: ${err}`))
                const muteembed = new Discord.MessageEmbed()
-               .setDescription(`Successfully muted ${mentionmember} for \`${ms(ms(time,{long: true}))}\` with the id \`${id}\``)
+               .setDescription(`Successfully muted ${mentionmember} for \`${ms(ms(time,{long: true}))}\` with the ID of \`${id}\``)
                .setColor("ff00f3")
               
                message.channel.send(muteembed)

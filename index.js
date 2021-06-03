@@ -63,6 +63,45 @@ client.Commands = new Discord.Collection();
     const command = require(`./commands/${file}`);
     client.Commands.set(command.name, command);
   }
+  async function handlechannel(member,voiceState){
+    console.log(`${member.id} created new VC.`)
+    const channel = member.guild.channels.cache.get("850078357327970374");
+    const newchannel = await member.guild.channels.create(`${member.displayName}\'s VC`,{type: "voice", userLimit: 2, parent: channel, reason: `${member.user.tag} went into the VC.`})
+    voiceState.setChannel(newchannel,`${member.user.tag} went into the VC.`)
+    client.on("voiceStateUpdate", async (oldState,newState) => {
+      if(oldState.channelID == newState.channelID){
+        return;
+      }
+      if(newState.guild.id != "813837609473933312"){
+        return;
+      }
+      if(client.user.id == "832740448909000755"){
+        if(newState.id != "432345618028036097" && newState.id != "7453y25943035396230" && newState.id != "737825820642639883"){
+          return;
+        }
+      }
+      if(oldState.channelID == newchannel.id && newState.channelID != newchannel.id && newState.member.id == member.id){
+        console.log(`${member.id} left new VC.`)
+        newchannel.delete()
+      }
+    })
+  }
+  client.on("voiceStateUpdate", async (oldState,newState) => {
+    if(oldState.channelID == newState.channelID){
+      return;
+    }
+    if(newState.guild.id != "813837609473933312"){
+      return;
+    }
+    if(client.user.id == "832740448909000755"){
+      if(newState.id != "432345618028036097" && newState.id != "7453y25943035396230" && newState.id != "737825820642639883"){
+        return;
+      }
+    }
+    if(newState.channelID == "850072327378960485" && oldState.channelID != "850072327378960485"){
+      handlechannel(newState.member,newState)
+    }
+  })
   client.on("messageUpdate", async (oldmsg,message) => {
     if(message.guild == null){
       return;

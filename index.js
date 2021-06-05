@@ -671,12 +671,27 @@ console.log(e3)
   client.on("raw", async packet => {
      
   })
-  ///Custom Messagse
+  ///Dad Bot Stuff
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
       return;
     }
     if (message.guild == null) {
+      return;
+    }
+   
+    
+    let args = message.content.split(" ")
+     if(client.user.id == "832740448909000755"){
+        if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
+          return;
+        }
+      }
+      
+  })
+  ///Custom Messagse
+  client.on("message", async message => {
+    if(message.type != "DEFAULT"){
       return;
     }
    
@@ -728,7 +743,7 @@ console.log(e3)
         return;
       }
       if(newmessage.includes(asked[i])){
-        return message.channel.send(`${message.member}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
+        return message.channel.send(`${message.author}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
       }
     }
   });

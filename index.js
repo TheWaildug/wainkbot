@@ -7,6 +7,7 @@ const discordInv = require('discord-inv');
 const RandomString = require("randomstring")
 const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
+const fetch = require("node-fetch")
 const blacklistmongo = require("./blacklistmongo")
 const LeaveRoleSchema = require("./leaveroles")
 const evalrole = require("./values/evalroles.js")
@@ -86,6 +87,28 @@ client.Commands = new Discord.Collection();
       }
     })
   }
+  client.on("rateLimit", async info => {
+    const embed = new Discord.MessageEmbed()
+    .setTitle(`Wainkbot Rate Limit`)
+    .setDescription(`**Timeout:** ${info.timeout}ms\n**Limit:** ${info.limit}\n**Method:** ${info.method}\n**Path:** ${info.path}\n**Route:** ${info.route}`)
+    .setTimestamp()
+    const params = {
+      username: "Wainkbot Rate Limits",
+      avatar_url: "",
+      embeds: [embed
+      ]
+      
+  }
+  await   fetch(process.env.errorweb, {
+    method: "POST",
+    headers: {
+        'Content-type': 'application/json'
+    },
+    body: JSON.stringify(params)
+}).then(res => {
+    console.log(res);
+}) 
+  })
   client.on("voiceStateUpdate", async (oldState,newState) => {
     if(oldState.channelID == newState.channelID){
       return;
@@ -94,9 +117,7 @@ client.Commands = new Discord.Collection();
       return;
     }
     if(client.user.id == "832740448909000755"){
-      if(newState.id != "432345618028036097" && newState.id != "7453y25943035396230" && newState.id != "737825820642639883"){
-        return;
-      }
+     return;
     }
     if(newState.channelID == "850072327378960485" && oldState.channelID != "850072327378960485"){
       handlechannel(newState.member,newState)

@@ -91,6 +91,7 @@ client.Commands = new Discord.Collection();
     const embed = new Discord.MessageEmbed()
     .setTitle(`Wainkbot Rate Limit`)
     .setDescription(`**Timeout:** ${info.timeout}ms\n**Limit:** ${info.limit}\n**Method:** ${info.method}\n**Path:** ${info.path}\n**Route:** ${info.route}`)
+    .setColor(wainkedcolor)
     .setTimestamp()
     const params = {
       username: "Wainkbot Rate Limits",
@@ -813,7 +814,13 @@ console.log(e3)
         const cont = await HasPermissions(roles,message.member)
         console.log(cont)
         if(cont == false){
-          return;
+          const embed = new Discord.MessageEmbed()
+          .setDescription(`You do not have the correct permissions to run this command.`)
+          .setColor("FF0000")
+          message.channel.send(embed).then(msg => {
+            msg.delete({timeout: 5000})
+          })
+          return message.delete();
         }
         let mentionmember = message.mentions.members.first()
         if(!mentionmember){

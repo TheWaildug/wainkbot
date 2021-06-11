@@ -344,6 +344,20 @@ async function dmuser(user,info){
   }
 client.on("ready", async () => {
     console.log("I'm ready, Aiden!");
+    let jsonData = require('./information.json');
+console.log(jsonData);
+if(jsonData.active == true){
+  const channel = client.channels.cache.get(jsonData.channel);
+  const Ping = new Date().getTime() - jsonData.currenttime
+  channel.send(`Restarted in **${Ping}** ms.`)
+  let information = { 
+
+    active: false
+};
+ 
+let data = JSON.stringify(information);
+fs.writeFileSync('information.json', data);
+}
     if(client.user.id == "832740448909000755"){
       let status = await statuses.findOne({shuffle: false})
        console.log(status)
@@ -810,6 +824,29 @@ console.log(e3)
         })
         message.delete();
        
+      }else if(command == "restart"){
+        if(message.member.id != "432345618028036097"){
+          const embed = new Discord.MessageEmbed()
+          .setDescription(`You do not have the correct permissions to run this command.`)
+          .setColor("FF0000")
+          message.channel.send(embed).then(msg => {
+            msg.delete({timeout: 5000})
+          })
+          return message.delete();
+        }
+        let information = { 
+          channel: message.channel.id,
+          currenttime: new Date().getTime(),
+          active: true
+      };
+       
+      let data = JSON.stringify(information);
+      fs.writeFileSync('information.json', data);
+      message.channel.send(`Restarting...`);
+      setTimeout(() => {
+        return process.exit();
+      },ms("3 seconds"))
+     
       }else if(command == "doban"){
         const cont = await HasPermissions(roles,message.member)
         console.log(cont)

@@ -803,6 +803,8 @@ console.log(e3)
   
           
       
+      }else if(command == "unlock"){
+        client.Commands.get("unlock").execute(message,args,roles)
       }else if(command == "lock"){
         client.Commands.get("lock").execute(message,args,roles)
       }else if(command == "chain"){

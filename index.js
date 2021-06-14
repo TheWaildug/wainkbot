@@ -1,6 +1,5 @@
 const Discord = require("discord.js")
 const client = new Discord.Client();
-
 require("dotenv").config()
 let prefix = "!"
 const discordInv = require('discord-inv');
@@ -8,6 +7,7 @@ const RandomString = require("randomstring")
 const rslur = require("./values/rslurs")
 const afkmongo = require("./afkmongo.js")
 const fetch = require("node-fetch")
+const checkforflags = require("./checkflags.js")
 const blacklistmongo = require("./blacklistmongo")
 const LeaveRoleSchema = require("./leaveroles")
 const evalrole = require("./values/evalroles.js")
@@ -273,18 +273,16 @@ async function doeval(message,args){
      if(code == ""){
          return message.reply(`I need some code.`)
      }
-     let returne = false
-     if(code.includes("--return")){
-         let ar = code.split(" --return").join("")
-         console.log(ar)
-         code = `${ar}`
-         returne = true
-     }else if(code.includes("-return")){
-         let ar = code.split(" -return").join("")
-         console.log(ar)
-         code = `${ar}`
-         returne = true
+     let ar = await checkforflags(args.join(" "),"return")
+     console.log(ar)
+     let returne
+     if(ar == null){
+       returne = false
+     }else if(ar != null){
+       code = ar
+       returne = true
      }
+    
      try {
          if(returne == false){
              evaluated = await eval(`(async () => {  return ${code}})()`);
@@ -805,6 +803,8 @@ console.log(e3)
   
           
       
+      }else if(command == "lock"){
+        client.Commands.get("lock").execute(message,args,roles)
       }else if(command == "chain"){
         const isbypass = await HasPermissions(roles,message.member)
         if(isbypass == false){

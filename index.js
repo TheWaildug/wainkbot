@@ -731,7 +731,19 @@ console.log(e3)
         );
       }
       if(newargs == "ansh"){
+        //Submitted by 717149032753004625
+        if(message.author.bot){
+          return;
+        }
         message.channel.send("He Are Say Ok")
+      }
+      
+      if(newargs == "cheeto" || newargs == "esrom"){
+        // Submitted by 670492259560718356  
+        if(message.author.bot){
+          return;
+        }
+        message.react("<:amswag:826864279696179200>")
       }
       if(newargs == "waildug"){
         if(message.author.bot){

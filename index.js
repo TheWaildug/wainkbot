@@ -283,6 +283,7 @@ async function doeval(message,args){
        returne = true
      }
     
+
      try {
          if(returne == false){
              evaluated = await eval(`(async () => {  return ${code}})()`);
@@ -292,15 +293,29 @@ async function doeval(message,args){
        
          console.log(evaluated)
          const evaltype = typeof evaluated;
-         const embed = new Discord.MessageEmbed()
+         let embed
+         if(evaltype == "object"){
+          let evaluatedstring = JSON.stringify(evaluated)
+     
+          embed = new Discord.MessageEmbed()
                .setTitle(`Evaluation`)
                .setColor("GREEN")
                .setDescription(`Evaluated in *${new Date().getTime() - message.createdTimestamp} ms.*`)
                .addField(`Input`,"```js\n" + code + "```")
-               .addField(`Output`,"```\n" + evaluated + "```")
+               .addField(`Output`,"```\n" + evaluatedstring + "```")
                .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
-                message.channel.send(`<@${message.author.id}>`,embed)
-           
+               
+         }else{
+          embed = new Discord.MessageEmbed()
+          .setTitle(`Evaluation`)
+          .setColor("GREEN")
+          .setDescription(`Evaluated in *${new Date().getTime() - message.createdTimestamp} ms.*`)
+          .addField(`Input`,"```js\n" + code + "```")
+          .addField(`Output`,"```\n" + evaluated + "```")
+          .addField("Output Type", "`" + evaltype.toUpperCase() + "`")
+         }
+         
+         message.channel.send(`<@${message.author.id}>`,embed)
            
        } catch (e) {
          console.log(e)

@@ -1169,6 +1169,8 @@ console.log(e3)
         client.Commands.get("unmute").execute(message,args,modroles)
       }else if(command == "mute"){
         client.Commands.get("mute").execute(message,args,modroles)
+      }else if(command == "purge"){
+        client.Commands.get("purge").execute(message,args,roles)
       }else if(command == "kick"){
         client.Commands.get("kick").execute(message,args,modroles)
       }

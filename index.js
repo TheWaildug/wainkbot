@@ -777,7 +777,15 @@ console.log(e3)
       
       }
     }
+    
     const newmessage = message.content.toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+    if(newmessage.includes("i am pro")){
+      //Submitted by 718778492866789437
+      if(message.author.bot){
+        return;
+      }
+      message.channel.send(`No, lol`)
+    }
     for(let i = 0; i < asked.length; i++){
       if(message.author.bot){
         return;

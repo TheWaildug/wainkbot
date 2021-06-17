@@ -4,9 +4,8 @@ let role
 async function hasrightperm(perm,member){
     if(perm == "None."){
         return true;
-    }else if(perm == "Staff Member"){
+    }else if(perm == "Staff Member."){
         let hasperm = await HasPermission(role,member)
-        console.log(hasperm)
         if(hasperm == true){
             return true;
         }else{
@@ -33,27 +32,32 @@ async function hasrightperm(perm,member){
     }
 }
 module.exports = {
-    name: "help",
+    name: [`help`,`info`,`commands`],
     description: "Shows all commands.",
     permissions: "None.",
     arguments: "!help or !help (command)",
     async execute(message,args,commands,roles){
         role = roles
         const cont = await HasPermission(roles,message.member)
-        if(cont == false && message.channel.id != "818890024178155603"){
+        if(cont == false && message.channel.id != "818890024178155603" && message.channel.id != "832040924267806750"){
             return message.reply(`Whoops! Make sure to use this in <#818890024178155603>.`);
         }
-        let allcommands = new Discord.Collection();
-        try{
-            commands.each(async command => {
-                let hasperm = await hasrightperm(command.permissions,message.member)
-                console.log(`${command.name} ${hasperm}`)
-                if(hasperm == true){
-                    allcommands.set(command.name,command)
+        for(const command of commands){
+            let permissions = command.permissions
+            if(permissions){
+                let hasPermission = true
+                if(await hasrightperm(permissions,message.member == false)){
+                    haspermission = false
+                    break;
                 }
-            })
-        }finally{
-            console.log(allcommands)
+                if(!hasPermission){
+                    continue;
+                }
+            } 
+            const mainCommand = typeof command.name === "string" ? command.name : command.name[0]
+
         }
+
+        
     }
 }

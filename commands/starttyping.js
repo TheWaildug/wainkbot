@@ -1,5 +1,5 @@
 module.exports = {
-    name: "starttyping",
+    name: [`starttyping`,`starttype`],
     description: "Makes WainkBot typing in the current channel.",
     permissions: "None.",
     arguments: "None.",

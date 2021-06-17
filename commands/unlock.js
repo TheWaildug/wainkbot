@@ -1,7 +1,7 @@
 const HasPermissions = require("../isbypass.js")
 const Discord = require("discord.js")
 module.exports = {
-    name: "unlock",
+  name: [`unlock`,`ul`,`ulk`],
     description: "Unlocks specified channel.",
     permissions: "Staff Member.",
     arguments: "!unlock (channel) (reason)",

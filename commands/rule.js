@@ -2,7 +2,7 @@ const Discord = require("discord.js")
 const HasPermissions = require("../isbypass")
 const rules = require("../values/rules")
 module.exports = {
-    name: "rule",
+    name: [`rule`,`r`],
     description: "Shows a certain rule.",
     permissions: "Staff Member.",
     arguments: "!rule (rule number)",

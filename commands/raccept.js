@@ -1,7 +1,7 @@
 let channelid = "828999151001272410"
 const Discord = require("discord.js")
 module.exports = {
-    name: "raccept",
+    name: [`raccept`,`acceptreport`],
     description: "Accepts reports in <#828999151001272410>",
     permissions: "<@&813840097166360577>.",
     arguments: "!raccept (messageID) (reason)",

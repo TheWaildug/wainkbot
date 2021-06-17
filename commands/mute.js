@@ -23,7 +23,7 @@ async function setData(user,time,reason,mod){
         return ne._id
   }
 module.exports = {
-    name: "mute",
+    name: [`mute`,`shut`,`m`],
     description: "Mutes users.",
     permissions: "Staff Member.",
     arguments: "!mute (user) (time) (reason)",

@@ -1,5 +1,5 @@
 module.exports = {
-    name: "roleleaderboard",
+    name: [`roleleaderboard`,`rleaderboard`,`rl`],
     description: "Shows the top 10 users with the highest role count.",
     permissions: "None.",
     arguments: "None.",

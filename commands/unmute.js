@@ -7,7 +7,7 @@ const fetch = require("node-fetch")
 const mutemongo = require("../mutemongo")
 
 module.exports = {
-    name: "mute",
+    name: [`unmute`,`unshut`,`um`],
     description: "Unmutes users. (Not yet finished.)",
     permissions: "Staff Member.",
     arguments: "!unmute (user) (reason)",

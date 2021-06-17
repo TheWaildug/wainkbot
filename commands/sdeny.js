@@ -1,7 +1,7 @@
 let channelid = "828999520120733777"
 const Discord = require("discord.js")
 module.exports = {
-    name: "sdeny",
+    name: [`sdeny`,`denysuggestion`],
     descripion: "Denies suggestions in <#828999520120733777>",
     permissions: "<@&833021553935122432>.",
     arguments: "!sdeny (messageID) (reason)",

@@ -3,7 +3,7 @@ const blacklistmongo = require("../blacklistmongo")
 const RandomString = require("randomstring")
 const Discord = require("discord.js")
 module.exports = {
-    name: "bl",
+    name: [`bl`,`blacklist`],
     description: "Blacklists users from making suggestions, reports or, changing WainkBot's status",
   permissions: "<@&833021553935122432>.",
   arguments: "!bl (user) (type) (reason)",

@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const HasPermissions = require("../isbypass")
 module.exports = {
-    name: "say",
+    name: [`say`,`talk`],
     description: "Makes WainkBot say something.",
     permissions: "Staff Member.",
     arguments: "!say (message)",

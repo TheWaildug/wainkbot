@@ -4,7 +4,7 @@ const daysoftheweek = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Frida
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 const Discord = require("discord.js")
 module.exports = {
-  name: "warnings",
+  name: [`warnings`,`warns`],
   description: "View all warnings for yourself or another person",
   permissions: "None.",
   arguments: "!warnings (user)",

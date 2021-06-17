@@ -1,5 +1,5 @@
 module.exports = {
-    name: "stoptyping",
+    name: [`stoptyping`,`stoptype`],
     description: "Makes WainkBot stop typing in the current channel.",
     permissions: "None.",
     arguments: "None.",

@@ -1,7 +1,7 @@
 const Isbypass = require("../isbypass")
 const Discord = require("discord.js")
 module.exports = {
-    name: "slowmode",
+    name: [`sm`,`slowmode`],
     description: "Changes slowmode in current channel",
     permissions: "Staff Member.",
     arguments: "!slowmode (length) or !slowmode",

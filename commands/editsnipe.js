@@ -3,7 +3,7 @@ const ms = require("ms")
 const snipemongo = require("../snipemongo")
 const Discord = require("discord.js")
 module.exports = {
-    name: "editsnipe",
+    name: [`editsnipe`,`esnipe`],
     description: "Shows the most recent edited message.",
     permissions: "None.",
     arguments: "None.",

@@ -3,7 +3,7 @@
   const RandomString = require("randomstring")
   const Discord = require("discord.js")
 module.exports = {
-    name: `kick`,
+    name: [`kick`,`k`],
     description: `Kicks users.`,
     permissions: "Staff Member.",
     arguments: "!kick (user) (reason)",

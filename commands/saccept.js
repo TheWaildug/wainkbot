@@ -1,7 +1,7 @@
 let channelid = "828999520120733777"
 const Discord = require("discord.js")
 module.exports = {
-    name: "saccept",
+    name: [`saccept`,`acceptsuggestion`],
     descripion: "Accepts suggestions in <#828999520120733777>",
     permissions: "<@&833021553935122432>.",
     arguments: "!saccept (messageID) (reason)",

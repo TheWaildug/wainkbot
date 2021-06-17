@@ -1,7 +1,7 @@
 const HasPermissions = require("../isbypass.js")
 const Discord = require("discord.js")
 module.exports = {
-    name: "purge",
+    name: [`purge`,`prune`,`sweep`],
     description: "Purges certain amount of messages.",
     permissions: "Staff Member.",
     arguments: "!purge (user) (amount) or !purge (amount)",
@@ -39,6 +39,9 @@ module.exports = {
         console.log(args[0])
         
         let messages = await message.channel.messages.fetch();
+        if(!messages){
+            return message.reply(`There isn't anything to purge.`);
+        }
         if(contin == true){
             messages = messages.filter(m => m.author.id == mentionmember.id)
             let newmsg = []
@@ -62,6 +65,9 @@ module.exports = {
                 msgsize++
             })
             messages = newmsg
+        }
+        if(!messages){
+            return message.reply(`There isn't anything to purge.`);
         }
         message.channel.bulkDelete(messages).catch(e => {
             const embed = new Discord.MessageEmbed()

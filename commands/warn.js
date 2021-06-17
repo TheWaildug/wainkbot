@@ -19,7 +19,7 @@ async function setData(user,warning,mod,url,id){
 const Discord = require("discord.js")
 
 module.exports = {
-  name: "warn",
+  name: [`warn`,`w`,`wr`],
   description: "Warns users.",
   permissions: "Staff Member.",
   arguments: "!warn (user) (reason)",

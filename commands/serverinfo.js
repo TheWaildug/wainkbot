@@ -4,7 +4,7 @@ async function hasreq(req,test,message){
     return req == test ? message : req != test ? "" : req;
 }
 module.exports = {
-    name: "serverinfo",
+    name: [`serverinfo`,`sinfo`],
     description: "Shows information about wainked®.",
     permissions: "None.",
     arguments: "None.",

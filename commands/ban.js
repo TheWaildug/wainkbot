@@ -3,7 +3,7 @@
   const RandomString = require("@supercharge/strings")
   const Discord = require("discord.js")
 module.exports = {
-    name: `ban`,
+    name: [`ban`,`b`],
     description: `Bans users`,
     permissions: "Staff Member.",
     arguments: "!ban (user) (reason)",

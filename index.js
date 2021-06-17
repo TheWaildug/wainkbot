@@ -14,10 +14,7 @@ const evalrole = require("./values/evalroles.js")
 const asked = require("./values/whoasked.js")
 const modroles = require("./values/roles.js")
 const snipemongo = require("./snipemongo")
-if(1+1 == 3){
-  const GphApiClient = require("giphy-js-sdk-core");
-  const giphy = GphApiClient(process.env.GIPHYTOKEN);
-}
+
 
 const mongoose = require("mongoose")
 const statuses = require("./statuses")

@@ -5,7 +5,9 @@ const months = ["January","February","March","April","May","June","July","August
 const Discord = require("discord.js")
 module.exports = {
   name: "warnings",
-  description: "views those idiot's warnings",
+  description: "View all warnings for yourself or another person",
+  permissions: "None.",
+  arguments: "!warnings (user)",
  async execute(message,args,roles) {
   
       

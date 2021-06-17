@@ -5,7 +5,9 @@ async function hasreq(req,test,message){
 }
 module.exports = {
     name: "serverinfo",
-    description: "shows information for server",
+    description: "Shows information about wainked®.",
+    permissions: "None.",
+    arguments: "None.",
     async execute(message,args,roles){
         let cont = await HasPermissions(roles,message.member)
         console.log(cont)

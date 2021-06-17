@@ -4,7 +4,9 @@ const blacklistmongo = require("../blacklistmongo")
 const HasPermissions = require("../isbypass")
 module.exports = {
     name: "suggest",
-    description: "suggest things",
+    description: "Makes a suggestion for the server.",
+    permissions: "None.",
+    arguments: "!suggest (suggestion)",
     async execute(message,args,roles){
         let hasperm = await HasPermissions(roles,message.member)
         if(message.channel.id != "818890024178155603" && message.channel.id != "832040924267806750" && hasperm == false){

@@ -4,7 +4,9 @@
   const Discord = require("discord.js")
 module.exports = {
     name: `ban`,
-    description: `bans members duh`,
+    description: `Bans users`,
+    permissions: "Staff Member.",
+    arguments: "!ban (user) (reason)",
     async execute(message,args,roles){
         let hasperm = await HasPermissions(roles,message.member)
         console.log(hasperm)

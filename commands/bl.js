@@ -3,8 +3,10 @@ const blacklistmongo = require("../blacklistmongo")
 const RandomString = require("randomstring")
 const Discord = require("discord.js")
 module.exports = {
-    name: "blacklist",
-    description: "blacklist user from suggestions or changing status",
+    name: "bl",
+    description: "Blacklists users from making suggestions, reports or, changing WainkBot's status",
+  permissions: "<@&833021553935122432>.",
+  arguments: "!bl (user) (type) (reason)",
     async execute(message,args,roles){
         
         if(!message.member.roles.cache.has("833021553935122432")){

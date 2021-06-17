@@ -4,7 +4,9 @@ const Isbypass = require("../isbypass")
 let continuee = true
 module.exports = {
     name: "report",
-    description: "reports users maybe?",
+    description: "Reports users.",
+    permissions: "None.",
+    arguments: "None.",
     async execute(message,args,roles,client){
      
         let cont = await Isbypass(roles,message.member)

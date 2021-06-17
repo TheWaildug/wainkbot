@@ -2,7 +2,9 @@ const HasPermissions = require("../isbypass.js")
 const Discord = require("discord.js")
 module.exports = {
     name: "lock",
-    description: "locks channels",
+    description: "Locks specified channel.",
+    permissions: "Staff Member.",
+    arguments: "!lock (channel) (reason)",
     async execute(message,args,roles){
         let cont = await HasPermissions(roles,message.member)
            console.log(cont)

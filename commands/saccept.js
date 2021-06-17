@@ -1,8 +1,10 @@
 let channelid = "828999520120733777"
 const Discord = require("discord.js")
 module.exports = {
-    name: "acceptsuggestion",
-    descripion: "accept things",
+    name: "saccept",
+    descripion: "Accepts suggestions in <#828999520120733777>",
+    permissions: "<@&833021553935122432>.",
+    arguments: "!saccept (messageID) (reason)",
    async execute(message,args,roles){
        if(!message.member.roles.cache.has("833021553935122432")){
 

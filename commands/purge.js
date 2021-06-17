@@ -2,7 +2,9 @@ const HasPermissions = require("../isbypass.js")
 const Discord = require("discord.js")
 module.exports = {
     name: "purge",
-    description: "purges messages",
+    description: "Purges certain amount of messages.",
+    permissions: "Staff Member.",
+    arguments: "!purge (user) (amount) or !purge (amount)",
     async execute(message,args,roles){
         let cont = await HasPermissions(roles,message.member)
            console.log(cont)

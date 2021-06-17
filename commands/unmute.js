@@ -8,7 +8,9 @@ const mutemongo = require("../mutemongo")
 
 module.exports = {
     name: "mute",
-    description: "mutes people",
+    description: "Unmutes users. (Not yet finished.)",
+    permissions: "Staff Member.",
+    arguments: "!unmute (user) (reason)",
     async execute(message,args,roles){
         
         let hasperm = await HasPermissions(roles,message.member)

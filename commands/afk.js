@@ -1,7 +1,9 @@
 const afkmongo = require("../afkmongo.js")
 module.exports = {
     name: "afk",
-    description: "makes you afk?",
+    description: "Gives you an AFK status.",
+    permissions: "None.",
+    arguments: "!afk (reason)",
    async execute(message,args){
         let isafk = await afkmongo.findOne({userid: message.member.id})
         console.log(isafk)

@@ -2,7 +2,9 @@ const Isbypass = require("../isbypass")
 const Discord = require("discord.js")
 module.exports = {
     name: "slowmode",
-    description: "idk it might change slowmode",
+    description: "Changes slowmode in current channel",
+    permissions: "Staff Member.",
+    arguments: "!slowmode (length) or !slowmode",
     async execute(message,args,roles){
         let cont = await Isbypass(roles,message.member)
         console.log(cont)

@@ -24,7 +24,9 @@ async function setData(user,time,reason,mod){
   }
 module.exports = {
     name: "mute",
-    description: "mutes people",
+    description: "Mutes users.",
+    permissions: "Staff Member.",
+    arguments: "!mute (user) (time) (reason)",
     async execute(message,args,roles){
         
         let hasperm = await HasPermissions(roles,message.member)

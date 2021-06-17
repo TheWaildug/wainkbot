@@ -2,7 +2,9 @@ const HasPermissions = require("../isbypass")
 const Discord = require("discord.js")
 module.exports = {
     name: "membercount",
-    description: "shows membercount",
+    description: "Shows current member count in wainked®.",
+    permissions: "None.",
+    arguments: "None.",
     async execute(message,args,roles){
         let cont = await HasPermissions(roles,message.member)
         console.log(cont)

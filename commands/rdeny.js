@@ -1,10 +1,12 @@
 let channelid = "828999151001272410"
 const Discord = require("discord.js")
 module.exports = {
-    name: "denyreport",
-    descripion: "denies things",
+    name: "rdeny",
+    descripion: "Denies reports in <#828999151001272410>",
+    permissions: "<@&813840097166360577>.",
+    arguments: "!rdeny (messageID) (reason)",
    async execute(message,args,roles){
-       if(!message.member.roles.cache.has("833021553935122432")){
+       if(!message.member.roles.cache.has("813840097166360577")){
 
             const embed = new Discord.MessageEmbed()
             .setDescription(`You do not have the correct permissions to run this command.`)

@@ -1,8 +1,10 @@
-let channelid = "828999151001272410"
+let channelid = "828999520120733777"
 const Discord = require("discord.js")
 module.exports = {
-    name: "acceptreport",
-    descripion: "accept things",
+    name: "sdeny",
+    descripion: "Denies suggestions in <#828999520120733777>",
+    permissions: "<@&833021553935122432>.",
+    arguments: "!sdeny (messageID) (reason)",
    async execute(message,args,roles){
        if(!message.member.roles.cache.has("833021553935122432")){
 
@@ -14,8 +16,8 @@ module.exports = {
             })
             return message.delete();
         }
-        if(message.channel.id != "828999151001272410" && message.channel.id != "816862529564573746" && message.channel.id != "832040924267806750"){
-            return message.reply(`Please run this in the staff channel or report channel.`)
+        if(message.channel.id != "828999520120733777" && message.channel.id != "816862529564573746" && message.channel.id != "832040924267806750"){
+            return message.reply(`Please run this in the staff channel or suggestions channel.`)
         }
         if(isNaN(args[0]) || !args[0]){
             return message.reply(`I need a message ID.`);
@@ -29,27 +31,25 @@ module.exports = {
         if(msg.author.id != message.guild.me.id){
             return message.reply(`I am not the author of this message! I cannot edit it.`);
         }
-       
         console.log(msg.embeds[0])
         let oldembed = msg.embeds[0]
         if(oldembed == undefined){
-            return message.reply(`This isn't a report!`)
+            return message.reply(`This isn't a suggestion!`)
         }
-        
         let acceptmsg = args.splice(1).join(" ")
         if(acceptmsg == ""){
             return message.reply(`I need a reason.`);
         }
         
         if(oldembed.footer.text == "Accepted" || oldembed.footer.text == "Denied"){
-            return message.reply(`This report has already been accepted/denied.`)
+            return message.reply(`This suggestion has already been accepted/denied.`)
         }
         console.log(oldembed.description)
         let newembed = new Discord.MessageEmbed()
         .setAuthor(oldembed.author.name,oldembed.author.iconURL)
-        .setDescription(`${oldembed.description}\n**Approved:**\nApproved by ${message.member}.\nReason: ${acceptmsg}`)
-        .setColor("00FF1D")
-        .setFooter(`Accepted`)
+        .setDescription(`${oldembed.description}\n**Denied:**\nDenied by ${message.member}.\nReason: ${acceptmsg}`)
+        .setColor("FF0000")
+        .setFooter(`Denied`)
         .setTimestamp()
         msg.edit(newembed)
         message.delete()

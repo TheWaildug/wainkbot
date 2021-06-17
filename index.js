@@ -61,7 +61,10 @@ client.Commands = new Discord.Collection();
   const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
   for (const file of commandFiles) {
+    
     const command = require(`./commands/${file}`);
+    console.log(command)
+    
     client.Commands.set(command.name, command);
   }
   async function handlechannel(member,voiceState){
@@ -361,8 +364,8 @@ client.on("ready", async () => {
 console.log(jsonData);
 if(jsonData.active == true){
   const channel = client.channels.cache.get(jsonData.channel);
-  const Ping = new Date().getTime() - jsonData.currenttime
-  channel.send(`Restarted in **${Ping}** ms.`)
+  let Ping = ms(new Date().getTime() - jsonData.currenttime,{long: true})
+  channel.send(`Restarted in **${Ping}.**`)
   let information = { 
 
     active: false
@@ -491,13 +494,7 @@ if(message.member.id != "432345618028036097"){
     if(command == "eval"){
      doeval(message,args)
     }else if(command == "ping"){
-      let yourping = new Date().getTime() - message.createdTimestamp 
-      let botping = Math.round(client.ws.ping)
-      const embed = new Discord.MessageEmbed()
-      .setTitle(`Pong!`)
-      .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
-      .setColor(`ff00f3`)
-      message.channel.send(embed)
+     client.Commands.get("ping").execute(message,args,client)
     }
     
   })
@@ -838,81 +835,18 @@ console.log(e3)
   
           
       
+      }else if(command == "help"){
+        client.Commands.get("help").execute(message,args,client.Commands,roles)
       }else if(command == "unlock"){
         client.Commands.get("unlock").execute(message,args,roles)
       }else if(command == "lock"){
         client.Commands.get("lock").execute(message,args,roles)
       }else if(command == "chain"){
-        const isbypass = await HasPermissions(roles,message.member)
-        if(isbypass == false){
-          return message.delete();
-        }
-        if(message.channel.id != "830510753155907584"){
-          return message.reply(`Run this in the <#830510753155907584> channel idiot.`)
-        }
-        let chainmsg = args.join(" ")
-        if(!chainmsg){
-          return message.reply(`I need something to chain idiot.`)
-        }
-        console.log(`chain ${chainmsg}`)
-        const channel = message.guild.channels.cache.get("830510753155907584")
-        channel.send(chainmsg,{allowedMentions: {parse: []}}).catch(e => {
-          console.log(e);
-        })
-        message.delete();
-       
+       client.Commands.get("chain").execute(message,args,roles)
       }else if(command == "restart"){
-        if(message.member.id != "432345618028036097"){
-          const embed = new Discord.MessageEmbed()
-          .setDescription(`You do not have the correct permissions to run this command.`)
-          .setColor("FF0000")
-          message.channel.send(embed).then(msg => {
-            msg.delete({timeout: 5000})
-          })
-          return message.delete();
-        }
-        let information = { 
-          channel: message.channel.id,
-          currenttime: new Date().getTime(),
-          active: true
-      };
-       
-      let data = JSON.stringify(information);
-      fs.writeFileSync('information.json', data);
-      message.channel.send(`Restarting...`);
-      setTimeout(() => {
-        return process.exit();
-      },ms("3 seconds"))
-     
+        client.Commands.get("restart").execute(message,args)
       }else if(command == "doban"){
-        const cont = await HasPermissions(roles,message.member)
-        console.log(cont)
-        if(cont == false){
-          const embed = new Discord.MessageEmbed()
-          .setDescription(`You do not have the correct permissions to run this command.`)
-          .setColor("FF0000")
-          message.channel.send(embed).then(msg => {
-            msg.delete({timeout: 5000})
-          })
-          return message.delete();
-        }
-        let mentionmember = message.mentions.members.first()
-        if(!mentionmember){
-          return message.reply(`Who do I ban?`)
-        }
-        const reason = args.splice(1).join(" ")
-        if(!reason){
-          return message.reply(`i need reason for ban.`)
-        }
-        const dmembed = new Discord.MessageEmbed()
-        .setDescription(`you are have ben ban from waink sergver with reason of ${reason} please a peal [here.](https://forms.gle/aZJPVnAhYMAk4AAA6)`)
-        .setColor(wainkedcolor)
-        .setTimestamp()
-        mentionmember.send(dmembed).catch(e => {
-          console.log(e)
-        })
-        return message.reply(`i are ban this noob.`)
-           
+        client.Commands.get("doban").execute(message,args,roles) 
       }else if(command == "warn"){
         client.Commands.get("warn").execute(message,args,roles)
       }else if(command == "warnings"){
@@ -922,134 +856,29 @@ console.log(e3)
       }else if(command == "membercount"){
         client.Commands.get("membercount").execute(message,args,roles)
       }else if(command == "mock"){
-        let msg = args.join(" ")
-        if(msg == null){
-          return message.reply(`i nEED SOme tExt tO mOcK`)
-        }
-        let mock = require("./mock")(msg)
-        return message.channel.send(mock,{allowedMentions: {parse: []}})
-      }else if(command == "getserver"){
-        if(message.member.id != "432345618028036097"){
-          return message.reply(`I'm sorry bro but you can't do this.`);
-        }
-        const invitelink = args[0]
-        if(!invitelink){
-          return message.reply("I need an invite.")
-        }
-        let invite = await discordInv.getInv(discordInv.getCodeFromUrl(invitelink)).catch(e => console.log(e))
-        console.log(invite)
-        if(!invite){
-          return message.reply(`This isn't a valid invite.`);
-        }
-          const format = `Here is the information for \`${invitelink}\`. Name: \`${invite.guild.name}\``
-       console.log(format)
-       console.log(format)
-       return message.channel.send(format)
+        client.Commands.get("mock").execute(message,args)
       }else if(command == "roleleaderboard"){
-        console.log(`role leaderboard ${message.member.id}`)
-  
-   message.reply(`Let me find the top 5 role leaders...`).then(me => {
-     message.channel.startTyping()
-     let list = message.guild.members.cache.sort((e,ee) => ee.roles.cache.size - e.roles.cache.size).array()
-   let user1 = message.guild.members.cache.find(u => u.id == list[0].id)
-     let user2 = message.guild.members.cache.find(u => u.id == list[1].id)
-      let user3 = message.guild.members.cache.find(u => u.id == list[2].id)
-      let user4 = message.guild.members.cache.find(u => u.id == list[3].id)
-      let user5 = message.guild.members.cache.find(u => u.id == list[4].id)
-    const format = `Here are the top 5 users: \n1. <@${user1.id}> - Roles: ${user1.roles.cache.filter(r => r.name != "@everyone").size}.\n2. <@${user2.id}> - Roles: ${user2.roles.cache.filter(r => r.name != "@everyone").size}.\n3. <@${user3.id}> - Roles: ${user3.roles.cache.filter(r => r.name != "@everyone").size}.\n4. <@${user4.id}> - Roles: ${user4.roles.cache.filter(r => r.name != "@everyone").size}\n5. <@${user5.id}> - Roles: ${user5.roles.cache.filter(r => r.name != "@everyone").size}`
-    
-  setTimeout(() => {
-   message.channel.stopTyping(true)
-   me.delete();
-    message.channel.send(format,{allowedMentions: {parse: []}})
-  },10000)
-   })
-     
+        client.Commands.get("roleleaderboard").execute(message,args)
       }else if(command == "starttyping"){
-        console.log(`start typing ${message.member.id}`)
-        message.delete();
-        message.channel.startTyping(5)
-        return;
+        client.Commands.get("starttyping").execute(message,args)
       }else if(command == "stoptyping"){
-        console.log(`stop typing`)
-        message.delete();
-        message.channel.stopTyping(true)
-        return;
+        client.Commands.get("stoptyping").execute(message,args)
       }else if(command == "editsnipe"){
-        console.log(`edit snipe`)
-        let hasperm = await HasPermissions(roles,message.member)
-        console.log(hasperm)
-        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
-          return;
-        }
-        const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "edit"})
-      console.log(newmsg)
-        if(!newmsg){
-          return message.channel.send(`I couldn't find anthing to snipe.`)
-        }
-        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && hasperm == false && message.member.id != "432345618028036097"){
-          const embed = new Discord.MessageEmbed()
-          .setDescription(`I couldn't find anything to snipe!`)
-          .setColor(wainkedcolor)
-          message.channel.send(embed)
-          return console.log(`Past 5 minutes.`)
-        }
-        let author = await client.users.fetch(newmsg.author).catch((e) => {console.log(e); return message.channel.send(`Something went wrong! \`${e}\``)})
-        let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || author.defaultAvatarURL
-        let tag = `${author.username}#${author.discriminator}`
-        console.log(newmsg.content)
-        console.log(author)
-        const embed = new Discord.MessageEmbed()
-        .setAuthor(tag,avatarurl)
-        .setTitle(`Edit Snipe`)
-        .setDescription(`**Before:**\n${newmsg.oldcontent}\n\n**After:**\n${newmsg.content}\n\n**[Jump to Message.](${newmsg.link})**`)
-        .setColor(wainkedcolor) 
-        .setFooter(`Edited`)
-        .setTimestamp(Number(newmsg.timestamp))
-        message.channel.send(embed)
+       client.Commands.get("editsnipe").execute(message,args,roles,client)
       }else if(command == "snipe"){
-        console.log(`snipe`)
-        let hasperm = await HasPermissions(roles,message.member)
-        console.log(hasperm)
-        if(message.channel.id == "830510753155907584" || message.channel.id == "830510970673168434" && message.member.id != "432345618028036097"){
-          return;
-        }
-        const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "delete"})
-      console.log(newmsg)
-        if(!newmsg){
-          return message.channel.send(`I couldn't find anthing to snipe.`)
-        }
-        if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && hasperm == false && message.member.id != "432345618028036097"){
-          const embed = new Discord.MessageEmbed()
-          .setDescription(`I couldn't find anything to snipe!`)
-          .setColor(wainkedcolor)
-          message.channel.send(embed)
-          return console.log(`Past 5 minutes.`)
-        }
-        let author = await client.users.fetch(newmsg.author).catch((e) => {console.log(e); return message.channel.send(`Something went wrong! \`${e}\``)})
-        let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || author.defaultAvatarURL
-        let tag = `${author.username}#${author.discriminator}`
-        console.log(newmsg.content)
-        console.log(author)
-        const embed = new Discord.MessageEmbed()
-        .setAuthor(tag,avatarurl)
-        .setDescription(`${newmsg.content}`)
-        .setColor(wainkedcolor) 
-        .setFooter(`Deleted`)
-        .setTimestamp(Number(newmsg.timestamp))
-        message.channel.send(embed)
+        client.Commands.get('snipe').execute(message,args,roles,client)
       }else if(command == "sm"){
         client.Commands.get("slowmode").execute(message,args,roles)
       }else if(command == "bl"){
-        client.Commands.get("blacklist").execute(message,args,roles)
+        client.Commands.get("bl").execute(message,args,roles)
       }else if(command == "sdeny"){
-        client.Commands.get("denysuggestion").execute(message,args,roles)
+        client.Commands.get("sdeny").execute(message,args,roles)
       }else if(command == "raccept"){
-        client.Commands.get("acceptreport").execute(message,args,roles)
+        client.Commands.get("raccept").execute(message,args,roles)
       }else if(command == "rdeny"){
-        client.Commands.get("denyreport").execute(message,args,roles)
+        client.Commands.get("rdeny").execute(message,args,roles)
       }else if(command == "saccept"){
-        client.Commands.get("acceptsuggestion").execute(message,args,roles)
+        client.Commands.get("saccept").execute(message,args,roles)
       }else if(command == "suggest"){
         client.Commands.get("suggest").execute(message,args,roles)
       }else if(command == "report"){
@@ -1057,122 +886,15 @@ console.log(e3)
       }else if(command == "serverinfo"){
         client.Commands.get("serverinfo").execute(message,args,roles)
       }else if(command == "rule"){
-        let cont = await HasPermissions(roles,message.member)
-        console.log(cont)
-         if(cont == false && message.member.id != "432345618028036097"){
-           const embed = new Discord.MessageEmbed()
-           .setDescription(`You do not have the correct permissions to run this command.`)
-           .setColor("FF0000")
-           message.channel.send(embed).then(msg => {
-             msg.delete({timeout: 5000})
-           })
-           return message.delete();
-         }
-         const rule = args[0]
-         let tablerule = Number(args[0]) - 1
-         if(tablerule > rules.length - 1){
-           return message.reply(`This is not a rule!`)
-         }
-         if(tablerule < 0){
-           return message.reply(`This is not a rule!`)
-         }
-         let getrule = rules[tablerule]
-         const embed = new Discord.MessageEmbed()
-         .setTitle(`Rule #**${rule}**`)
-         .setDescription(getrule)
-         .setColor(wainkedcolor)
-         message.channel.send(embed)
+        client.Commands.get("rule").execute(message,args,roles)
       }else if(command == "ping"){
-        let yourping = new Date().getTime() - message.createdTimestamp 
-        let botping = Math.round(client.ws.ping)
-        const embed = new Discord.MessageEmbed()
-        .setTitle(`Pong!`)
-        .setDescription(`Message Ping: ${yourping}\nAPI Ping: ${botping}`)
-        .setColor(`ff00f3`)
-        message.channel.send(embed)
+        client.Commands.get("ping").execute(message,args,client)
       }else if(command == "afk"){
         client.Commands.get("afk").execute(message,args)
       }else if(command == "status"){
-        
-        let isblacklisted = await blacklistmongo.findOne({user: message.member.id, type: "status", blacklisted: true})
-        console.log(isblacklisted)
-        if(isblacklisted != null){
-          return message.reply(`You have been blacklisted from changing my ststus.`)
-        }
-        let status = message.cleanContent.split(" ").splice(1).join(" ")
-        if(!status){
-          return message.reply(`I need a status!`)
-        }
-        if(changestatus == true){
-          message.reply(`I have added this status to the pool.`)
-        let statusm = new statuses({status: status, user: message.member.id, shuffle: true})
-        await statusm.save()
-        let allstat = await statuses.find()
-        allstatus = allstat
-        }else if(changestatus == false){
-          await statuses.deleteMany({shuffle: false})
-          let statusm = new statuses({status: status, user: message.member.id, shuffle: false})
-          await statusm.save()
-          const guild = await client.guilds.fetch("781292314856783892")
-          const channel = guild.channels.cache.get("840714384044457994")
-          const embed = new Discord.MessageEmbed()
-          .setTitle(`New Status Change`)
-          .setDescription(`User: ${message.member}\nStatus: ${status}`)
-          .setTimestamp()
-          .setColor(wainkedcolor)
-          channel.send(embed)
-          if(client.user.id == "832740448909000755"){
-            client.user.setPresence({activity: {name: status, type: `WATCHING`}, status: "online"})
-          }else{
-
-          
-          client.user.setActivity(status, {
-            type: "STREAMING",
-            url: "https://www.twitch.tv/wainked"
-          });
-        }
-          return message.reply(`go check it out noob.`)
-        }
-        
+        client.Commands.get("status").execute(message,args,client)
       }else if(command == "say"){
-        let cont = await HasPermissions(roles,message.member)
-       console.log(cont)
-        if(cont == false && message.member.id != "432345618028036097"){
-          const embed = new Discord.MessageEmbed()
-          .setDescription(`You do not have the correct permissions to run this command.`)
-          .setColor("FF0000")
-          message.channel.send(embed).then(msg => {
-            msg.delete({timeout: 5000})
-          })
-          return message.delete();
-        }
-        let mentionchannel
-        let switchargs = false
-        if(message.mentions.channels.first()){
-          mentionchannel = message.mentions.channels.first()
-        }else if(!isNaN(args[0])){
-          mentionchannel = message.guild.channels.cache.get(args[0])
-        }else{
-          mentionchannel = message.channel
-          switchargs = true
-        }
-        if(!mentionchannel){
-          switchargs = true
-          mentionchannel = message.channel
-        }
-        console.log(mentionchannel.name)
-        let msg = ""
-        if(switchargs == false){
-          msg = args.splice(1).join(" ")
-        }else if(switchargs == true){
-          msg = args.join(" ")
-        }
-        console.log(msg)
-        if(msg == ""){
-          return message.reply(`I can't say nothing!`)
-        }
-        mentionchannel.send(msg).catch(e => {return message.reply(`${e}`)})
-        message.delete()
+        client.Commands.get("say").execute(message,args,roles)
       }else if(command == "unmute"){
         client.Commands.get("unmute").execute(message,args,modroles)
       }else if(command == "mute"){
@@ -1187,10 +909,10 @@ console.log(e3)
   const express = require("express");
 const roles = require("./values/roles.js");
 const pingroles = require("./values/pingroles")
-const blacklist = require("./commands/blacklist.js");
+const blacklist = require("./commands/bl.js");
 const mute = require("./commands/mute.js");
   const server = express()
-  server.listen(3000, ()=>{console.log("Server is Ready!")}); 
+  server.listen(3000, ()=>{console.log("Server is Ready!")});
   server.all('/', (req, res)=>{
     res.send('wainked is meanie')
 })

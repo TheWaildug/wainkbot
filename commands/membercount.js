@@ -20,7 +20,7 @@ module.exports = {
        const embed = new Discord.MessageEmbed()
        .setColor("ff00f3")
        .setTitle(`Member Count`)
-       .setDescription(`${name} is at **${memberCount.size} members.**`)
+       .setDescription(`${name} is currently at **${memberCount.size} members!**`)
      
          
            message.channel.send(embed)

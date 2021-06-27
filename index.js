@@ -420,7 +420,7 @@ fs.writeFileSync('information.json', data);
   await roleschema.save()
   })
  
-  client.on("guildMemberAdd", async member => {
+   client.on("guildMemberAdd", async member => {
     if(client.user.id == "832740448909000755"){
       if(member.id != "432345618028036097" && member.id != "745325943035396230"){
         return;
@@ -452,7 +452,7 @@ fs.writeFileSync('information.json', data);
     }
         const embed = new Discord.MessageEmbed()
         .setTitle(`Welcome!`)
-        .setDescription(`${member} just hopped in!`)
+        .setDescription(`Woohoo! ${member} just joined the server.`)
         .setColor("ff00f3")
         .setTimestamp()
         let channel = member.guild.channels.cache.get("816863447156523028");

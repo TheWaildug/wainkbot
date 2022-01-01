@@ -845,7 +845,7 @@ console.log(e3)
           return;
         }
       }
-      if(message.mentions.members.cache.get(wainkbotid)){
+      if(message.mentions.members.has(wainkbotid)){
         message.reply("WAT")
       }
       if(message.content.toLowerCase().includes("pls rob") && (message.channel.id == "832040924267806750" || message.channel.id == "818890024178155603")){

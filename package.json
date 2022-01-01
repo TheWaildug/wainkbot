@@ -1,7 +1,6 @@
 {
   "name": "wainkbot",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -40,5 +39,7 @@
     "slash-commands": "^1.5.0",
     "statcord.js": "^3.2.0",
     "swearfilter": "^0.0.2"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }

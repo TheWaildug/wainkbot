@@ -28,6 +28,10 @@ const MuteSchema = new Schema({
   "unmutetimestamp":{
     type: String,
     required: true
+  },
+  "caseid": {
+    type: String,
+    required: false
   }
 });
-module.exports = Item = mongoose.model('muteshcema', MuteSchema);
+module.exports = Item = mongoose.model('muteschema', MuteSchema);

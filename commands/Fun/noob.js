@@ -29,7 +29,7 @@ module.exports = {
             message.channel.send(embed)
             return;
         }
-        const dmembed = await MakeEmbed({title: `You've been restricted in **${message.guild.name}**`,description: `\n**Moderator: **${message.member}\n**Reason**\nBig Noob\n\nYou can appeal this ban by joining this server [ht឵tps://disc឵ord.gg/dkY឵mpNM2Uh](https://www.youtube.com/watch?v=dQw4w9WgXcQ)`,color: "ff00f3"})
+        const dmembed = await MakeEmbed({title: `You've been restricted in **${message.guild.name}**`,description: `\n**Moderator*\n*${message.member}\n**Reason**\nBig Noob\n\nYou can appeal this ban by joining this server [ht឵tps://disc឵ord.gg/dkY឵mpNM2Uh](https://www.youtube.com/watch?v=dQw4w9WgXcQ)`,color: "ff00f3"})
         mentionmember.send(dmembed).then(async (sendmsg) => {
             message.channel.send(`ok.`,{allowedMentions: {parse: []}})
             const logembed = await MakeEmbed({title: `New DM Sent`, description: `**User: ** ${mentionmember}\n**Moderator: **${message.member}\n**Command: **Noob Command.\n**URL: **${sendmsg.url}`, timestamp: Date.now()})

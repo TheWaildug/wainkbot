@@ -497,16 +497,9 @@ async function dmuser(user,info){
   await roleschema.save()
   })
  
- client.on("test", (test1,test2) => {
-   console.log(test1)
-   console.log(test2)
- })
-  client.on("guildMemberAdd", async (member, previous) => {
-    const guild = client.guilds.cache.get("813837609473933312")
-    member = member.id || guild.members.cache.get(member)
-    if(!member){
-      return console.log(`Unknown Member!`);
-    }
+
+   client.on("guildMemberAdd", async member => {
+
     if(client.user.id == "832740448909000755"){
       if(member.id != "432345618028036097" && member.id != "745325943035396230" && [member != "432345618028036097" && member != "745325943035396230"]){
         return;
@@ -523,7 +516,8 @@ async function dmuser(user,info){
           member.roles.add(role,"User is stupid and fat.")
           }
         }
-        const leaveroles = await LeaveRoleSchema.findOne({userid: member.id})
+
+        /*const leaveroles = await LeaveRoleSchema.findOne({userid: member.id})
         if(leaveroles){
           
              console.log(leaveroles.roles)
@@ -537,11 +531,11 @@ async function dmuser(user,info){
           }
      
         })
-      }
+      }*/
       }
       
-      
-  })
+   
+      })
   ///Eval for thewaildug
   client.on("message", async message => {
     if(message.type != "DEFAULT"){
@@ -751,15 +745,15 @@ if(message.member.id != "432345618028036097"){
         return;
       }
     }
+    //test
     
-    
-     if(filter.check(message.content)){
+    /* if(filter.check(message.content)){
         message.delete()
         message.channel.send(`dude don't say that!`)
          muteuser(message,`(AUTOMOD) boobies.`,"5 seconds")
       
         
-       }
+       }*/
        
    
   let regxinvite = /discord.gg\/\w*\d*/
@@ -843,12 +837,16 @@ console.log(e3)
       return;
     }
    
-    
+    let wainkbotid = "826517160951676958"
     let args = message.content.split(" ")
      if(client.user.id == "832740448909000755"){
+       wainkbotid == "832740448909000755"
         if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
           return;
         }
+      }
+      if(message.mentions.members.get(wainkbotid)){
+        message.reply("WAT")
       }
       if(message.content.toLowerCase().includes("pls rob") && (message.channel.id == "832040924267806750" || message.channel.id == "818890024178155603")){
         const embed = await MakeEmbed({title: "Robbing is Disabled!", description: "In order to prevent users from leaving the server, robbing is disabled on this server! It will not be enabled so don't ask.", color: "ff00f3"})

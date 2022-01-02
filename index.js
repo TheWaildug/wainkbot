@@ -849,7 +849,7 @@ console.log(e3)
           return;
         }
       }
-      if(message.mentions.members.has(client.user.id)){
+      if(message.mentions.users.has(client.user.id)){
         const reference = message.reference
         if(reference){
           const referenceID = reference.messageID

@@ -1,8 +1,12 @@
 const Discord = require("discord.js")
-const client = new Discord.Client();
+const client = new Discord.Client({allowedMentions: {
+  // set repliedUser value to `false` to turn off the mention by default
+  repliedUser: true
+}});
 client.setMaxListeners(100);
 require("dotenv").config()
 let prefix = "!"
+require("./ExtendMessage")
 const usersMap = new Map()
 const hastebin = require("hastebin")
 const discordInv = require('discord-inv');
@@ -837,16 +841,30 @@ console.log(e3)
       return;
     }
    
-    let wainkbotid = "826517160951676958"
+    
     let args = message.content.split(" ")
      if(client.user.id == "832740448909000755"){
-       wainkbotid == "832740448909000755"
+       
         if(message.author.id != "432345618028036097" && message.author.id != "745325943035396230" && message.author.id != "737825820642639883"){
           return;
         }
       }
-      if(message.mentions.members.has(wainkbotid)){
-        message.reply("WAT")
+      if(message.mentions.members.has(client.user.id)){
+        const reference = message.reference
+        if(reference){
+          const referenceID = reference.messageID
+          if(referenceID){
+          const msg = await message.channel.messages.fetch(referenceID)
+          if(msg){
+            if(msg.author.id != client.user.id){
+              message.inlineReply("WAT")
+            }
+          }
+        }
+        }else{
+          message.inlineReply("WAT")
+        }
+       
       }
       if(message.content.toLowerCase().includes("pls rob") && (message.channel.id == "832040924267806750" || message.channel.id == "818890024178155603")){
         const embed = await MakeEmbed({title: "Robbing is Disabled!", description: "In order to prevent users from leaving the server, robbing is disabled on this server! It will not be enabled so don't ask.", color: "ff00f3"})

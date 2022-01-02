@@ -54,6 +54,7 @@ module.exports = {
            
             return;
         }else if(isblacklisted != null){
+            const blid = isblacklisted.blid
             const query = {"blid": isblacklisted.blid};
 // Set some fields in that document
 const update = {
@@ -68,7 +69,7 @@ const options = { returnNewDocument: true };
     if(updatedDocument) {
         const logembed = await MakeEmbed({title: `New Unblacklist`, description: `**User:** ${mentionmember}\n**Moderator:** ${message.member}\n**Reason:** ${reason}\n**Case ID:** ${isblacklisted.blid}`, color: "ff00f3", footer: {text: `Unblacklisted`}, timestamp: Date.now()})
         logchannel.send(logembed)
-        message.channel.send(`<a:checkmark:870842284202164244> ${mentionmember} has been unblacklisted with the ID of \`${isblacklisted.blid}\`.`,{allowedMentions: {parse: []}})
+        message.channel.send(`<a:checkmark:870842284202164244> ${mentionmember} has been unblacklisted with the ID of \`${blid}\`.`,{allowedMentions: {parse: []}})
        
       
       console.log(`Successfully updated document: ${updatedDocument}.`)

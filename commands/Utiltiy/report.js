@@ -57,24 +57,24 @@ module.exports = {
         console.log(e);
         const embed = await MakeEmbed({title: "Unknown Member", description: `\`${m.content}\` is not a real member.`, color: "RED"})
                  
-        message.channel.send(embed)
+        m.channel.send(embed)
         return;
       }).then(async user => {
         
         if(!user || user.size > 1){
             const embed = await MakeEmbed({title: "Unknown Member", description: `\`${m.content}\` is not a real member.`, color: "RED"})
                  
-            message.channel.send(embed)
+            m.channel.send(embed)
             return; 
         }
         if(user.bot){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to report bots.`, color: "RED"})
-            message.channel.send(embed)
+            m.channel.send(embed)
             return;
         }
         if(user.id == m.author.id){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to report yourself.`, color: "RED"})
-            message.channel.send(embed)
+            m.channel.send(embed)
             return;
         }
         const dmembed = await CreateEmbed({title: "Reports", description: `Why are you reporting **${user.tag}**? Please be as specific as possible. Including links to image sites (imgur, etc) would be appreciated. Uploading images will not work.`, color: "ff00f3"})

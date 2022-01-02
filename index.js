@@ -510,15 +510,14 @@ async function dmuser(user,info){
       }
     }
   
-    console.log(previous)
-      if(previous == null){
+   
         if(member.id == "745325943035396230"){
           const role = member.guild.roles.cache.get("832404582411927592")
           if(!role){
             console.log(`cannot find alt role.`)
           }else{
           member.roles.add(role,"User is stupid and fat.")
-          }
+        
         }
 
         /*const leaveroles = await LeaveRoleSchema.findOne({userid: member.id})

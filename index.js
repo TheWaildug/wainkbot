@@ -520,7 +520,7 @@ async function dmuser(user,info){
         
         }
 
-        /*const leaveroles = await LeaveRoleSchema.findOne({userid: member.id})
+        const leaveroles = await LeaveRoleSchema.findOne({userid: member.id})
         if(leaveroles){
           
              console.log(leaveroles.roles)
@@ -534,7 +534,7 @@ async function dmuser(user,info){
           }
      
         })
-      }*/
+      }
       }
       
    

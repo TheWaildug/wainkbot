@@ -5,7 +5,7 @@ const RequiredRoles = require("../../values/roles")
 module.exports = {
     commands: ["blacklist", "bl"],
     description: `Blacklists users from making suggestions, reports, or changing WainkBot's status.`,
-    requiredRoles: "832747239809613834",
+    requiredRoles: ["832747239809613834","813837707393761300"],
     expectedArgs: "<user> <type> <reason>",
     minArgs: 3,
     maxArgs: null,

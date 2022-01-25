@@ -5,7 +5,7 @@ const InformationSchema = informationschema = require("../../informationschema")
 module.exports = {
     commands: ["restart", "reboot"],
     description: "Restarts WainkBot",
-    requiredRoles: "832364191075663903",
+    requiredRoles: ["832364191075663903","813837707393761300"],
     expectedArgs: [],
     minArgs: null,
     maxArgs: null,

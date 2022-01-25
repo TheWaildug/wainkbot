@@ -4,7 +4,7 @@ const RequiredRoles = require("../../values/roles")
 module.exports = {
     commands: ["raccept","acceptreport","reportaccept","ar","ra"],
     description: "Accepts a report from <#828999151001272410>.",
-    requiredRoles: ["832364191075663903","813840097166360577"],
+    requiredRoles: ["832364191075663903","813840097166360577","813837707393761300"],
     expectedArgs: "<messageID> <reason>",
     minArgs: 2,
     maxArgs: null,

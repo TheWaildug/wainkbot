@@ -4,7 +4,7 @@ const RequiredRoles = require("../../values/roles")
 module.exports = {
     commands: ["suggestiondeny","denysuggestion","sdeny","sd","ds"],
     description: "Denies a suggestion from <#828999520120733777>.",
-    requiredRoles: ["832747239809613834"],
+    requiredRoles: ["832747239809613834","813837707393761300"],
     expectedArgs: "<messageID> <reason>",
     minArgs: 2,
     maxArgs: null,

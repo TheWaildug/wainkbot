@@ -3,7 +3,7 @@ const BlockSchema = require("../../blockschema")
 module.exports = {
     commands: ["dm"],
     description: `DMs users.`,
-    requiredRoles: "832747239809613834",
+    requiredRoles: ["813837707393761300","813837707393761300"],
     expectedArgs: "<user> <message>",
     minArgs: 2,
     maxArgs: null,

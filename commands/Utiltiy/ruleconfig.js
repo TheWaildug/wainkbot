@@ -3,7 +3,7 @@ const RuleSchema = ruleschema = require("../../ruleschema")
 module.exports = {
     commands: ["ruleconfig", "rconfig", "rc"],
     description: "Add or remove rules from WainkBot's system.",
-    requiredRoles: "832747239809613834",
+    requiredRoles: ["832747239809613834","813837707393761300"],
     expectedArgs: "<add/remove> <rule #>",
     minArgs: 2,
     maxArgs: null,

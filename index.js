@@ -1,12 +1,14 @@
 const Discord = require("discord.js")
-const client = new Discord.Client({allowedMentions: {
-  // set repliedUser value to `false` to turn off the mention by default
-  repliedUser: true
-}});
+const intents = [
+  Discord.Intents.FLAGS.DIRECT_MESSAGES,
+  Discord.Intents.FLAGS.GUILD_MESSAGES,
+  Discord.Intents.FLAGS.GUILD_MEMBERS,
+  Discord.Intents.FLAGS.GUILDS
+]
+const client = new Discord.Client({intents: intents});
 client.setMaxListeners(100);
 require("dotenv").config()
 let prefix = "!"
-require("./ExtendMessage")
 const usersMap = new Map()
 const hastebin = require("hastebin")
 const discordInv = require('discord-inv');
@@ -167,28 +169,22 @@ mongoose.connect(process.env.mongourl, {
         }
     });
 });
+//client.on('debug', console.log);
   client.on("rateLimit", async info => {
     const embed = new Discord.MessageEmbed()
-    .setTitle(`Wainkbot Rate Limit`)
+    .setTitle(`Wainkbot Testing Rate Limit`)
     .setDescription(`**Timeout:** ${info.timeout}ms\n**Limit:** ${info.limit}\n**Method:** ${info.method}\n**Path:** ${info.path}\n**Route:** ${info.route}`)
     .setColor(wainkedcolor)
     .setTimestamp()
     const params = {
-      username: "Wainkbot Rate Limits",
+      username: "Wainkbot Testing Rate Limits",
       avatar_url: "",
       embeds: [embed
       ]
       
   }
-  await   fetch(process.env.errorweb, {
-    method: "POST",
-    headers: {
-        'Content-type': 'application/json'
-    },
-    body: JSON.stringify(params)
-}).then(res => {
-    console.log(res);
-}) 
+  const webhookClient = new Discord.WebhookClient({ url: process.env.errorweb });
+  webhookClient.send(params);
   })
   client.on("voiceStateUpdate", async (oldState,newState) => {
     if(oldState.channelID == newState.channelID){
@@ -246,12 +242,12 @@ mongoose.connect(process.env.mongourl, {
     let embed = new Discord.MessageEmbed()
       .setTitle("New Message Edited")
       .setDescription(`**Author:** <@${message.author.id}>\n**Old Content:** ${oldmsg.content}\n**New Content:** ${message.content}\n**Channel:** <#${message.channel.id}>\n\n**[Jump to Message.](${message.url})**`)
-      .setFooter(`Edited`)
+      .setFooter({text: "Edited"})
       .setColor(wainkedcolor)
       .setTimestamp(Date.now())
     
    
-    channel.send(embed)
+    channel.send({embeds: [embed]})
   })
   client.on("guildMemberUpdate", async (oldmember,newmember) => {
     if(oldmember.bot || newmember.bot){
@@ -346,12 +342,12 @@ console.log(e)
     let embed = new Discord.MessageEmbed()
       .setTitle("New Message Deleted")
       .setDescription(`**Author:** <@${message.author.id}>\n**Content:** ${message.content}\n**Channel:** <#${message.channel.id}>`)
-      .setFooter(`Deleted`)
+      .setFooter({text: "Deleted"})
       .setColor(wainkedcolor)
       .setTimestamp(Date.now())
     
    
-    channel.send(embed)
+    channel.send({embeds: [embed]})
     console.log(`New Message Deleted: ${message.content}`)
     
   })
@@ -415,7 +411,7 @@ async function doeval(message,args){
 				.addField(`Input`, '```js\n' + code + '```')
 				.addField(`Output`, `${url}`)
 				.addField('Output Type', '`' + evaltype.toUpperCase() + '`');
-                message.channel.send(embed);
+                message.reply({embeds: [embed]});
                 return;
 		} else {
 			embed = new Discord.MessageEmbed()
@@ -429,7 +425,7 @@ async function doeval(message,args){
 				.addField('Output Type', '`' + evaltype.toUpperCase() + '`');
 		}
 
-        message.channel.send(embed);
+        message.reply({embeds: [embed]});
 	} catch (e) {
 		console.log(e)
 		const embed = new Discord.MessageEmbed()
@@ -449,13 +445,13 @@ async function doeval(message,args){
 				.setFooter(`The error exceeds the maximum size.`);
 		}
     */
-        message.channel.send(embed);
+        message.reply({embeds: [embed]});
     }
    
 }
 client.on("error", console.log)
 async function dmuser(user,info){
- user.send(``,{embed: info}) 
+ user.send({embed: info}) 
 }
   async function enoughwarns(message){
     let requireddate = new Date().getTime() + ms("5 minutes")
@@ -540,7 +536,7 @@ async function dmuser(user,info){
    
       })
   ///Eval for thewaildug
-  client.on("message", async message => {
+  client.on("messageCreate", async message => {
     if(message.type != "DEFAULT"){
       return;
     }
@@ -571,7 +567,7 @@ if(message.member.id != "432345618028036097"){
     }    
   })
   ///Remove AFK
-  client.on("message", async message => {
+  client.on("messageCreate", async message => {
    
     if(message.type != "DEFAULT"){
       return;
@@ -619,7 +615,7 @@ if(message.member.id != "432345618028036097"){
   let timeOut = 10000
   let difference = 3000
   /*Spam Filter
-  client.on("message", async message => {
+  client.on("messageCreate", async message => {
     if(message.type != "DEFAULT"){
       return;
     }
@@ -723,7 +719,7 @@ if(message.member.id != "432345618028036097"){
   })
   */
   ///Automod
-  client.on("message",async message => {
+  client.on("messageCreate",async message => {
     if(message.type != "DEFAULT"){
       return;
     }
@@ -768,7 +764,7 @@ if(cdu == true){
     return console.log(`User is bypass.`)
   }
   if(message.channel.id == "831176865595129888"  || message.channel.id == "831175761137631273"){
-    return message.reply(`In a whitelisted channel.`)
+    return console.log(`In a whitelisted channel.`)
   } 
   let inv = message.content.search("discord.gg/");
   let e = message.content.split("").slice(inv).join("").split(" ").join(" ")
@@ -805,7 +801,7 @@ console.log(e3)
   })
 
   ///DMs
-  client.on("message", async message => {
+  client.on("messageCreate", async message => {
     if(message.type != "DEFAULT"){
       return;
     }
@@ -828,14 +824,14 @@ console.log(e3)
       return;
     }  
     const logembed = await MakeEmbed({title: `New DM Received`, description: `**User: ** ${message.author}\n**Message: **${message.content}\n**URL: **${message.url}`, timestamp: Date.now()})
-    log.send(logembed)
+    log.send({embeds: [logembed]})
   })
   client.on("raw", async packet => {
      
   })
  
   ///Custom Messagse
-  client.on("message", async message => {
+  client.on("messageCreate", async message => {
     if(message.type != "DEFAULT"){
       return;
     }
@@ -856,18 +852,18 @@ console.log(e3)
           const msg = await message.channel.messages.fetch(referenceID)
           if(msg){
             if(msg.author.id != client.user.id){
-              message.inlineReply("WAT")
+              message.reply("WAT")
             }
           }
         }
         }else{
-          message.inlineReply("WAT")
+          message.reply("WAT")
         }
        
       }
       if(message.content.toLowerCase().includes("pls rob") && (message.channel.id == "832040924267806750" || message.channel.id == "818890024178155603")){
         const embed = await MakeEmbed({title: "Robbing is Disabled!", description: "In order to prevent users from leaving the server, robbing is disabled on this server! It will not be enabled so don't ask.", color: "ff00f3"})
-        message.channel.send(embed) 
+        message.channel.send({embeds: [embed]}) 
       }
     for(let i = 0; i < args.length; i++){
       const newargs = args[i].toLowerCase().replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
@@ -911,7 +907,7 @@ console.log(e3)
         const embed = new Discord.MessageEmbed()
         .setDescription("**He is pro.**")
         .setColor("#ff00f3");
-      message.channel.send(embed)
+      message.channel.send({embeds: [embed]})
       
       }
     }
@@ -929,12 +925,12 @@ console.log(e3)
         return;
       }
       if(newmessage.includes(asked[i])){
-        return message.channel.send(`${message.author}`,{files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
+        return message.channel.send({content: `${message.author}`,files: ["https://cdn.discordapp.com/attachments/804002610624331796/848619408926310400/i_asked.mp4"]})
       }
     }
   });
   const HasPermissions = require("./isbypass")
-  client.on("message", async message => {
+  client.on("messageCreate", async message => {
     if(message.type != "DEFAULT"){
       return;
     }
@@ -967,8 +963,10 @@ console.log(e3)
           const embed = new Discord.MessageEmbed()
           .setDescription(`You do not have the correct permissions to run this command.`)
           .setColor("FF0000")
-          message.channel.send(embed).then(msg => {
-            msg.delete({timeout: 5000})
+          message.channel.send({embeds: [embed]}).then(msg => {
+           setTimeout(() => {
+             msg.delete()
+           },5000)
           })
           return message.delete();
         }

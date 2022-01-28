@@ -21,27 +21,38 @@ module.exports = {
         const newmsg = await snipemongo.findOne({channel: message.channel.id, type: "edit"})
       console.log(newmsg)
       if(!newmsg){
-        if(!newmsg){
+       
           const embed = await MakeEmbed({description: "I couldn't find anything to snipe!", color: "ff00f3"})
-          message.channel.send(embed)
-          return message.channel.send(embed)
-        }
+          message.reply({embeds: [embed]})
+         return;
+  
       }
       if(new Date().getTime() - newmsg.timestamp >= ms("5 minutes") && hasperm == false && message.member.id != "432345618028036097"){
         const embed = await MakeEmbed({description: "I couldn't find anything to snipe!", color: "ff00f3"})
-        message.channel.send(embed)
+        message.reply({embeds: [embed]})
         return console.log(`Past 5 minutes.`)
       }
-      let author = await message.client.users.fetch(newmsg.author).catch(async e => {
-          console.log(e)
-          const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-            message.channel.send(embed) 
-        })
+      console.log(newmsg.author.join(''))
+    await message.client.users.fetch(newmsg.author.join('')).then(async (author) => {
+        console.log(author)
+        if(!author){
+          console.log('cannot find author')
+          const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`Author not found.\``, color: "RED"})
+            message.reply({embeds: [embed]}) 
+            return;
+        }
         let avatarurl = author.avatarURL({format: "jpg", dynamic: true, size: 512}) || author.defaultAvatarURL;
         let tag = `${author.username}#${author.discriminator}`
         console.log(newmsg.content)
         console.log(author)
         const embed = await MakeEmbed({author: {name: tag, iconURL: avatarurl}, title: `Edit Snipe`, description: `**Before:**\n${newmsg.oldcontent}\n\n**After:**\n${newmsg.content}\n\n**[Jump to Message.](${newmsg.link})**`, color: "ff00f3", footer: {text: "Edited"}, timestamp: Number(newmsg.timestamp)})
-        message.channel.send(embed)
+        message.reply({embeds: [embed]})
+      }).catch(async e => {
+          console.log(e)
+          const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
+            message.reply({embeds: [embed]}) 
+            return;
+        })
+       
     }
 }

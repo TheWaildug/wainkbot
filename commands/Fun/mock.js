@@ -10,6 +10,6 @@ module.exports = {
     callback: async (message,args,text) => {
         let msg = text
         let mock = require("../../mock")(msg)
-        return message.channel.send(mock,{allowedMentions: {parse: []}})
+        return message.channel.send({content: mock,allowedMentions: {parse: []}})
     }
 }

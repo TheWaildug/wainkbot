@@ -23,7 +23,7 @@ module.exports = {
         if(!reason){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You're missing a few arguments. Use \`${prefix}${alias} <channel/reason> <reason>\`.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return; 
         }
         
@@ -34,17 +34,17 @@ module.exports = {
         console.log(canchat.SEND_MESSAGES)
         if(canchat.SEND_MESSAGES == true || canchat.SEND_MESSAGES == null){
             const embed = await MakeEmbed({title: "Permission Denied", description: `This channel is already unlocked.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
           }
-          mentionchannel.updateOverwrite(everyone,{SEND_MESSAGES: null},`Unlocked by ${message.author.tag}(${message.author.id}) with the reason of ${reason}.`).catch(async e => {
+          mentionchannel.permissionOverwrites.edit(everyone,{SEND_MESSAGES: null},{reason:`Unlocked by ${message.author.tag}(${message.author.id}) with the reason of ${reason}.`}).catch(async e => {
             console.log(e)
             const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-        message.channel.send(embed)
+        message.reply({embeds: [embed]})
         return;
           })
           const channelembed = await MakeEmbed({title: "Channel Unlocked.",description: `This channel has been unlocked by a staff member. You can now chat here.\n\n**Reason**\n ${reason}`, color: "ff00f3",footer: {text: `Unlocked by ${message.author.tag}`}, timestamp: Date.now()});
-          mentionchannel.send(channelembed)
+          mentionchannel.send({embeds: [channelembed]})
 
           
     }

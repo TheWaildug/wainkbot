@@ -27,7 +27,7 @@ module.exports = {
        
         if(mentionchannel.id == "830510753155907584"){
            const embed = await MakeEmbed({title: "Permission Denied", description: `The **${prefix}chain** command exists ya know?`, color: "RED"})
-           message.channel.send(embed);
+           message.reply({embeds: [embed]});
     
            return;
           }
@@ -42,14 +42,14 @@ module.exports = {
           if(!msg){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You're missing a few arguments. Use \`${prefix}say <channel/message> <message>\`.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
           }
           message.delete();
-          mentionchannel.send(msg).catch(async e => {
+          mentionchannel.send({content: msg}).catch(async e => {
               console.log(e)
               const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-              message.channel.send(embed)
+              message.reply({embeds: [embed]})
               return;
           })
     }

@@ -13,14 +13,14 @@ module.exports = {
         const channel = message.guild.channels.cache.get("830510753155907584")
         if(!channel){
             const embed = await MakeEmbed({title: "Missing Channel", description: `Cannot find the chains channel.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             
             return;
         }
         channel.send(text,{allowedMentions: {parge: []}}).catch(async e => {
             console.log(e)
             const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
         })
         message.delete();
     }

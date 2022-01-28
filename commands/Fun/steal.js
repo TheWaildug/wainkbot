@@ -28,17 +28,17 @@ module.exports = {
         
             const embed = await MakeEmbed({title: "Unknown Emoji.", description: `**${msg}** is not an emoji.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }else{
             let name = msg.match(/\w+/g)
             name = name[1]
             message.guild.emojis.create(emojiurl,name,{reason: `Emoji stolen by ${message.author.id}`}).then((emote) => {
-                message.channel.send(`${emote} stolen with name **${name}**.`,{allowedMentions: {parse: []}})
+                message.reply({content: `${emote} stolen with name **${name}**.`,allowedMentions: {parse: []}})
             }).catch(async e => {
                 console.log(e)
                 const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-                message.channel.send(embed)
+                message.reply({embeds: [embed]})
             })
         }
     }

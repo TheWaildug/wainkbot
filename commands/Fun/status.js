@@ -15,7 +15,7 @@ module.exports = {
         console.log(isblacklisted)
         if(isblacklisted != null){
             const embed = await CreateEmbed({title: "Permission Denied", description: `You have been blacklisted from changing my status.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         
@@ -27,14 +27,14 @@ module.exports = {
         const channel = guild.channels.cache.get("840714384044457994")
         if(!channel){
             const embed = await MakeEmbed({title: "Missing Channel", description: `Cannot find the status log channel.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             
             return;
         }
         const embed = await MakeEmbed({title: "New Status Change", description: `**User:** ${message.member}\n**Status:** ${status}`, color: `ff00f3`, timestamp: Date.now()})
-        channel.send(embed)
+        channel.send({embeds: [embed]})
         if(message.client.user.id == "832740448909000755"){
-            message.client.user.setPresence({activity: {name: status, type: `WATCHING`}})
+            message.client.user.setActivity(status,{type: `WATCHING`})
         }else{
             message.client.user.setActivity(status, {
                 type: "STREAMING",

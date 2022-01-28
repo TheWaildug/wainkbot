@@ -22,19 +22,19 @@ module.exports = {
         if(isNaN(amnt)){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `\`${amnt}\` is not a number.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(Number(amnt) <= 0){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You need to provide a number greater than 0.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(Number(amnt) >= 100){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You need to provide a number less than 100.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
     
@@ -43,7 +43,7 @@ module.exports = {
         if(!messages){
             const embed = await MakeEmbed({title: "Error", description: `There is nothing to purge.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(contin == true){
@@ -51,7 +51,7 @@ module.exports = {
             if(!messages){
                 const embed = await MakeEmbed({title: "Error", description: `There is nothing to purge.`, color: "RED"})
                  
-                message.channel.send(embed)
+                message.reply({embeds: [embed]})
                 return;
             }
             let newmsg = []
@@ -79,17 +79,17 @@ module.exports = {
         if(!messages){
             const embed = await MakeEmbed({title: "Error", description: `There is nothing to purge.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         message.channel.bulkDelete(messages).catch(async e => {
             console.log(e)
                 const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         })
         const success = await MakeEmbed({title: `Purge`, description: `Purged \`${amnt}\` messages from ${message.channel}.`,color: "ff00f3"})
-        message.channel.send(success).then(msg => {
+        message.channel.send({embeds: [success]}).then(msg => {
             setTimeout(() => {
                 msg.delete();
             }, 5 * 1000)

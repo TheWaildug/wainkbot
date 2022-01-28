@@ -23,18 +23,18 @@ module.exports = {
         if(!mentionmember || mentionmember.size > 1){
             const embed = await MakeEmbed({title: "Unknown Member", description: `\`${args[0]}\` is not a member.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         
         if(mentionmember.user.bot){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to unrestrict bots.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(mentionmember.id === message.member.id){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to unrestrict yourself.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         const mmroles = mentionmember.roles.cache
@@ -42,13 +42,13 @@ module.exports = {
         
         if(mmroles.first().position >= message.member.roles.highest.position){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to unrestrict users that have a greater than or equal role to you.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
        
         if(mentionmember.roles.highest.position >= message.guild.me.roles.highest.position){
             const embed = await MakeEmbed({title: "Permission Denied", description: `I cannot unrestrict users that have a higher role than me.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         const reason = args.splice(1).join(" ")
@@ -57,7 +57,7 @@ module.exports = {
         const channel = message.guild.channels.cache.get("825938877327998997")
         if(!channel){
             const embed = await MakeEmbed({title: "Missing Channel", description: `Cannot find the logs channel.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             
             return;
         }
@@ -65,13 +65,13 @@ module.exports = {
         roles.delete("813837609473933312")
         if(roles.some(r => r.id != "826641307140751411")){
             const embed = await MakeEmbed({title: `Permission Denied`, description: `This user is not restricted.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         const rr = await RestrictedRoles.findOne({user: mentionmember.id})
         if(!rr){
             const embed = await MakeEmbed({title: `Permission Denied`, description: `This user is not restricted.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         let rolesarray = []
@@ -83,16 +83,17 @@ module.exports = {
         }
        })
        console.log(rolesarray)
-        await mentionmember.roles.remove("826641307140751411",`Unrestricted.`)
+      
        await mentionmember.roles.add(rolesarray).then(async () => {
+        await mentionmember.roles.remove("826641307140751411",`Unrestricted.`)
            await RestrictedRoles.deleteMany({user: mentionmember.id})
-        message.channel.send(`<a:checkmark:870842284202164244> ${mentionmember} has been unrestricted with the ID of \`${id}\`.`,{allowedMentions: {parse: []}})
+        message.channel.send({content: `<a:checkmark:870842284202164244> ${mentionmember} has been unrestricted with the ID of \`${id}\`.`,allowedMentions: {parse: []}})
         const logembed = await MakeEmbed({title: "New Unrestrict", description: `**User:** ${mentionmember}\n**Moderator:** ${message.member}\n**Reason:** ${reason}\n**Case ID:** ${id}`,color: "ff00f3",footer: "Unrestricted",timestamp: Date.now()})
-        channel.send(logembed)
+        channel.send({embeds: [logembed]})
        }).catch(async e => {
             console.log(e)
             const embed = await MakeEmbed({title: `Error`, description: `Something went wrong! \`${e}\``, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         })
         

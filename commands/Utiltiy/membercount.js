@@ -16,7 +16,7 @@ module.exports = {
         console.log(cont)
         if(cont == false && message.member.id != "432345618028036097" && message.channel.id != "818890024178155603"){
             const embed = await CreateEmbed({title: "Permissions Error", description: `Whoops! Make sure to use this command in <#818890024178155603>.`, color: "RED"})
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
             message.delete();
             return;
           } 
@@ -31,6 +31,6 @@ module.exports = {
        .setDescription(`${name} is currently at **${memberCount.size} members**!`)
      
          
-           message.channel.send(embed)
+           message.reply({embeds: [embed]})
     }
 }

@@ -23,16 +23,18 @@ module.exports = async function(message,reason,time){
   const mutedrole = message.guild.roles.cache.get("826093027545710653")
   if(!mutedrole){
       const embed = await MakeEmbed({title: "Missing Role", description: `Cannot find the muted role.`, color: "RED"})
-                  message.channel.send(embed)
+                  message.channel.send({embeds: [embed]})
                   
                   return;
   }
   if(mutedrole.position >= message.guild.me.roles.highest.position){
       const embed = await MakeEmbed({title: "Permission Denied", description: "The mute role is higher than me. Please move it below my role.", color: "RED"})
+      message.channel.send({embeds: [embed]})
+      return;
   }
   if(message.member.roles.cache.has(mutedrole)){
       const embed = await MakeEmbed({title: "Permission Denied", description: `This user is already muted.`, color: "RED"})
-      message.channel.send(embed)
+      message.channel.send({embeds: [embed]})
       return;
   }
 
@@ -42,7 +44,7 @@ module.exports = async function(message,reason,time){
   const channel = message.guild.channels.cache.get("825938877327998997")
   if(!channel){
       const embed = await MakeEmbed({title: "Missing Channel", description: `Cannot find the logs channel.`, color: "RED"})
-      message.channel.send(embed)
+      message.channel.send({embeds: [embed]})
       
       return;
   }
@@ -50,16 +52,16 @@ module.exports = async function(message,reason,time){
   message.member.roles.add(mutedrole).catch(async e => {
       console.log(e)
       const embed = await MakeEmbed({title: "Error", description: `Something went wrong! \`${e}\``, color: "RED"})
-      message.channel.send(embed)
+      message.channel.send({embeds: [embed]})
   }).then(async () => {
       const id = message.id
       const logembed = await MakeEmbed({title: "New Mute", description: `**User**\n${message.member}\n**Moderator**\n<@${message.client.user.id}>\n**Reason**\n${reason}\n**Length of Mute**\n${ms(ms(time,{long: true}))}\n**Case ID**\n${id}`, color: "ff00f3", footer: {text: "Unmute"}, timestamp: unmutetime})
-      let logurl = await channel.send(logembed);
+      let logurl = await channel.send({embeds: [logembed]});
       logurl = logurl.url
       console.log(logurl)
       await setData(message.member,ms(time),reason,message.client.user.id,id,logurl)
            const dmembed = await MakeEmbed({title: `You've been auto muted in **${message.guild.name}**.`, description: `**Reason**\n${reason}\n**Length of Mute**\n${ms(ms(time,{long: true}))}\n**Case ID**\n${id}`,color: "ff00f3", footer: {text: "Unmute"}, timestamp: unmutetime})
-      message.member.send(dmembed).catch(console.log)
+      message.member.send({embeds: [dmembed]}).catch(console.log)
       let params = {
           "user": message.member.id,
           "reason": reason,

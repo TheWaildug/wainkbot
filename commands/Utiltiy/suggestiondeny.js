@@ -13,20 +13,20 @@ module.exports = {
     callback: async (message,args,prefix,alias) => {
         if(message.channel.id != "828999520120733777" && message.channel.id != "816862529564573746" && message.channel.id != "832040924267806750"){
             const embed = await MakeEmbed({title: "Permissions Error", description: `Please run this in the staff channel or suggestion channel.`, color: "RED"})
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
             message.delete();
             return;
         }
         if(isNaN(args[0])){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You're missing a few arguments. Use \`${prefix}${alias} <messageID> <reason>\`.`, color: "RED"})
                  
-                    message.channel.send(embed)
+                    message.reply({embeds: [embed]})
                     return;
         }
         const channel = message.guild.channels.cache.get(channelid)
         if(!channel){
             const embed = await MakeEmbed({title: "Missing Channel", description: `Cannot find the suggestion channel.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             
             return;
         }
@@ -34,12 +34,12 @@ module.exports = {
         if(!msg || msg.size > 1){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `I cannot find that message in the suggestion channel.`, color: "RED"})
                  
-                    message.channel.send(embed)
+                    message.reply({embeds: [embed]})
                     return;
         }
         if(msg.author.id !== message.guild.me.id){
             const embed = await MakeEmbed({title: "Permission Denied", description: `I am not the author of this message. I cannot edit it.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         let acceptmsg = args.splice(1).join(" ")
@@ -47,17 +47,17 @@ module.exports = {
         let oldembed = msg.embeds[0]
         if(oldembed == undefined){
             const embed = await MakeEmbed({title: "Permission Denied", description: `This message is not a suggestion.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
-        if(oldembed.footer.text == "Accepted" || oldembed.footer.text == "Denied"){
+        if(oldembed.footer.text == "Approved" || oldembed.footer.text == "Denied"){
             const embed = await MakeEmbed({title: "Permission Denied", description: `This suggestion has already been accepted/denied.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         console.log(oldembed.description)
         let newembed = await MakeEmbed({author: {name: oldembed.author.name, iconURL: oldembed.author.iconURL}, description: `${oldembed.description}\n\n**Denied**\n**Denied by:** ${message.member}.\n**Reason:** ${acceptmsg}`,color: "FF0000", footer: {text: "Denied"}, timestamp: Date.now()})
-        msg.edit(newembed)
+        msg.edit({embeds: [newembed]})
         message.delete();
     }
 }

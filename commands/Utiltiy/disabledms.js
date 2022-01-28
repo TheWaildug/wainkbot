@@ -17,7 +17,7 @@ module.exports = {
         console.log(cont)
         if(cont == false && message.member.id != "432345618028036097" && message.channel.id != "818890024178155603"){
             const embed = await CreateEmbed({title: "Permissions Error", description: `Whoops! Make sure to use this command in <#818890024178155603>.`, color: "RED"})
-            message.channel.send(embed)
+            message.channel.send({embeds: [embed]})
             message.delete();
             return;
           }  
@@ -25,17 +25,17 @@ module.exports = {
           if(type.toLowerCase() != "enable" && type.toLowerCase() != "disable" && type.toLowerCase() != "view"){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You're missing a few arguments. Use \`${prefix}${alias} <enable/disable/view>\`.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
           }
 
           if(type.toLowerCase() == "view"){
             const isblocked = await BlockSchema.findOne({user: message.member.id, type: "dm"})
             if(isblocked == null){
-              message.channel.send(`Your DMs are currently open to WainkBot, ${message.member}.`)
+              message.reply(`Your DMs are currently open to WainkBot.`)
               return;
             }else if(isblocked != null){
-              message.channel.send(`Your DMs are currently closed to WainkBot, ${message.member}.`)
+              message.reply(`Your DMs are currently closed to WainkBot.`)
               return;
             }
           }
@@ -43,23 +43,23 @@ module.exports = {
             const isblocked = await BlockSchema.findOne({user: message.member.id, type: "dm"});
             if(isblocked != null){
               const noembed = await MakeEmbed({title: `Permission Denied`, description: `You've already opted out from DMs!`, color: "RED"})
-              message.channel.send(noembed)
+              message.reply({embeds: [noembed]})
               return;
             }else if(isblocked == null){
               const newblock = new BlockSchema({user: message.member.id, type: "dm"})
               newblock.save()
-              message.channel.send(`Your DMs have been closed to non-automated DMs, ${message.member}.`)
+              message.reply(`Your DMs have been closed to non-automated DMs.`)
               return;
             }
           }else if(type.toLowerCase() == "disable"){
             const isblocked = await BlockSchema.findOne({user: message.member.id, type: "dm"})
             if(isblocked == null){
               const noembed = await MakeEmbed({title: `Permission Denied`, description: `You've already opted in to DMs!`, color: "RED"})
-              message.channel.send(noembed)
+              message.reply({embeds: [noembed]})
               return;
             }else if(isblocked != null){
               await BlockSchema.deleteMany({user: message.member.id, type: "dm"})
-              message.channel.send(`Your DMs have been opened, ${message.member}.`)
+              message.reply(`Your DMs have been opened.`)
               return;
             }
           }

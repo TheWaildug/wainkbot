@@ -19,7 +19,7 @@ module.exports = {
         const cont = await HasPermission(roles,message.member)
         if(cont == false && message.channel.id != "818890024178155603" && message.channel.id != "832040924267806750"){
             const embed = await CreateEmbed({title: "Permissions Error", description: `Whoops! Make sure to use this command in <#818890024178155603>.`, color: "RED"})
-                 message.channel.send(embed)
+                 message.channel.send({embeds: [embed]})
                  message.delete();
                  return;
         }
@@ -66,7 +66,7 @@ module.exports = {
             : command.commands[0]
                         console.log(`there isn't a role names ${rr}`)
                         const embed = await MakeEmbed({title: "Missing Role", description: `Cannot find the role **${rr}** for the command **${cmdName}**.`, color: "RED"})
-                        message.channel.send(embed)
+                        message.reply({embeds: [embed]})
                         hasRole = false
                         return;
                     }
@@ -125,7 +125,7 @@ module.exports = {
         .setDescription(reply)
         .setColor("ff00f3")
         .setTimestamp()
-       message.channel.send(cmdembed)
+       message.reply({embeds: [cmdembed]})
         
     
     }

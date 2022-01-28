@@ -20,7 +20,7 @@ module.exports = {
             afkmsg = "AFK"
         }
         if(afkmsg.toLowerCase().includes("sleep") || afkmsg.toLowerCase().includes("slep")){
-            message.reply(`Sweet Dreams. 💤`,{allowedMentions: {parse: [], users: [message.member.id]}})
+            message.reply({content: "Sweet Dreams. 💤",allowedMentions: {parse: [], users: [message.member.id]}})
             let curname = message.member.displayName
             message.member.setNickname(`[AFK] ${curname}`,`Adding AFK.`).catch(e => console.log(e))
                let afkmo = new afkmongo({userid: message.member.id, afk: afkmsg, afkms: Date.now(), currentname: curname}) 

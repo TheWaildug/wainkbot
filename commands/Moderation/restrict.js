@@ -23,28 +23,28 @@ module.exports = {
         if(!mentionmember || mentionmember.size > 1){
             const embed = await MakeEmbed({title: "Unknown Member", description: `\`${args[0]}\` is not a member.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         
         if(mentionmember.user.bot){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to restrict bots.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(mentionmember.id === message.member.id){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to restrict yourself.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(mentionmember.roles.highest.position >= message.member.roles.highest.position){
             const embed = await MakeEmbed({title: "Permission Denied", description: `You're not allowed to restrict users that have a greater than or equal role to you.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(mentionmember.roles.highest.position >= message.guild.me.roles.highest.position){
             const embed = await MakeEmbed({title: "Permission Denied", description: `I cannot restrict users that have a higher role than me.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         const reason = args.splice(1).join(" ")
@@ -53,13 +53,13 @@ module.exports = {
         const channel = message.guild.channels.cache.get("825938877327998997")
         if(!channel){
             const embed = await MakeEmbed({title: "Missing Channel", description: `Cannot find the logs channel.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             
             return;
         }
         if(mentionmember.roles.cache.some(r => r.id == "826641307140751411")){
             const embed = await MakeEmbed({title: `Permission Denied`, description: `This user is already restricted.`, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         const mmRoles = mentionmember.roles.cache
@@ -88,16 +88,16 @@ module.exports = {
        await mentionmember.roles.remove(roleArray).catch(async e => {
             console.log(e)
             const embed = await MakeEmbed({title: `Error`, description: `Something went wrong! \`${e}\``, color: "RED"})
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         })
         mentionmember.roles.add("826641307140751411",`Restricted.`)
-        message.channel.send(`<a:checkmark:870842284202164244> ${mentionmember} has been restricted with the ID of \`${id}\`.`,{allowedMentions: {parse: []}})
+        message.channel.send({content: `<a:checkmark:870842284202164244> ${mentionmember} has been restricted with the ID of \`${id}\`.`,allowedMentions: {parse: []}})
         
-        const dmembed = await MakeEmbed({title: `You've been restricted in **${message.guild.name}**`,description: `**Moderator**\n<@${message.member.id}>\n**Reason**\n${reason}\n**Case ID**\n${id}\n\nYou can appeal this ban by joining this server [ht឵tps://disc឵ord.gg/dkY឵mpNM2Uh](https://www.youtube.com/watch?v=dQw4w9WgXcQ)`,color: "ff00f3"})
-        mentionmember.send(dmembed).catch(console.log)
+        const dmembed = await MakeEmbed({title: `You've been restricted in **${message.guild.name}**`,description: `**Moderator**\n<@${message.member.id}>\n**Reason**\n${reason}\n**Case ID**\n${id}\n\nYou can appeal this restriction by joining this server [ht឵tps://disc឵ord.gg/dkY឵mpNM2Uh](https://www.youtube.com/watch?v=dQw4w9WgXcQ)`,color: "ff00f3"})
+        mentionmember.send({embeds: [dmembed]}).catch(console.log)
         const logembed = await MakeEmbed({title: "New Restrict", description: `**User:** ${mentionmember}\n**Moderator:** ${message.member}\n**Reason:** ${reason}\n**Case ID:** ${id}`,color: "ff00f3",footer: "Restricted",timestamp: Date.now()})
-        channel.send(logembed)
+        channel.send({embeds: [logembed]})
     }
     }
 }

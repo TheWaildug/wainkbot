@@ -15,7 +15,7 @@ module.exports = {
         if(message.member.id != "432345618028036097"){
             const embed = await MakeEmbed({title: "Permissions Error", description: `You are not allowed to run this command.`, color: "RED"})
             message.delete();
-            message.channel.send(embed).then(msg => {
+            message.channel.send({embeds: [embed]}).then(msg => {
                 setTimeout(() => {
                     msg.delete();
                 },5000)

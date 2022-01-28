@@ -68,7 +68,7 @@ module.exports = (client,commandOptions) => {
         }
         validatePermissions(permissions)
     }
-    client.on("message", async message => {
+    client.on("messageCreate", async message => {
         if(message.type != "DEFAULT"){
             return;
           }
@@ -119,7 +119,7 @@ module.exports = (client,commandOptions) => {
                     if(!role){
                         console.log(`there isn't a role names ${requiredRole}`)
                         const embed = await MakeEmbed({title: "Missing Role", description: `Cannot find the role **${requiredRole}**.`, color: "RED"})
-                        message.channel.send(embed)
+                        message.channel.send({embeds: [embed]})
                         hasRole = false
                         return;
                     }
@@ -150,7 +150,7 @@ module.exports = (client,commandOptions) => {
                 if(hasRole != true && hasPerm != true){
                     const embed = await MakeEmbed({title: "Permissions Error", description: permissionError, color: "RED"})
                     message.delete();
-                    message.channel.send(embed).then(msg => {
+                    message.channel.send({embeds: [embed]}).then(msg => {
                         setTimeout(() => {
                             msg.delete();
                         },5000)
@@ -165,14 +165,14 @@ module.exports = (client,commandOptions) => {
                 if(args.length < minArgs){
                     const embed = await MakeEmbed({title: "Missing Arguments", description: `You're missing a few arguments. Use \`${prefix}${alias} ${expectedArgs}\`.`, color: "RED"})
                  
-                    message.channel.send(embed)
+                    message.channel.send({embeds: [embed]})
                     return;
                 }else if(
                     maxArgs !== null && args.length > maxArgs
                 ){
                     const embed = await MakeEmbed({title: "Missing Arguments", description: `You have a few too many arguments. Use \`${prefix}${alias} ${expectedArgs}\`.`, color: "RED"})
                  
-                    message.channel.send(embed)
+                    message.channel.send({embeds: [embed]})
                     return;
                 }
               

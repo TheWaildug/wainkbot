@@ -16,11 +16,11 @@ module.exports = {
         const yourping = now - message.createdTimestamp;
 		const clientping = message.client.ws.ping
         let embed = await MakeEmbed({description: `Pinging <a:loading:875074931459751937>`, color: "ff00f3"})
-       const msg = await message.channel.send(embed)
+       const msg = await message.reply({embeds: [embed]})
        wait(5000)
 		embed = await MakeEmbed({title: `Pong!`, description: `**Latiency:** ${yourping}\n**Websocket:** ${clientping}`, color: "ff00f3"})
         
-		msg.edit(embed)
+		msg.edit({embeds: [embed]})
 		return;
     }
 }

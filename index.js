@@ -844,21 +844,12 @@ console.log(e3)
           return;
         }
       }
-      if(message.mentions.users.has(client.user.id)){
-        const reference = message.reference
-        if(reference){
-          const referenceID = reference.messageID
-          if(referenceID){
-          const msg = await message.channel.messages.fetch(referenceID)
-          if(msg){
-            if(msg.author.id != client.user.id){
-              message.reply("WAT")
-            }
-          }
-        }
-        }else{
+      if(message.mentions.has(client.user.id)){
+        
+        
+  
           message.reply("WAT")
-        }
+  
        
       }
       if(message.content.toLowerCase().includes("pls rob") && (message.channel.id == "832040924267806750" || message.channel.id == "818890024178155603")){

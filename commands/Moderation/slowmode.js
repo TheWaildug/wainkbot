@@ -12,7 +12,7 @@ module.exports = {
     callback: async (message,args,text,prefix,alias) => {
         let sm = text
         if(!sm){
-            return message.channel.send(`The current slowmode in ${message.channel} is ${message.channel.rateLimitPerUser} seconds.`)
+            return message.reply(`The current slowmode in ${message.channel} is ${message.channel.rateLimitPerUser} seconds.`)
         }
        
         if(sm.includes("+")){
@@ -24,28 +24,28 @@ module.exports = {
         if(isNaN(sm)){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You're missing a few arguments. Use \`${prefix}${alias} <slowmode>\`.`, color: "RED"})
                  
-                    message.channel.send(embed)
+                    message.reply({embeds: [embed]})
                     return;
         }
         if(sm < 0){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You need to provide a number that's at least 0.`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         if(sm > 21600){
             const embed = await MakeEmbed({title: "Missing Arguments", description: `You need to provide a number no more than than 21600 (6 Hours).`, color: "RED"})
                  
-            message.channel.send(embed)
+            message.reply({embeds: [embed]})
             return;
         }
         message.channel.setRateLimitPerUser(sm,`Changed by ${message.author.tag}(${message.member.id})`).then(() => {
-            message.channel.send(`Changed slowmode to \`${sm}\` seconds.`)
+            message.reply(`Changed slowmode to \`${sm}\` seconds.`)
             return;
         }).catch(async e => {
             console.log(e)
             const errorembed = await MakeEmbed({title: `Error`, description: `Something went wrong! \`${e}\``,color: "RED"})
-            message.channel.send(errorembed)
+            message.reply({embeds: [errorembed]})
             return;
         })
     }
